@@ -1,0 +1,8 @@
+supergraph:
+  introspection: true
+  path: /graphql
+  listen: 192.168.86.38:4000
+homepage:
+  enabled: false
+sandbox:
+  enabled: true
