@@ -2,9 +2,6 @@ supergraph:
   introspection: true
   path: /graphql
   listen: 192.168.86.38:4000
-override_subgraph_url:
-  profiling: http://localhost:5001/graphql
-  manaing: http://localhost:5002/graphql
 homepage:
   enabled: false
 sandbox:
