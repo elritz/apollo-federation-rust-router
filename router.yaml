@@ -2,7 +2,30 @@ supergraph:
   introspection: true
   path: /graphql
   listen: 192.168.86.38:4000
+override_subgraph_url:
+  profiling: http://localhost:5001/graphql
+  manaing: http://localhost:5002/graphql
 homepage:
   enabled: false
 sandbox:
   enabled: true
+headers:
+  # Header rules for all subgraphs
+  all:
+    request:
+      - propagate:
+          matching: .*
+    # Subgraph-specific header rules
+  subgraphs:
+    profiling:
+      request:
+        # Calls to the products subgraph have the "router-subgraph-name" header set to `products`.
+        - insert:
+            name: "router-subgraph-name"
+            value: "profiling"
+    managing:
+      request:
+        # Calls to the accounts subgraph have the "router-subgraph-name" header set to `accounts`.
+        - insert:
+            name: "router-subgraph-name"
+            value: "managing"
