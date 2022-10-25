@@ -1,0 +1,10 @@
+federation_version: 2
+subgraphs:
+  profiling:
+    routing_url: http://localhost:5001/graphql
+    schema:
+      file: profiling-schema-rover.graphql
+  managing:
+    routing_url: http://localhost:5002/graphql
+    schema:
+      file: managing-schema-rover.graphql

@@ -1,0 +1,169 @@
+interface Node {
+  id: String
+}
+
+type Device {
+  deviceType: String
+}
+
+type DeviceManager @key(fields: "id") {
+  id: String!
+  Device: Device
+  DeviceProfile: DeviceProfile
+}
+
+type DeviceManagerDeviceProfiles {
+  DeviceProfiles: [DeviceProfile]
+}
+
+type DeviceProfile {
+  id: Int!
+  isActive: Boolean!
+  refreshtoken: String
+  accesstoken: String
+  Profile: Profile
+  AppType: AppType
+  DeviceManager: DeviceManager!
+  deviceManagerId: String!
+}
+
+union DeviceManagerDeviceProfilesResponseUnion = DeviceManagerDeviceProfiles | Error
+
+union RefreshDeviceManagerResponseUnion = DeviceManager | Error | Success
+
+extend type Profile implements Node @key(fields: "id") {
+  id: String! @external
+}
+
+type Error {
+  type: String
+  errorCode: String
+  message: String
+}
+
+type Success {
+  type: String
+  successCode: String
+  message: String
+}
+
+type Mutation {
+  createOneDevice(data: DeviceCreateInput!): Device!
+  createADeviceManager(profileId: String): RefreshDeviceManagerResponseUnion
+  switchDeviceProfile(profileId: String): RefreshDeviceManagerResponseUnion
+  refreshDeviceManager: RefreshDeviceManagerResponseUnion
+  removeDeviceProfileToDeviceManager(profileId: String!): Boolean
+}
+
+extend type Query {
+  device(where: DeviceWhereUniqueInput!): Device
+  getADeviceManager: DeviceManagerDeviceProfilesResponseUnion
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+enum AppType {
+  BARFRIENDS
+  PETFRIENDS
+}
+
+input DeviceCreateInput {
+  id: String
+  deviceType: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
+}
+
+input DeviceWhereUniqueInput {
+  id: String
+  deviceManagerId: String
+}
+
+scalar DateTime
+
+input DeviceManagerCreateNestedOneWithoutDeviceInput {
+  create: DeviceManagerCreateWithoutDeviceInput
+  connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceInput
+  connect: DeviceManagerWhereUniqueInput
+}
+
+input DeviceManagerCreateWithoutDeviceInput {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
+}
+
+input DeviceManagerCreateOrConnectWithoutDeviceInput {
+  where: DeviceManagerWhereUniqueInput!
+  create: DeviceManagerCreateWithoutDeviceInput!
+}
+
+input DeviceManagerWhereUniqueInput {
+  id: String
+}
+
+input DeviceProfileCreateNestedManyWithoutDeviceManagerInput {
+  create: [DeviceProfileCreateWithoutDeviceManagerInput!]
+  connectOrCreate: [DeviceProfileCreateOrConnectWithoutDeviceManagerInput!]
+  createMany: DeviceProfileCreateManyDeviceManagerInputEnvelope
+  connect: [DeviceProfileWhereUniqueInput!]
+}
+
+input DeviceProfileCreateWithoutDeviceManagerInput {
+  AppType: AppType
+  profileId: String
+  isActive: Boolean!
+  accesstoken: String
+  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
+}
+
+input DeviceProfileCreateOrConnectWithoutDeviceManagerInput {
+  where: DeviceProfileWhereUniqueInput!
+  create: DeviceProfileCreateWithoutDeviceManagerInput!
+}
+
+input DeviceProfileCreateManyDeviceManagerInputEnvelope {
+  data: [DeviceProfileCreateManyDeviceManagerInput!]
+  skipDuplicates: Boolean
+}
+
+input DeviceProfileWhereUniqueInput {
+  id: Int
+}
+
+input RefreshTokenCreateNestedOneWithoutDeviceProfileInput {
+  create: RefreshTokenCreateWithoutDeviceProfileInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutDeviceProfileInput
+  connect: RefreshTokenWhereUniqueInput
+}
+
+input DeviceProfileCreateManyDeviceManagerInput {
+  id: Int
+  AppType: AppType
+  profileId: String
+  isActive: Boolean!
+  accesstoken: String
+}
+
+input RefreshTokenCreateWithoutDeviceProfileInput {
+  token: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input RefreshTokenCreateOrConnectWithoutDeviceProfileInput {
+  where: RefreshTokenWhereUniqueInput!
+  create: RefreshTokenCreateWithoutDeviceProfileInput!
+}
+
+input RefreshTokenWhereUniqueInput {
+  id: Int
+  token: String
+  DeviceProfileId: Int
+}

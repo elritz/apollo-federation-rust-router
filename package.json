@@ -1,0 +1,29 @@
+{
+  "name": "router",
+  "version": "1.0.0",
+  "description": "Rust",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "router": "APOLLO_KEY=service:barfriends:HK36HSViS1rAb1l5wNG67w APOLLO_GRAPH_REF=barfriends@current ./router --config ./router.yaml",
+    "router2": "APOLLO_KEY=service:barfriends:HK36HSViS1rAb1l5wNG67w APOLLO_GRAPH_REF=barfriends@current ./router --dev --supergraph supergraph.graphql --config ./router.yaml",
+    "list": "rover subgraph list barfriends@current",
+    "fetch-profiling": "rover subgraph fetch barfriends@current --name profiling > profiling-schema-rover.graphql",
+    "fetch-managing": "rover subgraph fetch barfriends@current --name managing  > managing-schema-rover.graphql",
+    "fetch-all": "npm run fetch-managing && npm run fetch-profiling",
+    "intro-profiling": "rover subgraph introspect http://localhost:5001/graphql > profiling-schema-rover.graphql",
+    "intro-managing": "rover subgraph introspect http://localhost:5002/graphql > managing-schema-rover.graphql",
+    "super-compose": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql",
+    "super-compose2": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elritz/router.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elritz/router/issues"
+  },
+  "homepage": "https://github.com/elritz/router#readme"
+}
