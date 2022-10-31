@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "router": "APOLLO_KEY=service:barfriends:HK36HSViS1rAb1l5wNG67w APOLLO_GRAPH_REF=barfriends@current ./router ./router.yaml",
+    "router": "APOLLO_KEY=service:barfriends:HK36HSViS1rAb1l5wNG67w APOLLO_GRAPH_REF=barfriends@current ./router --config ./router.yaml",
     "router-local": "./router --dev --supergraph supergraph.graphql --config ./router.yaml",
     "list": "rover subgraph list barfriends@current",
     "fetch-profiling": "rover subgraph fetch barfriends@current --name profiling > profiling-schema-rover.graphql",
