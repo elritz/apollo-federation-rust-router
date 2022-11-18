@@ -435,19 +435,19 @@ input BoolNullableFilter
   not: NestedBoolNullableFilter
 }
 
+input ChatroomCreateNestedManyWithoutProfilesInput
+  @join__type(graph: PROFILING)
+{
+  create: [ChatroomCreateWithoutProfilesInput!]
+  connectOrCreate: [ChatroomCreateOrConnectWithoutProfilesInput!]
+  connect: [ChatroomWhereUniqueInput!]
+}
+
 input ChatroomCreateNestedOneWithoutMessagesInput
   @join__type(graph: PROFILING)
 {
   create: ChatroomCreateWithoutMessagesInput
   connectOrCreate: ChatroomCreateOrConnectWithoutMessagesInput
-  connect: ChatroomWhereUniqueInput
-}
-
-input ChatroomCreateNestedOneWithoutProfilesInput
-  @join__type(graph: PROFILING)
-{
-  create: ChatroomCreateWithoutProfilesInput
-  connectOrCreate: ChatroomCreateOrConnectWithoutProfilesInput
   connect: ChatroomWhereUniqueInput
 }
 
@@ -479,12 +479,55 @@ input ChatroomCreateWithoutProfilesInput
   messages: MessageCreateNestedManyWithoutChatroomInput
 }
 
-input ChatroomOrderByWithRelationInput
+input ChatroomListRelationFilter
   @join__type(graph: PROFILING)
 {
-  id: SortOrder
-  profiles: ProfileOrderByRelationAggregateInput
-  messages: MessageOrderByRelationAggregateInput
+  every: ChatroomWhereInput
+  some: ChatroomWhereInput
+  none: ChatroomWhereInput
+}
+
+input ChatroomOrderByRelationAggregateInput
+  @join__type(graph: PROFILING)
+{
+  _count: SortOrder
+}
+
+input ChatroomScalarWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [ChatroomScalarWhereInput!]
+  OR: [ChatroomScalarWhereInput!]
+  NOT: [ChatroomScalarWhereInput!]
+  id: StringFilter
+}
+
+input ChatroomUpdateManyMutationInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+}
+
+input ChatroomUpdateManyWithoutProfilesInput
+  @join__type(graph: PROFILING)
+{
+  create: [ChatroomCreateWithoutProfilesInput!]
+  connectOrCreate: [ChatroomCreateOrConnectWithoutProfilesInput!]
+  upsert: [ChatroomUpsertWithWhereUniqueWithoutProfilesInput!]
+  set: [ChatroomWhereUniqueInput!]
+  disconnect: [ChatroomWhereUniqueInput!]
+  delete: [ChatroomWhereUniqueInput!]
+  connect: [ChatroomWhereUniqueInput!]
+  update: [ChatroomUpdateWithWhereUniqueWithoutProfilesInput!]
+  updateMany: [ChatroomUpdateManyWithWhereWithoutProfilesInput!]
+  deleteMany: [ChatroomScalarWhereInput!]
+}
+
+input ChatroomUpdateManyWithWhereWithoutProfilesInput
+  @join__type(graph: PROFILING)
+{
+  where: ChatroomScalarWhereInput!
+  data: ChatroomUpdateManyMutationInput!
 }
 
 input ChatroomUpdateOneWithoutMessagesInput
@@ -497,18 +540,6 @@ input ChatroomUpdateOneWithoutMessagesInput
   delete: Boolean
   connect: ChatroomWhereUniqueInput
   update: ChatroomUpdateWithoutMessagesInput
-}
-
-input ChatroomUpdateOneWithoutProfilesInput
-  @join__type(graph: PROFILING)
-{
-  create: ChatroomCreateWithoutProfilesInput
-  connectOrCreate: ChatroomCreateOrConnectWithoutProfilesInput
-  upsert: ChatroomUpsertWithoutProfilesInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: ChatroomWhereUniqueInput
-  update: ChatroomUpdateWithoutProfilesInput
 }
 
 input ChatroomUpdateWithoutMessagesInput
@@ -525,6 +556,13 @@ input ChatroomUpdateWithoutProfilesInput
   messages: MessageUpdateManyWithoutChatroomInput
 }
 
+input ChatroomUpdateWithWhereUniqueWithoutProfilesInput
+  @join__type(graph: PROFILING)
+{
+  where: ChatroomWhereUniqueInput!
+  data: ChatroomUpdateWithoutProfilesInput!
+}
+
 input ChatroomUpsertWithoutMessagesInput
   @join__type(graph: PROFILING)
 {
@@ -532,9 +570,10 @@ input ChatroomUpsertWithoutMessagesInput
   create: ChatroomCreateWithoutMessagesInput!
 }
 
-input ChatroomUpsertWithoutProfilesInput
+input ChatroomUpsertWithWhereUniqueWithoutProfilesInput
   @join__type(graph: PROFILING)
 {
+  where: ChatroomWhereUniqueInput!
   update: ChatroomUpdateWithoutProfilesInput!
   create: ChatroomCreateWithoutProfilesInput!
 }
@@ -1057,6 +1096,7 @@ input DeviceProfileCreateManyDeviceManagerInput
 {
   id: Int
   AppType: AppType
+  ProfileType: ProfileType
   profileId: String
   isActive: Boolean!
   accesstoken: String
@@ -1089,6 +1129,7 @@ input DeviceProfileCreateWithoutDeviceManagerInput
   @join__type(graph: MANAGING)
 {
   AppType: AppType
+  ProfileType: ProfileType
   profileId: String
   isActive: Boolean!
   accesstoken: String
@@ -1366,12 +1407,12 @@ input EmojimoodCreateInput
   emojiname: String!
 }
 
-input EmojimoodCreateNestedOneWithoutStoryInput
+input EmojimoodCreateNestedManyWithoutStoryInput
   @join__type(graph: PROFILING)
 {
-  create: EmojimoodCreateWithoutStoryInput
-  connectOrCreate: EmojimoodCreateOrConnectWithoutStoryInput
-  connect: EmojimoodWhereUniqueInput
+  create: [EmojimoodCreateWithoutStoryInput!]
+  connectOrCreate: [EmojimoodCreateOrConnectWithoutStoryInput!]
+  connect: [EmojimoodWhereUniqueInput!]
 }
 
 input EmojimoodCreateOrConnectWithoutStoryInput
@@ -1389,6 +1430,14 @@ input EmojimoodCreateWithoutStoryInput
   colors: EmojimoodCreatecolorsInput
 }
 
+input EmojimoodListRelationFilter
+  @join__type(graph: PROFILING)
+{
+  every: EmojimoodWhereInput
+  some: EmojimoodWhereInput
+  none: EmojimoodWhereInput
+}
+
 input EmojimoodOrderByWithRelationInput
   @join__type(graph: PROFILING)
 {
@@ -1399,6 +1448,18 @@ input EmojimoodOrderByWithRelationInput
   Story: StoryOrderByRelationAggregateInput
 }
 
+input EmojimoodScalarWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [EmojimoodScalarWhereInput!]
+  OR: [EmojimoodScalarWhereInput!]
+  NOT: [EmojimoodScalarWhereInput!]
+  id: IntFilter
+  colors: StringNullableListFilter
+  emojiname: StringNullableFilter
+  emoji: StringNullableFilter
+}
+
 input EmojimoodUpdatecolorsInput
   @join__type(graph: PROFILING)
 {
@@ -1406,16 +1467,34 @@ input EmojimoodUpdatecolorsInput
   push: String
 }
 
-input EmojimoodUpdateOneWithoutStoryInput
+input EmojimoodUpdateManyMutationInput
   @join__type(graph: PROFILING)
 {
-  create: EmojimoodCreateWithoutStoryInput
-  connectOrCreate: EmojimoodCreateOrConnectWithoutStoryInput
-  upsert: EmojimoodUpsertWithoutStoryInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: EmojimoodWhereUniqueInput
-  update: EmojimoodUpdateWithoutStoryInput
+  emojiname: NullableStringFieldUpdateOperationsInput
+  emoji: NullableStringFieldUpdateOperationsInput
+  colors: EmojimoodUpdatecolorsInput
+}
+
+input EmojimoodUpdateManyWithoutStoryInput
+  @join__type(graph: PROFILING)
+{
+  create: [EmojimoodCreateWithoutStoryInput!]
+  connectOrCreate: [EmojimoodCreateOrConnectWithoutStoryInput!]
+  upsert: [EmojimoodUpsertWithWhereUniqueWithoutStoryInput!]
+  set: [EmojimoodWhereUniqueInput!]
+  disconnect: [EmojimoodWhereUniqueInput!]
+  delete: [EmojimoodWhereUniqueInput!]
+  connect: [EmojimoodWhereUniqueInput!]
+  update: [EmojimoodUpdateWithWhereUniqueWithoutStoryInput!]
+  updateMany: [EmojimoodUpdateManyWithWhereWithoutStoryInput!]
+  deleteMany: [EmojimoodScalarWhereInput!]
+}
+
+input EmojimoodUpdateManyWithWhereWithoutStoryInput
+  @join__type(graph: PROFILING)
+{
+  where: EmojimoodScalarWhereInput!
+  data: EmojimoodUpdateManyMutationInput!
 }
 
 input EmojimoodUpdateWithoutStoryInput
@@ -1426,9 +1505,17 @@ input EmojimoodUpdateWithoutStoryInput
   colors: EmojimoodUpdatecolorsInput
 }
 
-input EmojimoodUpsertWithoutStoryInput
+input EmojimoodUpdateWithWhereUniqueWithoutStoryInput
   @join__type(graph: PROFILING)
 {
+  where: EmojimoodWhereUniqueInput!
+  data: EmojimoodUpdateWithoutStoryInput!
+}
+
+input EmojimoodUpsertWithWhereUniqueWithoutStoryInput
+  @join__type(graph: PROFILING)
+{
+  where: EmojimoodWhereUniqueInput!
   update: EmojimoodUpdateWithoutStoryInput!
   create: EmojimoodCreateWithoutStoryInput!
 }
@@ -1657,7 +1744,7 @@ input GooglePlaceAutocompleteInput
          This value also is returned and should be passed back through this input. 
          Default value provided.
   """
-  sessiontoken: String = "0f373ebd-956f-4822-a4cb-9b592159f3c6"
+  sessiontoken: String = "3402ff1c-03d2-4b6b-8b29-12f1cd263391"
   latitude: Float
   longitude: Float
 
@@ -3411,12 +3498,6 @@ input MessageListRelationFilter
   none: MessageWhereInput
 }
 
-input MessageOrderByRelationAggregateInput
-  @join__type(graph: PROFILING)
-{
-  _count: SortOrder
-}
-
 input MessageScalarWhereInput
   @join__type(graph: PROFILING)
 {
@@ -3590,10 +3671,10 @@ type Mutation
   @join__type(graph: PROFILING)
 {
   createOneDevice(data: DeviceCreateInput!): Device! @join__field(graph: MANAGING)
-  createADeviceManager(profileId: String): RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
-  switchDeviceProfile(profileId: String): RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
+  createADeviceManager(profileId: String!): RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
+  switchDeviceProfile(profileId: String!): RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
   refreshDeviceManager: RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
-  removeDeviceProfileToDeviceManager(profileId: String!): Boolean @join__field(graph: MANAGING)
+  removeDeviceProfileFromDeviceManager(profileId: String!): Boolean @join__field(graph: MANAGING)
   sendAuthenticatorDeviceOwnerCode(where: CodeWhere, data: CodeData): CodeResponse @join__field(graph: PROFILING)
   sendAuthenticatorForgotPasswordCode(where: CodeWhere, data: CodeData): CodeResponse @join__field(graph: PROFILING)
   createOneEmojimood(data: EmojimoodCreateInput!): Emojimood! @join__field(graph: PROFILING)
@@ -3609,7 +3690,10 @@ type Mutation
   updateProfileIdentifiableInformation(where: IdentifiableInformationWhereUniqueInput!, data: IdentifiableInformationUpdateWithoutProfileInput!): UpdateProfileResponse @join__field(graph: PROFILING)
   createAVenue(data: CreateVenueProfileDataInput!): CreateProfileResponseUnion @join__field(graph: PROFILING)
   storageCreateVenues(data: [Json]): [CreateVenueStorageResponse] @join__field(graph: PROFILING)
-  upsertProfileStory(data: ProfileUpdateInput!): Boolean @join__field(graph: PROFILING)
+  updateStoryPhotos(storyId: String, photos: PhotoCreateManyProfileInputEnvelope, disconnectId: String!): Boolean @join__field(graph: PROFILING)
+  updateStoryEmojimood(storyId: String, emojimoodId: Int!): Boolean @join__field(graph: PROFILING)
+  createOneProfileTheme(data: ProfileThemeCreateInput!): ProfileTheme! @join__field(graph: PROFILING)
+  updateThemeManagerSwitchTheme(id: String!, themeId: String!): ProfileTheme @join__field(graph: PROFILING)
 }
 
 enum MutationType
@@ -4486,6 +4570,7 @@ type Photo
   url: String!
   type: PhotoType
   active: Boolean!
+  position: Int
   ratio: String
   blurhash: String
   createdAt: DateTime!
@@ -4502,7 +4587,9 @@ input PhotoCreateManyGroupInput
   blurhash: String
   ratio: String
   type: PhotoType
+  position: Int
   active: Boolean
+  storyId: String
   profileId: String
   createdAt: DateTime
   updatedAt: DateTime
@@ -4525,7 +4612,9 @@ input PhotoCreateManyProfileInput
   blurhash: String
   ratio: String
   type: PhotoType
+  position: Int
   active: Boolean
+  storyId: String
   groupId: String
   createdAt: DateTime
   updatedAt: DateTime
@@ -4535,6 +4624,31 @@ input PhotoCreateManyProfileInputEnvelope
   @join__type(graph: PROFILING)
 {
   data: [PhotoCreateManyProfileInput!]
+  skipDuplicates: Boolean
+}
+
+input PhotoCreateManyStoryInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  url: String!
+  width: Int
+  height: Int
+  blurhash: String
+  ratio: String
+  type: PhotoType
+  position: Int
+  active: Boolean
+  groupId: String
+  profileId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input PhotoCreateManyStoryInputEnvelope
+  @join__type(graph: PROFILING)
+{
+  data: [PhotoCreateManyStoryInput!]
   skipDuplicates: Boolean
 }
 
@@ -4561,6 +4675,7 @@ input PhotoCreateNestedManyWithoutStoryInput
 {
   create: [PhotoCreateWithoutStoryInput!]
   connectOrCreate: [PhotoCreateOrConnectWithoutStoryInput!]
+  createMany: PhotoCreateManyStoryInputEnvelope
   connect: [PhotoWhereUniqueInput!]
 }
 
@@ -4595,10 +4710,11 @@ input PhotoCreateWithoutGroupInput
   blurhash: String
   ratio: String
   type: PhotoType
+  position: Int
   active: Boolean
   createdAt: DateTime
   updatedAt: DateTime
-  Story: StoryCreateNestedManyWithoutPhotosInput
+  Story: StoryCreateNestedOneWithoutPhotosInput
   Profile: ProfileCreateNestedOneWithoutPhotosInput
 }
 
@@ -4612,10 +4728,11 @@ input PhotoCreateWithoutProfileInput
   blurhash: String
   ratio: String
   type: PhotoType
+  position: Int
   active: Boolean
   createdAt: DateTime
   updatedAt: DateTime
-  Story: StoryCreateNestedManyWithoutPhotosInput
+  Story: StoryCreateNestedOneWithoutPhotosInput
   Group: GroupCreateNestedOneWithoutPhotosInput
 }
 
@@ -4629,6 +4746,7 @@ input PhotoCreateWithoutStoryInput
   blurhash: String
   ratio: String
   type: PhotoType
+  position: Int
   active: Boolean
   createdAt: DateTime
   updatedAt: DateTime
@@ -4663,7 +4781,9 @@ input PhotoScalarWhereInput
   blurhash: StringNullableFilter
   ratio: StringNullableFilter
   type: EnumPhotoTypeNullableFilter
+  position: IntNullableFilter
   active: BoolFilter
+  storyId: StringNullableFilter
   groupId: StringNullableFilter
   profileId: StringNullableFilter
   createdAt: DateTimeFilter
@@ -4687,6 +4807,7 @@ input PhotoUpdateManyMutationInput
   blurhash: NullableStringFieldUpdateOperationsInput
   ratio: NullableStringFieldUpdateOperationsInput
   type: NullableEnumPhotoTypeFieldUpdateOperationsInput
+  position: NullableIntFieldUpdateOperationsInput
   active: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -4730,6 +4851,7 @@ input PhotoUpdateManyWithoutStoryInput
   create: [PhotoCreateWithoutStoryInput!]
   connectOrCreate: [PhotoCreateOrConnectWithoutStoryInput!]
   upsert: [PhotoUpsertWithWhereUniqueWithoutStoryInput!]
+  createMany: PhotoCreateManyStoryInputEnvelope
   set: [PhotoWhereUniqueInput!]
   disconnect: [PhotoWhereUniqueInput!]
   delete: [PhotoWhereUniqueInput!]
@@ -4770,10 +4892,11 @@ input PhotoUpdateWithoutGroupInput
   blurhash: NullableStringFieldUpdateOperationsInput
   ratio: NullableStringFieldUpdateOperationsInput
   type: NullableEnumPhotoTypeFieldUpdateOperationsInput
+  position: NullableIntFieldUpdateOperationsInput
   active: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  Story: StoryUpdateManyWithoutPhotosInput
+  Story: StoryUpdateOneWithoutPhotosInput
   Profile: ProfileUpdateOneWithoutPhotosInput
 }
 
@@ -4787,10 +4910,11 @@ input PhotoUpdateWithoutProfileInput
   blurhash: NullableStringFieldUpdateOperationsInput
   ratio: NullableStringFieldUpdateOperationsInput
   type: NullableEnumPhotoTypeFieldUpdateOperationsInput
+  position: NullableIntFieldUpdateOperationsInput
   active: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  Story: StoryUpdateManyWithoutPhotosInput
+  Story: StoryUpdateOneWithoutPhotosInput
   Group: GroupUpdateOneWithoutPhotosInput
 }
 
@@ -4804,6 +4928,7 @@ input PhotoUpdateWithoutStoryInput
   blurhash: NullableStringFieldUpdateOperationsInput
   ratio: NullableStringFieldUpdateOperationsInput
   type: NullableEnumPhotoTypeFieldUpdateOperationsInput
+  position: NullableIntFieldUpdateOperationsInput
   active: BoolFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
@@ -4869,8 +4994,10 @@ input PhotoWhereInput
   blurhash: StringNullableFilter
   ratio: StringNullableFilter
   type: EnumPhotoTypeNullableFilter
+  position: IntNullableFilter
   active: BoolFilter
-  Story: StoryListRelationFilter
+  Story: StoryWhereInput
+  storyId: StringNullableFilter
   Group: GroupWhereInput
   groupId: StringNullableFilter
   Profile: ProfileWhereInput
@@ -4977,15 +5104,15 @@ type Profile implements Node
 {
   id: String!
   photos(first: Int, last: Int, before: PhotoWhereUniqueInput, after: PhotoWhereUniqueInput): [Photo!]! @join__field(graph: PROFILING)
-  Story(first: Int, last: Int, before: StoryWhereUniqueInput, after: StoryWhereUniqueInput): [Story!]! @join__field(graph: PROFILING)
+  Story: Story @join__field(graph: PROFILING)
   Credentials: Credentials @join__field(graph: PROFILING)
   Relationships(first: Int, last: Int, before: RelationshipWhereUniqueInput, after: RelationshipWhereUniqueInput): [Relationship!]! @join__field(graph: PROFILING)
   Personal: Personal @join__field(graph: PROFILING)
   Venue: Venue @join__field(graph: PROFILING)
-  ProfileType: ProfileType! @join__field(graph: PROFILING)
+  ProfileType: ProfileType @join__field(graph: PROFILING)
   IdentifiableInformation: IdentifiableInformation @join__field(graph: PROFILING)
   DetailInformation: DetailInformation @join__field(graph: PROFILING)
-  ProfileSearchesService: ProfileSearchesService @join__field(graph: PROFILING)
+  ThemeManager: ThemeManager @join__field(graph: PROFILING)
   createdAt: DateTime! @join__field(graph: PROFILING)
   updatedAt: DateTime! @join__field(graph: PROFILING)
 }
@@ -5004,36 +5131,11 @@ input ProfileCreateDeviceManagerInput
   set: [String!]
 }
 
-input ProfileCreateManyChatroomInput
-  @join__type(graph: PROFILING)
-{
-  id: String
-  bfsprofileid: String
-  ProfileType: ProfileType
-  createdAt: DateTime
-  updatedAt: DateTime
-  DeviceManager: ProfileCreateManyDeviceManagerInput
-}
-
-input ProfileCreateManyChatroomInputEnvelope
-  @join__type(graph: PROFILING)
-{
-  data: [ProfileCreateManyChatroomInput!]
-  skipDuplicates: Boolean
-}
-
-input ProfileCreateManyDeviceManagerInput
-  @join__type(graph: PROFILING)
-{
-  set: [String!]
-}
-
 input ProfileCreateNestedManyWithoutChatroomInput
   @join__type(graph: PROFILING)
 {
   create: [ProfileCreateWithoutChatroomInput!]
   connectOrCreate: [ProfileCreateOrConnectWithoutChatroomInput!]
-  createMany: ProfileCreateManyChatroomInputEnvelope
   connect: [ProfileWhereUniqueInput!]
 }
 
@@ -5066,6 +5168,14 @@ input ProfileCreateNestedOneWithoutStoryInput
 {
   create: ProfileCreateWithoutStoryInput
   connectOrCreate: ProfileCreateOrConnectWithoutStoryInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateNestedOneWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  create: ProfileCreateWithoutThemeManagerInput
+  connectOrCreate: ProfileCreateOrConnectWithoutThemeManagerInput
   connect: ProfileWhereUniqueInput
 }
 
@@ -5112,6 +5222,13 @@ input ProfileCreateOrConnectWithoutStoryInput
   create: ProfileCreateWithoutStoryInput!
 }
 
+input ProfileCreateOrConnectWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  where: ProfileWhereUniqueInput!
+  create: ProfileCreateWithoutThemeManagerInput!
+}
+
 input ProfileCreateOrConnectWithoutVenueInput
   @join__type(graph: PROFILING)
 {
@@ -5138,6 +5255,7 @@ input ProfileCreateWithoutChatroomInput
   Group: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
 }
 
 input ProfileCreateWithoutGroupInput
@@ -5158,7 +5276,8 @@ input ProfileCreateWithoutGroupInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
-  Chatroom: ChatroomCreateNestedOneWithoutProfilesInput
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
+  Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutPersonalInput
@@ -5179,7 +5298,8 @@ input ProfileCreateWithoutPersonalInput
   Group: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
-  Chatroom: ChatroomCreateNestedOneWithoutProfilesInput
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
+  Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutPhotosInput
@@ -5200,7 +5320,8 @@ input ProfileCreateWithoutPhotosInput
   Group: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
-  Chatroom: ChatroomCreateNestedOneWithoutProfilesInput
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
+  Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutStoryInput
@@ -5221,7 +5342,30 @@ input ProfileCreateWithoutStoryInput
   Group: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
-  Chatroom: ChatroomCreateNestedOneWithoutProfilesInput
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
+  Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+}
+
+input ProfileCreateWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  bfsprofileid: String
+  ProfileType: ProfileType
+  createdAt: DateTime
+  updatedAt: DateTime
+  DeviceManager: ProfileCreateDeviceManagerInput
+  Personal: PersonalCreateNestedOneWithoutProfileInput
+  Venue: VenueCreateNestedOneWithoutProfileInput
+  DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
+  IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  photos: PhotoCreateNestedManyWithoutProfileInput
+  Story: StoryCreateNestedManyWithoutProfileInput
+  Relationships: RelationshipCreateNestedManyWithoutProfileInput
+  Group: GroupCreateNestedManyWithoutProfileInput
+  Credentials: CredentialsCreateNestedOneWithoutProfileInput
+  ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
+  Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutVenueInput
@@ -5242,7 +5386,8 @@ input ProfileCreateWithoutVenueInput
   Group: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
-  Chatroom: ChatroomCreateNestedOneWithoutProfilesInput
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
+  Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
 }
 
 input ProfileListRelationFilter
@@ -5251,12 +5396,6 @@ input ProfileListRelationFilter
   every: ProfileWhereInput
   some: ProfileWhereInput
   none: ProfileWhereInput
-}
-
-input ProfileOrderByRelationAggregateInput
-  @join__type(graph: PROFILING)
-{
-  _count: SortOrder
 }
 
 input ProfileOrderByWithRelationInput
@@ -5276,10 +5415,10 @@ input ProfileOrderByWithRelationInput
   Credentials: CredentialsOrderByWithRelationInput
   ProfileSearchesService: ProfileSearchesServiceOrderByWithRelationInput
   ProfileType: SortOrder
+  ThemeManager: ThemeManagerOrderByWithRelationInput
   createdAt: SortOrder
   updatedAt: SortOrder
-  Chatroom: ChatroomOrderByWithRelationInput
-  chatroomId: SortOrder
+  Chatroom: ChatroomOrderByRelationAggregateInput
 }
 
 type Profiles
@@ -5300,14 +5439,6 @@ input ProfileScalarWhereInput
   ProfileType: EnumProfileTypeFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
-  chatroomId: StringNullableFilter
-}
-
-type ProfileSearchesService
-  @join__type(graph: PROFILING)
-{
-  id: String!
-  searches: [Json!]!
 }
 
 input ProfileSearchesServiceCreateNestedOneWithoutProfileInput
@@ -5399,12 +5530,187 @@ input ProfileSearchesServiceWhereUniqueInput
   profileId: String
 }
 
-enum ProfileType
+type ProfileTheme
   @join__type(graph: PROFILING)
 {
-  PERSONAL
-  VENUE
+  id: String!
+  isActive: Boolean!
+  Theme: Theme!
+  themeId: String!
+  ThemeManager: ThemeManager
+  themeManagerId: String
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+input ProfileThemeCreateInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  isActive: Boolean!
+  updatedAt: DateTime
+  createdAt: DateTime
+  Theme: ThemeCreateNestedOneWithoutProfileThemeInput!
+  ThemeManager: ThemeManagerCreateNestedOneWithoutProfileThemeInput
+}
+
+input ProfileThemeCreateManyThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  isActive: Boolean!
+  themeId: String!
+  updatedAt: DateTime
+  createdAt: DateTime
+}
+
+input ProfileThemeCreateManyThemeManagerInputEnvelope
+  @join__type(graph: PROFILING)
+{
+  data: [ProfileThemeCreateManyThemeManagerInput!]
+  skipDuplicates: Boolean
+}
+
+input ProfileThemeCreateNestedManyWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  create: [ProfileThemeCreateWithoutThemeManagerInput!]
+  connectOrCreate: [ProfileThemeCreateOrConnectWithoutThemeManagerInput!]
+  createMany: ProfileThemeCreateManyThemeManagerInputEnvelope
+  connect: [ProfileThemeWhereUniqueInput!]
+}
+
+input ProfileThemeCreateOrConnectWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  where: ProfileThemeWhereUniqueInput!
+  create: ProfileThemeCreateWithoutThemeManagerInput!
+}
+
+input ProfileThemeCreateWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  isActive: Boolean!
+  updatedAt: DateTime
+  createdAt: DateTime
+  Theme: ThemeCreateNestedOneWithoutProfileThemeInput!
+}
+
+input ProfileThemeListRelationFilter
+  @join__type(graph: PROFILING)
+{
+  every: ProfileThemeWhereInput
+  some: ProfileThemeWhereInput
+  none: ProfileThemeWhereInput
+}
+
+input ProfileThemeOrderByRelationAggregateInput
+  @join__type(graph: PROFILING)
+{
+  _count: SortOrder
+}
+
+input ProfileThemeScalarWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [ProfileThemeScalarWhereInput!]
+  OR: [ProfileThemeScalarWhereInput!]
+  NOT: [ProfileThemeScalarWhereInput!]
+  id: StringFilter
+  isActive: BoolFilter
+  themeId: StringFilter
+  themeManagerId: StringNullableFilter
+  updatedAt: DateTimeFilter
+  createdAt: DateTimeFilter
+}
+
+input ProfileThemeUpdateManyMutationInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+}
+
+input ProfileThemeUpdateManyWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  create: [ProfileThemeCreateWithoutThemeManagerInput!]
+  connectOrCreate: [ProfileThemeCreateOrConnectWithoutThemeManagerInput!]
+  upsert: [ProfileThemeUpsertWithWhereUniqueWithoutThemeManagerInput!]
+  createMany: ProfileThemeCreateManyThemeManagerInputEnvelope
+  set: [ProfileThemeWhereUniqueInput!]
+  disconnect: [ProfileThemeWhereUniqueInput!]
+  delete: [ProfileThemeWhereUniqueInput!]
+  connect: [ProfileThemeWhereUniqueInput!]
+  update: [ProfileThemeUpdateWithWhereUniqueWithoutThemeManagerInput!]
+  updateMany: [ProfileThemeUpdateManyWithWhereWithoutThemeManagerInput!]
+  deleteMany: [ProfileThemeScalarWhereInput!]
+}
+
+input ProfileThemeUpdateManyWithWhereWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  where: ProfileThemeScalarWhereInput!
+  data: ProfileThemeUpdateManyMutationInput!
+}
+
+input ProfileThemeUpdateWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  Theme: ThemeUpdateOneRequiredWithoutProfileThemeInput
+}
+
+input ProfileThemeUpdateWithWhereUniqueWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  where: ProfileThemeWhereUniqueInput!
+  data: ProfileThemeUpdateWithoutThemeManagerInput!
+}
+
+input ProfileThemeUpsertWithWhereUniqueWithoutThemeManagerInput
+  @join__type(graph: PROFILING)
+{
+  where: ProfileThemeWhereUniqueInput!
+  update: ProfileThemeUpdateWithoutThemeManagerInput!
+  create: ProfileThemeCreateWithoutThemeManagerInput!
+}
+
+input ProfileThemeWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [ProfileThemeWhereInput!]
+  OR: [ProfileThemeWhereInput!]
+  NOT: [ProfileThemeWhereInput!]
+  id: StringFilter
+  isActive: BoolFilter
+  Theme: ThemeWhereInput
+  themeId: StringFilter
+  ThemeManager: ThemeManagerWhereInput
+  themeManagerId: StringNullableFilter
+  updatedAt: DateTimeFilter
+  createdAt: DateTimeFilter
+}
+
+input ProfileThemeWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+}
+
+enum ProfileType
+  @join__type(graph: MANAGING)
+  @join__type(graph: PROFILING)
+{
   GUEST
+  VENUE
+  PERSONAL
 }
 
 type ProfileTypesResponse
@@ -5441,7 +5747,8 @@ input ProfileUpdateInput
   Group: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
-  Chatroom: ChatroomUpdateOneWithoutProfilesInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Chatroom: ChatroomUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateManyMutationInput
@@ -5461,7 +5768,6 @@ input ProfileUpdateManyWithoutChatroomInput
   create: [ProfileCreateWithoutChatroomInput!]
   connectOrCreate: [ProfileCreateOrConnectWithoutChatroomInput!]
   upsert: [ProfileUpsertWithWhereUniqueWithoutChatroomInput!]
-  createMany: ProfileCreateManyChatroomInputEnvelope
   set: [ProfileWhereUniqueInput!]
   disconnect: [ProfileWhereUniqueInput!]
   delete: [ProfileWhereUniqueInput!]
@@ -5563,6 +5869,7 @@ input ProfileUpdateWithoutChatroomInput
   Group: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
 }
 
 input ProfileUpdateWithoutGroupInput
@@ -5583,7 +5890,8 @@ input ProfileUpdateWithoutGroupInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
-  Chatroom: ChatroomUpdateOneWithoutProfilesInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Chatroom: ChatroomUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutPersonalInput
@@ -5604,7 +5912,8 @@ input ProfileUpdateWithoutPersonalInput
   Group: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
-  Chatroom: ChatroomUpdateOneWithoutProfilesInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Chatroom: ChatroomUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutPhotosInput
@@ -5625,7 +5934,8 @@ input ProfileUpdateWithoutPhotosInput
   Group: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
-  Chatroom: ChatroomUpdateOneWithoutProfilesInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Chatroom: ChatroomUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutStoryInput
@@ -5646,7 +5956,8 @@ input ProfileUpdateWithoutStoryInput
   Group: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
-  Chatroom: ChatroomUpdateOneWithoutProfilesInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Chatroom: ChatroomUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutVenueInput
@@ -5667,7 +5978,8 @@ input ProfileUpdateWithoutVenueInput
   Group: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
-  Chatroom: ChatroomUpdateOneWithoutProfilesInput
+  ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Chatroom: ChatroomUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutChatroomInput
@@ -5748,10 +6060,10 @@ input ProfileWhereInput
   Credentials: CredentialsWhereInput
   ProfileSearchesService: ProfileSearchesServiceWhereInput
   ProfileType: EnumProfileTypeFilter
+  ThemeManager: ThemeManagerWhereInput
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
-  Chatroom: ChatroomWhereInput
-  chatroomId: StringNullableFilter
+  Chatroom: ChatroomListRelationFilter
 }
 
 input ProfileWhereUniqueInput
@@ -5794,6 +6106,7 @@ type Query
   getAllCitiesByState(country: String!, state: String!): [Json] @join__field(graph: PROFILING)
   searchAreaCity(search: String!, country: String!): Json @join__field(graph: PROFILING)
   story(where: StoryWhereUniqueInput!): Story @join__field(graph: PROFILING)
+  getAllThemes: [Theme] @join__field(graph: PROFILING)
 }
 
 enum QueryMode
@@ -6042,7 +6355,7 @@ type Story
   @join__type(graph: PROFILING)
 {
   id: String!
-  emojimood: Emojimood
+  emojimood(first: Int, last: Int, before: EmojimoodWhereUniqueInput, after: EmojimoodWhereUniqueInput): [Emojimood!]!
   photos(first: Int, last: Int, before: PhotoWhereUniqueInput, after: PhotoWhereUniqueInput): [Photo!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -6052,7 +6365,7 @@ input StoryCreateManyProfileInput
   @join__type(graph: PROFILING)
 {
   id: String
-  emojimoodId: Int
+  date: DateTime!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -6064,14 +6377,6 @@ input StoryCreateManyProfileInputEnvelope
   skipDuplicates: Boolean
 }
 
-input StoryCreateNestedManyWithoutPhotosInput
-  @join__type(graph: PROFILING)
-{
-  create: [StoryCreateWithoutPhotosInput!]
-  connectOrCreate: [StoryCreateOrConnectWithoutPhotosInput!]
-  connect: [StoryWhereUniqueInput!]
-}
-
 input StoryCreateNestedManyWithoutProfileInput
   @join__type(graph: PROFILING)
 {
@@ -6079,6 +6384,14 @@ input StoryCreateNestedManyWithoutProfileInput
   connectOrCreate: [StoryCreateOrConnectWithoutProfileInput!]
   createMany: StoryCreateManyProfileInputEnvelope
   connect: [StoryWhereUniqueInput!]
+}
+
+input StoryCreateNestedOneWithoutPhotosInput
+  @join__type(graph: PROFILING)
+{
+  create: StoryCreateWithoutPhotosInput
+  connectOrCreate: StoryCreateOrConnectWithoutPhotosInput
+  connect: StoryWhereUniqueInput
 }
 
 input StoryCreateOrConnectWithoutPhotosInput
@@ -6099,9 +6412,10 @@ input StoryCreateWithoutPhotosInput
   @join__type(graph: PROFILING)
 {
   id: String
+  date: DateTime!
   createdAt: DateTime
   updatedAt: DateTime
-  emojimood: EmojimoodCreateNestedOneWithoutStoryInput
+  emojimood: EmojimoodCreateNestedManyWithoutStoryInput
   Profile: ProfileCreateNestedOneWithoutStoryInput
 }
 
@@ -6109,10 +6423,11 @@ input StoryCreateWithoutProfileInput
   @join__type(graph: PROFILING)
 {
   id: String
+  date: DateTime!
   createdAt: DateTime
   updatedAt: DateTime
   photos: PhotoCreateNestedManyWithoutStoryInput
-  emojimood: EmojimoodCreateNestedOneWithoutStoryInput
+  emojimood: EmojimoodCreateNestedManyWithoutStoryInput
 }
 
 input StoryListRelationFilter
@@ -6136,8 +6451,8 @@ input StoryScalarWhereInput
   OR: [StoryScalarWhereInput!]
   NOT: [StoryScalarWhereInput!]
   id: StringFilter
-  emojimoodId: IntNullableFilter
   profileId: StringNullableFilter
+  date: DateTimeFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
@@ -6146,23 +6461,9 @@ input StoryUpdateManyMutationInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input StoryUpdateManyWithoutPhotosInput
-  @join__type(graph: PROFILING)
-{
-  create: [StoryCreateWithoutPhotosInput!]
-  connectOrCreate: [StoryCreateOrConnectWithoutPhotosInput!]
-  upsert: [StoryUpsertWithWhereUniqueWithoutPhotosInput!]
-  set: [StoryWhereUniqueInput!]
-  disconnect: [StoryWhereUniqueInput!]
-  delete: [StoryWhereUniqueInput!]
-  connect: [StoryWhereUniqueInput!]
-  update: [StoryUpdateWithWhereUniqueWithoutPhotosInput!]
-  updateMany: [StoryUpdateManyWithWhereWithoutPhotosInput!]
-  deleteMany: [StoryScalarWhereInput!]
 }
 
 input StoryUpdateManyWithoutProfileInput
@@ -6181,13 +6482,6 @@ input StoryUpdateManyWithoutProfileInput
   deleteMany: [StoryScalarWhereInput!]
 }
 
-input StoryUpdateManyWithWhereWithoutPhotosInput
-  @join__type(graph: PROFILING)
-{
-  where: StoryScalarWhereInput!
-  data: StoryUpdateManyMutationInput!
-}
-
 input StoryUpdateManyWithWhereWithoutProfileInput
   @join__type(graph: PROFILING)
 {
@@ -6195,13 +6489,26 @@ input StoryUpdateManyWithWhereWithoutProfileInput
   data: StoryUpdateManyMutationInput!
 }
 
+input StoryUpdateOneWithoutPhotosInput
+  @join__type(graph: PROFILING)
+{
+  create: StoryCreateWithoutPhotosInput
+  connectOrCreate: StoryCreateOrConnectWithoutPhotosInput
+  upsert: StoryUpsertWithoutPhotosInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: StoryWhereUniqueInput
+  update: StoryUpdateWithoutPhotosInput
+}
+
 input StoryUpdateWithoutPhotosInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  emojimood: EmojimoodUpdateOneWithoutStoryInput
+  emojimood: EmojimoodUpdateManyWithoutStoryInput
   Profile: ProfileUpdateOneWithoutStoryInput
 }
 
@@ -6209,17 +6516,11 @@ input StoryUpdateWithoutProfileInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
+  date: DateTimeFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   photos: PhotoUpdateManyWithoutStoryInput
-  emojimood: EmojimoodUpdateOneWithoutStoryInput
-}
-
-input StoryUpdateWithWhereUniqueWithoutPhotosInput
-  @join__type(graph: PROFILING)
-{
-  where: StoryWhereUniqueInput!
-  data: StoryUpdateWithoutPhotosInput!
+  emojimood: EmojimoodUpdateManyWithoutStoryInput
 }
 
 input StoryUpdateWithWhereUniqueWithoutProfileInput
@@ -6229,10 +6530,9 @@ input StoryUpdateWithWhereUniqueWithoutProfileInput
   data: StoryUpdateWithoutProfileInput!
 }
 
-input StoryUpsertWithWhereUniqueWithoutPhotosInput
+input StoryUpsertWithoutPhotosInput
   @join__type(graph: PROFILING)
 {
-  where: StoryWhereUniqueInput!
   update: StoryUpdateWithoutPhotosInput!
   create: StoryCreateWithoutPhotosInput!
 }
@@ -6253,10 +6553,10 @@ input StoryWhereInput
   NOT: [StoryWhereInput!]
   id: StringFilter
   photos: PhotoListRelationFilter
-  emojimood: EmojimoodWhereInput
-  emojimoodId: IntNullableFilter
+  emojimood: EmojimoodListRelationFilter
   Profile: ProfileWhereInput
   profileId: StringNullableFilter
+  date: DateTimeFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
@@ -6467,6 +6767,276 @@ input TagWhereUniqueInput
   @join__type(graph: PROFILING)
 {
   id: Int
+}
+
+type Theme
+  @join__type(graph: PROFILING)
+{
+  id: String!
+  name: String!
+  startDate: DateTime
+  endDate: DateTime
+  ProfileTheme(first: Int, last: Int, before: ProfileThemeWhereUniqueInput, after: ProfileThemeWhereUniqueInput): [ProfileTheme!]!
+  mobileVersions: [String!]!
+  webVersions: [String!]!
+  mobile: [Json!]!
+  web: [Json!]!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+input ThemeCreatemobileInput
+  @join__type(graph: PROFILING)
+{
+  set: [Json!]
+}
+
+input ThemeCreatemobileVersionsInput
+  @join__type(graph: PROFILING)
+{
+  set: [String!]
+}
+
+input ThemeCreateNestedOneWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  create: ThemeCreateWithoutProfileThemeInput
+  connectOrCreate: ThemeCreateOrConnectWithoutProfileThemeInput
+  connect: ThemeWhereUniqueInput
+}
+
+input ThemeCreateOrConnectWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  where: ThemeWhereUniqueInput!
+  create: ThemeCreateWithoutProfileThemeInput!
+}
+
+input ThemeCreatewebInput
+  @join__type(graph: PROFILING)
+{
+  set: [Json!]
+}
+
+input ThemeCreatewebVersionsInput
+  @join__type(graph: PROFILING)
+{
+  set: [String!]
+}
+
+input ThemeCreateWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  name: String!
+  startDate: DateTime
+  endDate: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+  mobileVersions: ThemeCreatemobileVersionsInput
+  webVersions: ThemeCreatewebVersionsInput
+  mobile: ThemeCreatemobileInput
+  web: ThemeCreatewebInput
+}
+
+type ThemeManager
+  @join__type(graph: PROFILING)
+{
+  id: ID
+  ProfileTheme: ProfileTheme
+}
+
+input ThemeManagerCreateNestedOneWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  create: ThemeManagerCreateWithoutProfileInput
+  connectOrCreate: ThemeManagerCreateOrConnectWithoutProfileInput
+  connect: ThemeManagerWhereUniqueInput
+}
+
+input ThemeManagerCreateNestedOneWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  create: ThemeManagerCreateWithoutProfileThemeInput
+  connectOrCreate: ThemeManagerCreateOrConnectWithoutProfileThemeInput
+  connect: ThemeManagerWhereUniqueInput
+}
+
+input ThemeManagerCreateOrConnectWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  where: ThemeManagerWhereUniqueInput!
+  create: ThemeManagerCreateWithoutProfileInput!
+}
+
+input ThemeManagerCreateOrConnectWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  where: ThemeManagerWhereUniqueInput!
+  create: ThemeManagerCreateWithoutProfileThemeInput!
+}
+
+input ThemeManagerCreateWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  updatedAt: DateTime
+  createdAt: DateTime
+  ProfileTheme: ProfileThemeCreateNestedManyWithoutThemeManagerInput
+}
+
+input ThemeManagerCreateWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  updatedAt: DateTime
+  createdAt: DateTime
+  Profile: ProfileCreateNestedOneWithoutThemeManagerInput!
+}
+
+input ThemeManagerOrderByWithRelationInput
+  @join__type(graph: PROFILING)
+{
+  id: SortOrder
+  ProfileTheme: ProfileThemeOrderByRelationAggregateInput
+  Profile: ProfileOrderByWithRelationInput
+  profileId: SortOrder
+  updatedAt: SortOrder
+  createdAt: SortOrder
+}
+
+input ThemeManagerUpdateOneWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  create: ThemeManagerCreateWithoutProfileInput
+  connectOrCreate: ThemeManagerCreateOrConnectWithoutProfileInput
+  upsert: ThemeManagerUpsertWithoutProfileInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: ThemeManagerWhereUniqueInput
+  update: ThemeManagerUpdateWithoutProfileInput
+}
+
+input ThemeManagerUpdateWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  ProfileTheme: ProfileThemeUpdateManyWithoutThemeManagerInput
+}
+
+input ThemeManagerUpsertWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  update: ThemeManagerUpdateWithoutProfileInput!
+  create: ThemeManagerCreateWithoutProfileInput!
+}
+
+input ThemeManagerWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [ThemeManagerWhereInput!]
+  OR: [ThemeManagerWhereInput!]
+  NOT: [ThemeManagerWhereInput!]
+  id: StringFilter
+  ProfileTheme: ProfileThemeListRelationFilter
+  Profile: ProfileWhereInput
+  profileId: StringFilter
+  updatedAt: DateTimeFilter
+  createdAt: DateTimeFilter
+}
+
+input ThemeManagerWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  profileId: String
+}
+
+input ThemeUpdatemobileInput
+  @join__type(graph: PROFILING)
+{
+  set: [Json!]
+  push: Json
+}
+
+input ThemeUpdatemobileVersionsInput
+  @join__type(graph: PROFILING)
+{
+  set: [String!]
+  push: String
+}
+
+input ThemeUpdateOneRequiredWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  create: ThemeCreateWithoutProfileThemeInput
+  connectOrCreate: ThemeCreateOrConnectWithoutProfileThemeInput
+  upsert: ThemeUpsertWithoutProfileThemeInput
+  connect: ThemeWhereUniqueInput
+  update: ThemeUpdateWithoutProfileThemeInput
+}
+
+input ThemeUpdatewebInput
+  @join__type(graph: PROFILING)
+{
+  set: [Json!]
+  push: Json
+}
+
+input ThemeUpdatewebVersionsInput
+  @join__type(graph: PROFILING)
+{
+  set: [String!]
+  push: String
+}
+
+input ThemeUpdateWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  startDate: NullableDateTimeFieldUpdateOperationsInput
+  endDate: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  mobileVersions: ThemeUpdatemobileVersionsInput
+  webVersions: ThemeUpdatewebVersionsInput
+  mobile: ThemeUpdatemobileInput
+  web: ThemeUpdatewebInput
+}
+
+input ThemeUpsertWithoutProfileThemeInput
+  @join__type(graph: PROFILING)
+{
+  update: ThemeUpdateWithoutProfileThemeInput!
+  create: ThemeCreateWithoutProfileThemeInput!
+}
+
+input ThemeWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [ThemeWhereInput!]
+  OR: [ThemeWhereInput!]
+  NOT: [ThemeWhereInput!]
+  id: StringFilter
+  mobileVersions: StringNullableListFilter
+  webVersions: StringNullableListFilter
+  name: StringFilter
+  mobile: JsonNullableListFilter
+  web: JsonNullableListFilter
+  startDate: DateTimeNullableFilter
+  endDate: DateTimeNullableFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  ProfileTheme: ProfileThemeListRelationFilter
+}
+
+input ThemeWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
 }
 
 type TotaledOut

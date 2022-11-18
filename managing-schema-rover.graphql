@@ -49,10 +49,10 @@ type Success {
 
 type Mutation {
   createOneDevice(data: DeviceCreateInput!): Device!
-  createADeviceManager(profileId: String): RefreshDeviceManagerResponseUnion
-  switchDeviceProfile(profileId: String): RefreshDeviceManagerResponseUnion
+  createADeviceManager(profileId: String!): RefreshDeviceManagerResponseUnion
+  switchDeviceProfile(profileId: String!): RefreshDeviceManagerResponseUnion
   refreshDeviceManager: RefreshDeviceManagerResponseUnion
-  removeDeviceProfileToDeviceManager(profileId: String!): Boolean
+  removeDeviceProfileFromDeviceManager(profileId: String!): Boolean
 }
 
 extend type Query {
@@ -64,6 +64,12 @@ enum MutationType {
   CREATED
   UPDATED
   DELETED
+}
+
+enum ProfileType {
+  GUEST
+  VENUE
+  PERSONAL
 }
 
 enum AppType {
@@ -117,6 +123,7 @@ input DeviceProfileCreateNestedManyWithoutDeviceManagerInput {
 
 input DeviceProfileCreateWithoutDeviceManagerInput {
   AppType: AppType
+  ProfileType: ProfileType
   profileId: String
   isActive: Boolean!
   accesstoken: String
@@ -146,6 +153,7 @@ input RefreshTokenCreateNestedOneWithoutDeviceProfileInput {
 input DeviceProfileCreateManyDeviceManagerInput {
   id: Int
   AppType: AppType
+  ProfileType: ProfileType
   profileId: String
   isActive: Boolean!
   accesstoken: String
