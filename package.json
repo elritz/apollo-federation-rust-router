@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "router": "APOLLO_KEY=service:barfriends:HK36HSViS1rAb1l5wNG67w APOLLO_GRAPH_REF=barfriends@current ./router --config ./router.yaml",
+    "router": "APOLLO_ROUTER_HOT_RELOAD=true APOLLO_KEY=service:barfriends:HK36HSViS1rAb1l5wNG67w APOLLO_GRAPH_REF=barfriends@current ./router --config ./router.yaml ",
     "router-local": "./router --dev --supergraph supergraph.graphql --config ./router.yaml",
     "list": "rover subgraph list barfriends@current",
     "fetch-profiling": "rover subgraph fetch barfriends@current --name profiling > profiling-schema-rover.graphql",
@@ -13,8 +13,8 @@
     "fetch-all": "npm run fetch-managing && npm run fetch-profiling",
     "intro-profiling": "rover subgraph introspect http://localhost:5001/graphql > profiling-schema-rover.graphql",
     "intro-managing": "rover subgraph introspect http://localhost:5002/graphql > managing-schema-rover.graphql",
-    "super-compose": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql",
-    "super-compose2": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql"
+    "intro-all": "npm run intro-managing && npm run intro-profiling",
+    "super-compose": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql"
   },
   "repository": {
     "type": "git",

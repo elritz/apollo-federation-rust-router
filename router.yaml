@@ -1,11 +1,13 @@
 supergraph:
   introspection: true
-  path: /graphql
+  path: "/graphql"
   listen: 192.168.86.38:4000
 homepage:
   enabled: false
 sandbox:
   enabled: true
+cors:
+  allow_credentials: true
 headers:
   # Header rules for all subgraphs
   all:
@@ -13,16 +15,16 @@ headers:
       - propagate:
           matching: .*
     # Subgraph-specific header rules
-  subgraphs:
-    profiling:
-      request:
-        # Calls to the products subgraph have the "router-subgraph-name" header set to `products`.
-        - insert:
-            name: "router-subgraph-name"
-            value: "profiling"
-    managing:
-      request:
-        # Calls to the accounts subgraph have the "router-subgraph-name" header set to `accounts`.
-        - insert:
-            name: "router-subgraph-name"
-            value: "managing"
+  # subgraphs:
+  #   profiling:
+  #     request:
+  #       # Calls to the products subgraph have the "router-subgraph-name" header set to `products`.
+  #       - insert:
+  #           name: "router-subgraph-profiling"
+  #           value: "profiling"
+  #   managing:
+  #     request:
+  #       # Calls to the accounts subgraph have the "router-subgraph-name" header set to `accounts`.
+  #       - insert:
+  #           name: "router-subgraph-managing"
+  #           value: "managing"
