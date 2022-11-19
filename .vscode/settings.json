@@ -1,0 +1,17 @@
+{
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#03bafc",
+    "titleBar.activeForeground": "#000000",
+    "titleBar.inactiveForeground": "#000000",
+    "titleBar.inactiveBackground": "#03bafc",
+    "statusBar.foreground": "#000000",
+    "statusBar.background": "#03bafc"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "jest.jestCommandLine": "jest",
+  "githubPullRequests.ignoredPullRequestBranches": ["main"]
+}
