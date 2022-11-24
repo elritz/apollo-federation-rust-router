@@ -1744,7 +1744,7 @@ input GooglePlaceAutocompleteInput
          This value also is returned and should be passed back through this input. 
          Default value provided.
   """
-  sessiontoken: String = "3402ff1c-03d2-4b6b-8b29-12f1cd263391"
+  sessiontoken: String = "02219f58-41d0-4ac4-bdc9-8b32e73177a1"
   latitude: Float
   longitude: Float
 
@@ -3671,9 +3671,9 @@ type Mutation
   @join__type(graph: PROFILING)
 {
   createOneDevice(data: DeviceCreateInput!): Device! @join__field(graph: MANAGING)
-  createADeviceManager(profileId: String!): RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
-  switchDeviceProfile(profileId: String!): RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
-  refreshDeviceManager: RefreshDeviceManagerResponseUnion @join__field(graph: MANAGING)
+  createADeviceManager(profileId: String!): RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
+  switchDeviceProfile(profileId: String!, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
+  refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
   removeDeviceProfileFromDeviceManager(profileId: String!): Boolean @join__field(graph: MANAGING)
   sendAuthenticatorDeviceOwnerCode(where: CodeWhere, data: CodeData): CodeResponse @join__field(graph: PROFILING)
   sendAuthenticatorForgotPasswordCode(where: CodeWhere, data: CodeData): CodeResponse @join__field(graph: PROFILING)
@@ -3694,15 +3694,6 @@ type Mutation
   updateStoryEmojimood(storyId: String, emojimoodId: Int!): Boolean @join__field(graph: PROFILING)
   createOneProfileTheme(data: ProfileThemeCreateInput!): ProfileTheme! @join__field(graph: PROFILING)
   updateThemeManagerSwitchTheme(id: String!, themeId: String!): ProfileTheme @join__field(graph: PROFILING)
-}
-
-enum MutationType
-  @join__type(graph: MANAGING)
-  @join__type(graph: PROFILING)
-{
-  CREATED
-  UPDATED
-  DELETED
 }
 
 input NestedBoolFilter
@@ -6102,8 +6093,8 @@ type Query
   venuesNearby(latitude: Float!, longitude: Float!, kRing: Int): [Profile] @join__field(graph: PROFILING)
   searchAddressGoogleAutocomplete(where: GooglePlaceAutocompleteInput!): GooglePlaceAutocompleteReturn @join__field(graph: PROFILING)
   getAllCountries: [Json] @join__field(graph: PROFILING)
-  getAllStatesByCountry(country: String!): [Json] @join__field(graph: PROFILING)
-  getAllCitiesByState(country: String!, state: String!): [Json] @join__field(graph: PROFILING)
+  getAllStatesByCountry(countryIsoCode: String!): [Json] @join__field(graph: PROFILING)
+  getAllCitiesByState(countryIsoCode: String!, state: String!): [Json] @join__field(graph: PROFILING)
   searchAreaCity(search: String!, country: String!): Json @join__field(graph: PROFILING)
   story(where: StoryWhereUniqueInput!): Story @join__field(graph: PROFILING)
   getAllThemes: [Theme] @join__field(graph: PROFILING)
@@ -6116,9 +6107,9 @@ enum QueryMode
   insensitive
 }
 
-union RefreshDeviceManagerResponseUnion
+union RefreshDeviceManagerDeviceManagerResponseUnion
   @join__type(graph: MANAGING)
- = DeviceManager | Error | Success
+ = DeviceManager | Error
 
 input RefreshTokenCreateNestedOneWithoutDeviceProfileInput
   @join__type(graph: MANAGING)

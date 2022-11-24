@@ -29,7 +29,7 @@ type DeviceProfile {
 
 union DeviceManagerDeviceProfilesResponseUnion = DeviceManagerDeviceProfiles | Error
 
-union RefreshDeviceManagerResponseUnion = DeviceManager | Error | Success
+union RefreshDeviceManagerDeviceManagerResponseUnion = DeviceManager | Error
 
 extend type Profile implements Node @key(fields: "id") {
   id: String! @external
@@ -49,21 +49,15 @@ type Success {
 
 type Mutation {
   createOneDevice(data: DeviceCreateInput!): Device!
-  createADeviceManager(profileId: String!): RefreshDeviceManagerResponseUnion
-  switchDeviceProfile(profileId: String!): RefreshDeviceManagerResponseUnion
-  refreshDeviceManager: RefreshDeviceManagerResponseUnion
+  createADeviceManager(profileId: String!): RefreshDeviceManagerDeviceManagerResponseUnion
+  switchDeviceProfile(profileId: String!, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion
+  refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion
   removeDeviceProfileFromDeviceManager(profileId: String!): Boolean
 }
 
 extend type Query {
   device(where: DeviceWhereUniqueInput!): Device
   getADeviceManager: DeviceManagerDeviceProfilesResponseUnion
-}
-
-enum MutationType {
-  CREATED
-  UPDATED
-  DELETED
 }
 
 enum ProfileType {

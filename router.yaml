@@ -1,13 +1,28 @@
+rhai:
+  # Specify a different Rhai script directory path with this key.
+  # The path can be relative or absolute.
+  scripts: "./src/rhai"
+
+  # Specify a different name for your "main" Rhai file with this key.
+  # The router looks for this filename in your Rhai script directory.
+  # main: "rhai_data_response_mutate.rhai"
+  main: rhai_surrogate_cache_key.rhai
+# plugins:
+#   # this plugin doesn't have any configuration
+#   # mention it here and you're set!
+#   example.context_data:
 supergraph:
   introspection: true
-  path: "/graphql"
-  listen: 192.168.86.38:4000
+  path: /graphql
+  listen: 192.168.86.23:4000
 homepage:
-  enabled: false
+  enabled: true
 sandbox:
   enabled: true
 cors:
-  allow_credentials: true
+  allow_credentials: false
+  allow_headers:
+    - authorization
 headers:
   # Header rules for all subgraphs
   all:
