@@ -8,3 +8,7 @@ subgraphs:
     routing_url: http://localhost:5002/graphql
     schema:
       file: managing-schema-rover.graphql
+  # messaging:
+  #   routing_url: https://localhost:5003/graphql
+  #   schema:
+  #     file: messaging-schema-rover.graphql

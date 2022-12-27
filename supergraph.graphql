@@ -1026,6 +1026,7 @@ input DeviceCreateInput
   createdAt: DateTime
   updatedAt: DateTime
   DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
+  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
 }
 
 type DeviceManager implements Node
@@ -1100,6 +1101,8 @@ input DeviceProfileCreateManyDeviceManagerInput
   profileId: String
   isActive: Boolean!
   accesstoken: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input DeviceProfileCreateManyDeviceManagerInputEnvelope
@@ -1133,6 +1136,8 @@ input DeviceProfileCreateWithoutDeviceManagerInput
   profileId: String
   isActive: Boolean!
   accesstoken: String
+  createdAt: DateTime
+  updatedAt: DateTime
   RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
 }
 
@@ -1147,6 +1152,7 @@ input DeviceWhereUniqueInput
 {
   id: String
   deviceManagerId: String
+  pushTokenId: String
 }
 
 type Document
@@ -1563,13 +1569,13 @@ input EnumProfileTypeFilter
   not: NestedEnumProfileTypeFilter
 }
 
-input EnumStatusNullableListFilter
+input EnumRelationshipStatusNullableListFilter
   @join__type(graph: PROFILING)
 {
-  equals: [Status!]
-  has: Status
-  hasEvery: [Status!]
-  hasSome: [Status!]
+  equals: [RelationshipStatus!]
+  has: RelationshipStatus
+  hasEvery: [RelationshipStatus!]
+  hasSome: [RelationshipStatus!]
   isEmpty: Boolean
 }
 
@@ -1618,6 +1624,14 @@ type ErrorProfiling
   message: String
 }
 
+type ExploreResponse
+  @join__type(graph: PROFILING)
+{
+  people: [Personal]
+  venues: [Venue]
+  events: [Json]
+}
+
 input FloatFieldUpdateOperationsInput
   @join__type(graph: PROFILING)
 {
@@ -1639,6 +1653,166 @@ input FloatFilter
   gt: Float
   gte: Float
   not: NestedFloatFilter
+}
+
+type FriendRequest
+  @join__type(graph: PROFILING)
+{
+  id: String!
+  Notifications(first: Int, last: Int, before: NotificationsWhereUniqueInput, after: NotificationsWhereUniqueInput): [Notifications!]!
+  receiverProfileId: String!
+  senderProfileId: String!
+  NotificationStatus: NotificationStatus!
+  notificationStatusId: String!
+}
+
+input FriendRequestCreateNestedManyWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  create: [FriendRequestCreateWithoutNotificationsInput!]
+  connectOrCreate: [FriendRequestCreateOrConnectWithoutNotificationsInput!]
+  connect: [FriendRequestWhereUniqueInput!]
+}
+
+input FriendRequestCreateOrConnectWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  where: FriendRequestWhereUniqueInput!
+  create: FriendRequestCreateWithoutNotificationsInput!
+}
+
+input FriendRequestCreateWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  senderProfileId: String!
+  receiverProfileId: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  NotificationStatus: NotificationStatusCreateNestedOneWithoutFriendRequestInput!
+}
+
+input FriendRequestListRelationFilter
+  @join__type(graph: PROFILING)
+{
+  every: FriendRequestWhereInput
+  some: FriendRequestWhereInput
+  none: FriendRequestWhereInput
+}
+
+type FriendRequestNotification
+  @join__type(graph: PROFILING)
+{
+  id: ID
+  NotificationStatus: NotificationStatus
+  notificationStatusId: String
+  receiverProfileId: String
+  senderProfileId: String
+  senderProfile: Profile
+  receiverProfile: Profile
+  createdAt: String
+  updatedAt: String
+}
+
+input FriendRequestOrderByRelationAggregateInput
+  @join__type(graph: PROFILING)
+{
+  _count: SortOrder
+}
+
+input FriendRequestScalarWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [FriendRequestScalarWhereInput!]
+  OR: [FriendRequestScalarWhereInput!]
+  NOT: [FriendRequestScalarWhereInput!]
+  id: StringFilter
+  senderProfileId: StringFilter
+  receiverProfileId: StringFilter
+  notificationStatusId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input FriendRequestUpdateManyMutationInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  senderProfileId: StringFieldUpdateOperationsInput
+  receiverProfileId: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input FriendRequestUpdateManyWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  create: [FriendRequestCreateWithoutNotificationsInput!]
+  connectOrCreate: [FriendRequestCreateOrConnectWithoutNotificationsInput!]
+  upsert: [FriendRequestUpsertWithWhereUniqueWithoutNotificationsInput!]
+  set: [FriendRequestWhereUniqueInput!]
+  disconnect: [FriendRequestWhereUniqueInput!]
+  delete: [FriendRequestWhereUniqueInput!]
+  connect: [FriendRequestWhereUniqueInput!]
+  update: [FriendRequestUpdateWithWhereUniqueWithoutNotificationsInput!]
+  updateMany: [FriendRequestUpdateManyWithWhereWithoutNotificationsInput!]
+  deleteMany: [FriendRequestScalarWhereInput!]
+}
+
+input FriendRequestUpdateManyWithWhereWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  where: FriendRequestScalarWhereInput!
+  data: FriendRequestUpdateManyMutationInput!
+}
+
+input FriendRequestUpdateWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  senderProfileId: StringFieldUpdateOperationsInput
+  receiverProfileId: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+  NotificationStatus: NotificationStatusUpdateOneRequiredWithoutFriendRequestInput
+}
+
+input FriendRequestUpdateWithWhereUniqueWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  where: FriendRequestWhereUniqueInput!
+  data: FriendRequestUpdateWithoutNotificationsInput!
+}
+
+input FriendRequestUpsertWithWhereUniqueWithoutNotificationsInput
+  @join__type(graph: PROFILING)
+{
+  where: FriendRequestWhereUniqueInput!
+  update: FriendRequestUpdateWithoutNotificationsInput!
+  create: FriendRequestCreateWithoutNotificationsInput!
+}
+
+input FriendRequestWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [FriendRequestWhereInput!]
+  OR: [FriendRequestWhereInput!]
+  NOT: [FriendRequestWhereInput!]
+  id: StringFilter
+  Notifications: NotificationsListRelationFilter
+  senderProfileId: StringFilter
+  receiverProfileId: StringFilter
+  NotificationStatus: NotificationStatusWhereInput
+  notificationStatusId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input FriendRequestWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  notificationStatusId: String
 }
 
 type Geometry
@@ -1744,7 +1918,7 @@ input GooglePlaceAutocompleteInput
          This value also is returned and should be passed back through this input. 
          Default value provided.
   """
-  sessiontoken: String = "02219f58-41d0-4ac4-bdc9-8b32e73177a1"
+  sessiontoken: String = "e44080af-a2a4-4db3-8255-852a4dc68fc9"
   latitude: Float
   longitude: Float
 
@@ -1823,7 +1997,7 @@ input GroupCreateWithoutPhotosInput
   name: String!
   createdAt: DateTime
   updatedAt: DateTime
-  Profile: ProfileCreateNestedManyWithoutGroupInput
+  Profile: ProfileCreateNestedManyWithoutGroupsInput
 }
 
 input GroupCreateWithoutProfileInput
@@ -1912,7 +2086,7 @@ input GroupUpdateWithoutPhotosInput
   name: StringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  Profile: ProfileUpdateManyWithoutGroupInput
+  Profile: ProfileUpdateManyWithoutGroupsInput
 }
 
 input GroupUpdateWithoutProfileInput
@@ -2645,6 +2819,7 @@ input JoinedOutWhereUniqueInput
 }
 
 scalar Json
+  @join__type(graph: MANAGING)
   @join__type(graph: PROFILING)
 
 input JsonNullableListFilter
@@ -3672,13 +3847,19 @@ type Mutation
 {
   createOneDevice(data: DeviceCreateInput!): Device! @join__field(graph: MANAGING)
   createADeviceManager(profileId: String!): RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
-  switchDeviceProfile(profileId: String!, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
+  switchDeviceProfile(profileId: String, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
   refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion @join__field(graph: MANAGING)
   removeDeviceProfileFromDeviceManager(profileId: String!): Boolean @join__field(graph: MANAGING)
+  upsertDevicePushToken(androidToken: String, appleToken: String, expoToken: String): Boolean @join__field(graph: MANAGING)
   sendAuthenticatorDeviceOwnerCode(where: CodeWhere, data: CodeData): CodeResponse @join__field(graph: PROFILING)
   sendAuthenticatorForgotPasswordCode(where: CodeWhere, data: CodeData): CodeResponse @join__field(graph: PROFILING)
   createOneEmojimood(data: EmojimoodCreateInput!): Emojimood! @join__field(graph: PROFILING)
+  createFriendRequest(senderProfileId: String!, receiversProfileId: [String!]!): Boolean @join__field(graph: PROFILING)
+  deleteFriendRequest(friendRequestId: String!): Boolean @join__field(graph: PROFILING)
+  removeFriend(relationshipId: String!): Boolean @join__field(graph: PROFILING)
+  acceptFriendRequest(friendRequestId: String!, venueIdMetAt: String): Relationship @join__field(graph: PROFILING)
   checkThePink: Boolean @join__field(graph: PROFILING)
+  updateManyNotificationStatusIsChecked(data: UpdateManyNotificationStatusInput!): UpdateManyNotificationStatusUnionResponse @join__field(graph: PROFILING)
   upsertTonightPathOrPath(tonightPathId: String, profileIdPersonal: String!, latitude: Float!, longitude: Float!): Boolean @join__field(graph: PROFILING)
   addPersonalTotalsVenue(profileIdPersonal: String!, profileIdVenue: String!): Boolean @join__field(graph: PROFILING)
   removePersonalTotalsVenue(profileIdPersonal: String!, profileIdVenue: String!): Boolean @join__field(graph: PROFILING)
@@ -3848,6 +4029,194 @@ interface Node
   @join__type(graph: PROFILING)
 {
   id: String
+}
+
+union NotificationFriendRequestStatusResponse
+  @join__type(graph: PROFILING)
+ = ErrorProfiling | FriendRequest | Relationship | RejectedFriendsResponse
+
+type NotificationResponse
+  @join__type(graph: PROFILING)
+{
+  friendRequestNotifications: [FriendRequestNotification]
+}
+
+type Notifications
+  @join__type(graph: PROFILING)
+{
+  id: String!
+  FriendRequests(first: Int, last: Int, before: FriendRequestWhereUniqueInput, after: FriendRequestWhereUniqueInput): [FriendRequest!]!
+  Profile: Profile!
+  profileId: String!
+}
+
+input NotificationsCreateNestedOneWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  create: NotificationsCreateWithoutProfileInput
+  connectOrCreate: NotificationsCreateOrConnectWithoutProfileInput
+  connect: NotificationsWhereUniqueInput
+}
+
+input NotificationsCreateOrConnectWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  where: NotificationsWhereUniqueInput!
+  create: NotificationsCreateWithoutProfileInput!
+}
+
+input NotificationsCreateWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  FriendRequests: FriendRequestCreateNestedManyWithoutNotificationsInput
+}
+
+input NotificationsListRelationFilter
+  @join__type(graph: PROFILING)
+{
+  every: NotificationsWhereInput
+  some: NotificationsWhereInput
+  none: NotificationsWhereInput
+}
+
+input NotificationsOrderByWithRelationInput
+  @join__type(graph: PROFILING)
+{
+  id: SortOrder
+  Profile: ProfileOrderByWithRelationInput
+  profileId: SortOrder
+  FriendRequests: FriendRequestOrderByRelationAggregateInput
+}
+
+type NotificationStatus
+  @join__type(graph: PROFILING)
+{
+  id: String!
+  FriendRequest: FriendRequest
+  isAccepted: Boolean!
+  isAnswered: Boolean!
+  isChecked: Boolean!
+}
+
+input NotificationStatusCreateNestedOneWithoutFriendRequestInput
+  @join__type(graph: PROFILING)
+{
+  create: NotificationStatusCreateWithoutFriendRequestInput
+  connectOrCreate: NotificationStatusCreateOrConnectWithoutFriendRequestInput
+  connect: NotificationStatusWhereUniqueInput
+}
+
+input NotificationStatusCreateOrConnectWithoutFriendRequestInput
+  @join__type(graph: PROFILING)
+{
+  where: NotificationStatusWhereUniqueInput!
+  create: NotificationStatusCreateWithoutFriendRequestInput!
+}
+
+input NotificationStatusCreateWithoutFriendRequestInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  isAccepted: Boolean
+  isChecked: Boolean
+  isAnswered: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input NotificationStatusUpdateOneRequiredWithoutFriendRequestInput
+  @join__type(graph: PROFILING)
+{
+  create: NotificationStatusCreateWithoutFriendRequestInput
+  connectOrCreate: NotificationStatusCreateOrConnectWithoutFriendRequestInput
+  upsert: NotificationStatusUpsertWithoutFriendRequestInput
+  connect: NotificationStatusWhereUniqueInput
+  update: NotificationStatusUpdateWithoutFriendRequestInput
+}
+
+input NotificationStatusUpdateWithoutFriendRequestInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  isAccepted: BoolFieldUpdateOperationsInput
+  isChecked: BoolFieldUpdateOperationsInput
+  isAnswered: BoolFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input NotificationStatusUpsertWithoutFriendRequestInput
+  @join__type(graph: PROFILING)
+{
+  update: NotificationStatusUpdateWithoutFriendRequestInput!
+  create: NotificationStatusCreateWithoutFriendRequestInput!
+}
+
+input NotificationStatusWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [NotificationStatusWhereInput!]
+  OR: [NotificationStatusWhereInput!]
+  NOT: [NotificationStatusWhereInput!]
+  id: StringFilter
+  FriendRequest: FriendRequestWhereInput
+  isAccepted: BoolFilter
+  isChecked: BoolFilter
+  isAnswered: BoolFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input NotificationStatusWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+}
+
+input NotificationsUpdateOneWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  create: NotificationsCreateWithoutProfileInput
+  connectOrCreate: NotificationsCreateOrConnectWithoutProfileInput
+  upsert: NotificationsUpsertWithoutProfileInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: NotificationsWhereUniqueInput
+  update: NotificationsUpdateWithoutProfileInput
+}
+
+input NotificationsUpdateWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  FriendRequests: FriendRequestUpdateManyWithoutNotificationsInput
+}
+
+input NotificationsUpsertWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  update: NotificationsUpdateWithoutProfileInput!
+  create: NotificationsCreateWithoutProfileInput!
+}
+
+input NotificationsWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [NotificationsWhereInput!]
+  OR: [NotificationsWhereInput!]
+  NOT: [NotificationsWhereInput!]
+  id: StringFilter
+  Profile: ProfileWhereInput
+  profileId: StringFilter
+  FriendRequests: FriendRequestListRelationFilter
+}
+
+input NotificationsWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  profileId: String
 }
 
 input NullableBoolFieldUpdateOperationsInput
@@ -5094,10 +5463,10 @@ type Profile implements Node
   @join__type(graph: PROFILING, key: "id")
 {
   id: String!
-  photos(first: Int, last: Int, before: PhotoWhereUniqueInput, after: PhotoWhereUniqueInput): [Photo!]! @join__field(graph: PROFILING)
+  photos: Photo @join__field(graph: PROFILING)
   Story: Story @join__field(graph: PROFILING)
   Credentials: Credentials @join__field(graph: PROFILING)
-  Relationships(first: Int, last: Int, before: RelationshipWhereUniqueInput, after: RelationshipWhereUniqueInput): [Relationship!]! @join__field(graph: PROFILING)
+  Relationships: [Relationship] @join__field(graph: PROFILING)
   Personal: Personal @join__field(graph: PROFILING)
   Venue: Venue @join__field(graph: PROFILING)
   ProfileType: ProfileType @join__field(graph: PROFILING)
@@ -5130,11 +5499,11 @@ input ProfileCreateNestedManyWithoutChatroomInput
   connect: [ProfileWhereUniqueInput!]
 }
 
-input ProfileCreateNestedManyWithoutGroupInput
+input ProfileCreateNestedManyWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
-  create: [ProfileCreateWithoutGroupInput!]
-  connectOrCreate: [ProfileCreateOrConnectWithoutGroupInput!]
+  create: [ProfileCreateWithoutGroupsInput!]
+  connectOrCreate: [ProfileCreateOrConnectWithoutGroupsInput!]
   connect: [ProfileWhereUniqueInput!]
 }
 
@@ -5154,11 +5523,11 @@ input ProfileCreateNestedOneWithoutPhotosInput
   connect: ProfileWhereUniqueInput
 }
 
-input ProfileCreateNestedOneWithoutStoryInput
+input ProfileCreateNestedOneWithoutStorysInput
   @join__type(graph: PROFILING)
 {
-  create: ProfileCreateWithoutStoryInput
-  connectOrCreate: ProfileCreateOrConnectWithoutStoryInput
+  create: ProfileCreateWithoutStorysInput
+  connectOrCreate: ProfileCreateOrConnectWithoutStorysInput
   connect: ProfileWhereUniqueInput
 }
 
@@ -5185,11 +5554,11 @@ input ProfileCreateOrConnectWithoutChatroomInput
   create: ProfileCreateWithoutChatroomInput!
 }
 
-input ProfileCreateOrConnectWithoutGroupInput
+input ProfileCreateOrConnectWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
   where: ProfileWhereUniqueInput!
-  create: ProfileCreateWithoutGroupInput!
+  create: ProfileCreateWithoutGroupsInput!
 }
 
 input ProfileCreateOrConnectWithoutPersonalInput
@@ -5206,11 +5575,11 @@ input ProfileCreateOrConnectWithoutPhotosInput
   create: ProfileCreateWithoutPhotosInput!
 }
 
-input ProfileCreateOrConnectWithoutStoryInput
+input ProfileCreateOrConnectWithoutStorysInput
   @join__type(graph: PROFILING)
 {
   where: ProfileWhereUniqueInput!
-  create: ProfileCreateWithoutStoryInput!
+  create: ProfileCreateWithoutStorysInput!
 }
 
 input ProfileCreateOrConnectWithoutThemeManagerInput
@@ -5240,16 +5609,18 @@ input ProfileCreateWithoutChatroomInput
   Venue: VenueCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
   photos: PhotoCreateNestedManyWithoutProfileInput
-  Story: StoryCreateNestedManyWithoutProfileInput
+  Storys: StoryCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
-  Group: GroupCreateNestedManyWithoutProfileInput
+  Groups: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
-input ProfileCreateWithoutGroupInput
+input ProfileCreateWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
   id: String
@@ -5262,13 +5633,15 @@ input ProfileCreateWithoutGroupInput
   Venue: VenueCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
   photos: PhotoCreateNestedManyWithoutProfileInput
-  Story: StoryCreateNestedManyWithoutProfileInput
+  Storys: StoryCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
   Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
 input ProfileCreateWithoutPersonalInput
@@ -5283,14 +5656,16 @@ input ProfileCreateWithoutPersonalInput
   Venue: VenueCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
   photos: PhotoCreateNestedManyWithoutProfileInput
-  Story: StoryCreateNestedManyWithoutProfileInput
+  Storys: StoryCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
-  Group: GroupCreateNestedManyWithoutProfileInput
+  Groups: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
   Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
 input ProfileCreateWithoutPhotosInput
@@ -5306,16 +5681,18 @@ input ProfileCreateWithoutPhotosInput
   Venue: VenueCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
-  Story: StoryCreateNestedManyWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
+  Storys: StoryCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
-  Group: GroupCreateNestedManyWithoutProfileInput
+  Groups: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
   Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
-input ProfileCreateWithoutStoryInput
+input ProfileCreateWithoutStorysInput
   @join__type(graph: PROFILING)
 {
   id: String
@@ -5328,13 +5705,15 @@ input ProfileCreateWithoutStoryInput
   Venue: VenueCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
   photos: PhotoCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
-  Group: GroupCreateNestedManyWithoutProfileInput
+  Groups: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
   Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
 input ProfileCreateWithoutThemeManagerInput
@@ -5350,13 +5729,15 @@ input ProfileCreateWithoutThemeManagerInput
   Venue: VenueCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
   photos: PhotoCreateNestedManyWithoutProfileInput
-  Story: StoryCreateNestedManyWithoutProfileInput
+  Storys: StoryCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
-  Group: GroupCreateNestedManyWithoutProfileInput
+  Groups: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
 input ProfileCreateWithoutVenueInput
@@ -5371,14 +5752,16 @@ input ProfileCreateWithoutVenueInput
   Personal: PersonalCreateNestedOneWithoutProfileInput
   DetailInformation: DetailInformationCreateNestedOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationCreateNestedOneWithoutProfileInput
+  Notifications: NotificationsCreateNestedOneWithoutProfileInput
   photos: PhotoCreateNestedManyWithoutProfileInput
-  Story: StoryCreateNestedManyWithoutProfileInput
+  Storys: StoryCreateNestedManyWithoutProfileInput
   Relationships: RelationshipCreateNestedManyWithoutProfileInput
-  Group: GroupCreateNestedManyWithoutProfileInput
+  Groups: GroupCreateNestedManyWithoutProfileInput
   Credentials: CredentialsCreateNestedOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceCreateNestedOneWithoutProfileInput
   ThemeManager: ThemeManagerCreateNestedOneWithoutProfileInput
   Chatroom: ChatroomCreateNestedManyWithoutProfilesInput
+  Settings: SettingsCreateNestedOneWithoutProfileInput
 }
 
 input ProfileListRelationFilter
@@ -5399,10 +5782,11 @@ input ProfileOrderByWithRelationInput
   Venue: VenueOrderByWithRelationInput
   DetailInformation: DetailInformationOrderByWithRelationInput
   IdentifiableInformation: IdentifiableInformationOrderByWithRelationInput
+  Notifications: NotificationsOrderByWithRelationInput
   photos: PhotoOrderByRelationAggregateInput
-  Story: StoryOrderByRelationAggregateInput
+  Storys: StoryOrderByRelationAggregateInput
   Relationships: RelationshipOrderByRelationAggregateInput
-  Group: GroupOrderByRelationAggregateInput
+  Groups: GroupOrderByRelationAggregateInput
   Credentials: CredentialsOrderByWithRelationInput
   ProfileSearchesService: ProfileSearchesServiceOrderByWithRelationInput
   ProfileType: SortOrder
@@ -5410,6 +5794,7 @@ input ProfileOrderByWithRelationInput
   createdAt: SortOrder
   updatedAt: SortOrder
   Chatroom: ChatroomOrderByRelationAggregateInput
+  Settings: SettingsOrderByWithRelationInput
 }
 
 type Profiles
@@ -5732,14 +6117,16 @@ input ProfileUpdateInput
   Venue: VenueUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
   photos: PhotoUpdateManyWithoutProfileInput
-  Story: StoryUpdateManyWithoutProfileInput
+  Storys: StoryUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
-  Group: GroupUpdateManyWithoutProfileInput
+  Groups: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
   Chatroom: ChatroomUpdateManyWithoutProfilesInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
 input ProfileUpdateManyMutationInput
@@ -5768,18 +6155,18 @@ input ProfileUpdateManyWithoutChatroomInput
   deleteMany: [ProfileScalarWhereInput!]
 }
 
-input ProfileUpdateManyWithoutGroupInput
+input ProfileUpdateManyWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
-  create: [ProfileCreateWithoutGroupInput!]
-  connectOrCreate: [ProfileCreateOrConnectWithoutGroupInput!]
-  upsert: [ProfileUpsertWithWhereUniqueWithoutGroupInput!]
+  create: [ProfileCreateWithoutGroupsInput!]
+  connectOrCreate: [ProfileCreateOrConnectWithoutGroupsInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutGroupsInput!]
   set: [ProfileWhereUniqueInput!]
   disconnect: [ProfileWhereUniqueInput!]
   delete: [ProfileWhereUniqueInput!]
   connect: [ProfileWhereUniqueInput!]
-  update: [ProfileUpdateWithWhereUniqueWithoutGroupInput!]
-  updateMany: [ProfileUpdateManyWithWhereWithoutGroupInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutGroupsInput!]
+  updateMany: [ProfileUpdateManyWithWhereWithoutGroupsInput!]
   deleteMany: [ProfileScalarWhereInput!]
 }
 
@@ -5790,7 +6177,7 @@ input ProfileUpdateManyWithWhereWithoutChatroomInput
   data: ProfileUpdateManyMutationInput!
 }
 
-input ProfileUpdateManyWithWhereWithoutGroupInput
+input ProfileUpdateManyWithWhereWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
   where: ProfileScalarWhereInput!
@@ -5829,16 +6216,16 @@ input ProfileUpdateOneWithoutPhotosInput
   update: ProfileUpdateWithoutPhotosInput
 }
 
-input ProfileUpdateOneWithoutStoryInput
+input ProfileUpdateOneWithoutStorysInput
   @join__type(graph: PROFILING)
 {
-  create: ProfileCreateWithoutStoryInput
-  connectOrCreate: ProfileCreateOrConnectWithoutStoryInput
-  upsert: ProfileUpsertWithoutStoryInput
+  create: ProfileCreateWithoutStorysInput
+  connectOrCreate: ProfileCreateOrConnectWithoutStorysInput
+  upsert: ProfileUpsertWithoutStorysInput
   disconnect: Boolean
   delete: Boolean
   connect: ProfileWhereUniqueInput
-  update: ProfileUpdateWithoutStoryInput
+  update: ProfileUpdateWithoutStorysInput
 }
 
 input ProfileUpdateWithoutChatroomInput
@@ -5854,16 +6241,18 @@ input ProfileUpdateWithoutChatroomInput
   Venue: VenueUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
   photos: PhotoUpdateManyWithoutProfileInput
-  Story: StoryUpdateManyWithoutProfileInput
+  Storys: StoryUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
-  Group: GroupUpdateManyWithoutProfileInput
+  Groups: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
-input ProfileUpdateWithoutGroupInput
+input ProfileUpdateWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
@@ -5876,13 +6265,15 @@ input ProfileUpdateWithoutGroupInput
   Venue: VenueUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
   photos: PhotoUpdateManyWithoutProfileInput
-  Story: StoryUpdateManyWithoutProfileInput
+  Storys: StoryUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
   Chatroom: ChatroomUpdateManyWithoutProfilesInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
 input ProfileUpdateWithoutPersonalInput
@@ -5897,14 +6288,16 @@ input ProfileUpdateWithoutPersonalInput
   Venue: VenueUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
   photos: PhotoUpdateManyWithoutProfileInput
-  Story: StoryUpdateManyWithoutProfileInput
+  Storys: StoryUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
-  Group: GroupUpdateManyWithoutProfileInput
+  Groups: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
   Chatroom: ChatroomUpdateManyWithoutProfilesInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
 input ProfileUpdateWithoutPhotosInput
@@ -5920,16 +6313,18 @@ input ProfileUpdateWithoutPhotosInput
   Venue: VenueUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
-  Story: StoryUpdateManyWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
+  Storys: StoryUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
-  Group: GroupUpdateManyWithoutProfileInput
+  Groups: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
   Chatroom: ChatroomUpdateManyWithoutProfilesInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
-input ProfileUpdateWithoutStoryInput
+input ProfileUpdateWithoutStorysInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
@@ -5942,13 +6337,15 @@ input ProfileUpdateWithoutStoryInput
   Venue: VenueUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
   photos: PhotoUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
-  Group: GroupUpdateManyWithoutProfileInput
+  Groups: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
   Chatroom: ChatroomUpdateManyWithoutProfilesInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
 input ProfileUpdateWithoutVenueInput
@@ -5963,14 +6360,16 @@ input ProfileUpdateWithoutVenueInput
   Personal: PersonalUpdateOneWithoutProfileInput
   DetailInformation: DetailInformationUpdateOneWithoutProfileInput
   IdentifiableInformation: IdentifiableInformationUpdateOneWithoutProfileInput
+  Notifications: NotificationsUpdateOneWithoutProfileInput
   photos: PhotoUpdateManyWithoutProfileInput
-  Story: StoryUpdateManyWithoutProfileInput
+  Storys: StoryUpdateManyWithoutProfileInput
   Relationships: RelationshipUpdateManyWithoutProfileInput
-  Group: GroupUpdateManyWithoutProfileInput
+  Groups: GroupUpdateManyWithoutProfileInput
   Credentials: CredentialsUpdateOneWithoutProfileInput
   ProfileSearchesService: ProfileSearchesServiceUpdateOneWithoutProfileInput
   ThemeManager: ThemeManagerUpdateOneWithoutProfileInput
   Chatroom: ChatroomUpdateManyWithoutProfilesInput
+  Settings: SettingsUpdateOneWithoutProfileInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutChatroomInput
@@ -5980,11 +6379,11 @@ input ProfileUpdateWithWhereUniqueWithoutChatroomInput
   data: ProfileUpdateWithoutChatroomInput!
 }
 
-input ProfileUpdateWithWhereUniqueWithoutGroupInput
+input ProfileUpdateWithWhereUniqueWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
   where: ProfileWhereUniqueInput!
-  data: ProfileUpdateWithoutGroupInput!
+  data: ProfileUpdateWithoutGroupsInput!
 }
 
 input ProfileUpsertWithoutPersonalInput
@@ -6001,11 +6400,11 @@ input ProfileUpsertWithoutPhotosInput
   create: ProfileCreateWithoutPhotosInput!
 }
 
-input ProfileUpsertWithoutStoryInput
+input ProfileUpsertWithoutStorysInput
   @join__type(graph: PROFILING)
 {
-  update: ProfileUpdateWithoutStoryInput!
-  create: ProfileCreateWithoutStoryInput!
+  update: ProfileUpdateWithoutStorysInput!
+  create: ProfileCreateWithoutStorysInput!
 }
 
 input ProfileUpsertWithoutVenueInput
@@ -6023,12 +6422,12 @@ input ProfileUpsertWithWhereUniqueWithoutChatroomInput
   create: ProfileCreateWithoutChatroomInput!
 }
 
-input ProfileUpsertWithWhereUniqueWithoutGroupInput
+input ProfileUpsertWithWhereUniqueWithoutGroupsInput
   @join__type(graph: PROFILING)
 {
   where: ProfileWhereUniqueInput!
-  update: ProfileUpdateWithoutGroupInput!
-  create: ProfileCreateWithoutGroupInput!
+  update: ProfileUpdateWithoutGroupsInput!
+  create: ProfileCreateWithoutGroupsInput!
 }
 
 input ProfileWhereInput
@@ -6044,10 +6443,11 @@ input ProfileWhereInput
   Venue: VenueWhereInput
   DetailInformation: DetailInformationWhereInput
   IdentifiableInformation: IdentifiableInformationWhereInput
+  Notifications: NotificationsWhereInput
   photos: PhotoListRelationFilter
-  Story: StoryListRelationFilter
+  Storys: StoryListRelationFilter
   Relationships: RelationshipListRelationFilter
-  Group: GroupListRelationFilter
+  Groups: GroupListRelationFilter
   Credentials: CredentialsWhereInput
   ProfileSearchesService: ProfileSearchesServiceWhereInput
   ProfileType: EnumProfileTypeFilter
@@ -6055,6 +6455,7 @@ input ProfileWhereInput
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   Chatroom: ChatroomListRelationFilter
+  Settings: SettingsWhereInput
 }
 
 input ProfileWhereUniqueInput
@@ -6062,6 +6463,46 @@ input ProfileWhereUniqueInput
 {
   id: String
   bfsprofileid: String
+}
+
+input PushTokenCreateNestedOneWithoutDeviceInput
+  @join__type(graph: MANAGING)
+{
+  create: PushTokenCreateWithoutDeviceInput
+  connectOrCreate: PushTokenCreateOrConnectWithoutDeviceInput
+  connect: PushTokenWhereUniqueInput
+}
+
+input PushTokenCreateOrConnectWithoutDeviceInput
+  @join__type(graph: MANAGING)
+{
+  where: PushTokenWhereUniqueInput!
+  create: PushTokenCreateWithoutDeviceInput!
+}
+
+input PushTokenCreatereceiptsInput
+  @join__type(graph: MANAGING)
+{
+  set: [Json!]
+}
+
+input PushTokenCreateWithoutDeviceInput
+  @join__type(graph: MANAGING)
+{
+  id: String
+  isExpired: Boolean
+  expoToken: String
+  androidToken: String
+  appleToken: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  receipts: PushTokenCreatereceiptsInput
+}
+
+input PushTokenWhereUniqueInput
+  @join__type(graph: MANAGING)
+{
+  id: String
 }
 
 type Query
@@ -6080,6 +6521,8 @@ type Query
   Personals(where: PersonalWhereInput, first: Int, last: Int, before: PersonalWhereUniqueInput, after: PersonalWhereUniqueInput): [Personal!]! @join__field(graph: PROFILING)
   emojimood(where: EmojimoodWhereUniqueInput!): Emojimood @join__field(graph: PROFILING)
   emojimoods(where: EmojimoodWhereInput, orderBy: [EmojimoodOrderByWithRelationInput!], first: Int, last: Int, before: EmojimoodWhereUniqueInput, after: EmojimoodWhereUniqueInput): [Emojimood!]! @join__field(graph: PROFILING)
+  getRelationshipFriendRequestStatus(profileId: String!): NotificationFriendRequestStatusResponse @join__field(graph: PROFILING)
+  getNotifications: NotificationResponse @join__field(graph: PROFILING)
   getLiveVenueTotals(profileIdVenue: String!): LiveVenueTotals @join__field(graph: PROFILING)
   profile(where: ProfileWhereUniqueInput!): Profile @join__field(graph: PROFILING)
   profiles(where: ProfileWhereInput, orderBy: [ProfileOrderByWithRelationInput!], first: Int, last: Int, before: ProfileWhereUniqueInput, after: ProfileWhereUniqueInput): [Profile!]! @join__field(graph: PROFILING)
@@ -6096,6 +6539,7 @@ type Query
   getAllStatesByCountry(countryIsoCode: String!): [Json] @join__field(graph: PROFILING)
   getAllCitiesByState(countryIsoCode: String!, state: String!): [Json] @join__field(graph: PROFILING)
   searchAreaCity(search: String!, country: String!): Json @join__field(graph: PROFILING)
+  exploreSearch(search: String!): ExploreResponse @join__field(graph: PROFILING)
   story(where: StoryWhereUniqueInput!): Story @join__field(graph: PROFILING)
   getAllThemes: [Theme] @join__field(graph: PROFILING)
 }
@@ -6142,13 +6586,21 @@ input RefreshTokenWhereUniqueInput
   DeviceProfileId: Int
 }
 
+type RejectedFriendsResponse
+  @join__type(graph: PROFILING)
+{
+  friends: Boolean
+}
+
 type Relationship
   @join__type(graph: PROFILING)
 {
   id: String!
   venueMetAt: String
+  friendProfileId: String!
+  friendProfile: Profile
   Profile: Profile
-  status: [Status!]!
+  RelationshipStatus: [RelationshipStatus!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -6157,11 +6609,11 @@ input RelationshipCreateManyProfileInput
   @join__type(graph: PROFILING)
 {
   id: String
-  friend: String!
+  friendProfileId: String!
   venueMetAt: String
   createdAt: DateTime
   updatedAt: DateTime
-  status: RelationshipCreateManystatusInput
+  RelationshipStatus: RelationshipCreateManyRelationshipStatusInput
 }
 
 input RelationshipCreateManyProfileInputEnvelope
@@ -6171,10 +6623,10 @@ input RelationshipCreateManyProfileInputEnvelope
   skipDuplicates: Boolean
 }
 
-input RelationshipCreateManystatusInput
+input RelationshipCreateManyRelationshipStatusInput
   @join__type(graph: PROFILING)
 {
-  set: [Status!]
+  set: [RelationshipStatus!]
 }
 
 input RelationshipCreateNestedManyWithoutProfileInput
@@ -6193,21 +6645,21 @@ input RelationshipCreateOrConnectWithoutProfileInput
   create: RelationshipCreateWithoutProfileInput!
 }
 
-input RelationshipCreatestatusInput
+input RelationshipCreateRelationshipStatusInput
   @join__type(graph: PROFILING)
 {
-  set: [Status!]
+  set: [RelationshipStatus!]
 }
 
 input RelationshipCreateWithoutProfileInput
   @join__type(graph: PROFILING)
 {
   id: String
-  friend: String!
+  friendProfileId: String!
   venueMetAt: String
   createdAt: DateTime
   updatedAt: DateTime
-  status: RelationshipCreatestatusInput
+  RelationshipStatus: RelationshipCreateRelationshipStatusInput
 }
 
 input RelationshipListRelationFilter
@@ -6232,22 +6684,29 @@ input RelationshipScalarWhereInput
   NOT: [RelationshipScalarWhereInput!]
   id: StringFilter
   profileId: StringNullableFilter
-  friend: StringFilter
-  status: EnumStatusNullableListFilter
+  friendProfileId: StringFilter
+  RelationshipStatus: EnumRelationshipStatusNullableListFilter
   venueMetAt: StringNullableFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
+}
+
+enum RelationshipStatus
+  @join__type(graph: PROFILING)
+{
+  FRIENDS
+  DATING
 }
 
 input RelationshipUpdateManyMutationInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
-  friend: StringFieldUpdateOperationsInput
+  friendProfileId: StringFieldUpdateOperationsInput
   venueMetAt: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  status: RelationshipUpdatestatusInput
+  RelationshipStatus: RelationshipUpdateRelationshipStatusInput
 }
 
 input RelationshipUpdateManyWithoutProfileInput
@@ -6273,22 +6732,22 @@ input RelationshipUpdateManyWithWhereWithoutProfileInput
   data: RelationshipUpdateManyMutationInput!
 }
 
-input RelationshipUpdatestatusInput
+input RelationshipUpdateRelationshipStatusInput
   @join__type(graph: PROFILING)
 {
-  set: [Status!]
-  push: Status
+  set: [RelationshipStatus!]
+  push: RelationshipStatus
 }
 
 input RelationshipUpdateWithoutProfileInput
   @join__type(graph: PROFILING)
 {
   id: StringFieldUpdateOperationsInput
-  friend: StringFieldUpdateOperationsInput
+  friendProfileId: StringFieldUpdateOperationsInput
   venueMetAt: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
-  status: RelationshipUpdatestatusInput
+  RelationshipStatus: RelationshipUpdateRelationshipStatusInput
 }
 
 input RelationshipUpdateWithWhereUniqueWithoutProfileInput
@@ -6315,8 +6774,8 @@ input RelationshipWhereInput
   id: StringFilter
   Profile: ProfileWhereInput
   profileId: StringNullableFilter
-  friend: StringFilter
-  status: EnumStatusNullableListFilter
+  friendProfileId: StringFilter
+  RelationshipStatus: EnumRelationshipStatusNullableListFilter
   venueMetAt: StringNullableFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -6328,18 +6787,95 @@ input RelationshipWhereUniqueInput
   id: String
 }
 
+input SettingsCreateNestedOneWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  create: SettingsCreateWithoutProfileInput
+  connectOrCreate: SettingsCreateOrConnectWithoutProfileInput
+  connect: SettingsWhereUniqueInput
+}
+
+input SettingsCreateOrConnectWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  where: SettingsWhereUniqueInput!
+  create: SettingsCreateWithoutProfileInput!
+}
+
+input SettingsCreateWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  messagePushNotifications: Boolean!
+  eventPushNotifications: Boolean!
+  PushNotifications: Boolean!
+}
+
+input SettingsOrderByWithRelationInput
+  @join__type(graph: PROFILING)
+{
+  id: SortOrder
+  Profile: ProfileOrderByWithRelationInput
+  profileId: SortOrder
+  messagePushNotifications: SortOrder
+  eventPushNotifications: SortOrder
+  PushNotifications: SortOrder
+}
+
+input SettingsUpdateOneWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  create: SettingsCreateWithoutProfileInput
+  connectOrCreate: SettingsCreateOrConnectWithoutProfileInput
+  upsert: SettingsUpsertWithoutProfileInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: SettingsWhereUniqueInput
+  update: SettingsUpdateWithoutProfileInput
+}
+
+input SettingsUpdateWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  id: StringFieldUpdateOperationsInput
+  messagePushNotifications: BoolFieldUpdateOperationsInput
+  eventPushNotifications: BoolFieldUpdateOperationsInput
+  PushNotifications: BoolFieldUpdateOperationsInput
+}
+
+input SettingsUpsertWithoutProfileInput
+  @join__type(graph: PROFILING)
+{
+  update: SettingsUpdateWithoutProfileInput!
+  create: SettingsCreateWithoutProfileInput!
+}
+
+input SettingsWhereInput
+  @join__type(graph: PROFILING)
+{
+  AND: [SettingsWhereInput!]
+  OR: [SettingsWhereInput!]
+  NOT: [SettingsWhereInput!]
+  id: StringFilter
+  Profile: ProfileWhereInput
+  profileId: StringFilter
+  messagePushNotifications: BoolFilter
+  eventPushNotifications: BoolFilter
+  PushNotifications: BoolFilter
+}
+
+input SettingsWhereUniqueInput
+  @join__type(graph: PROFILING)
+{
+  id: String
+  profileId: String
+}
+
 enum SortOrder
   @join__type(graph: PROFILING)
 {
   asc
   desc
-}
-
-enum Status
-  @join__type(graph: PROFILING)
-{
-  FRIENDS
-  DATING
 }
 
 type Story
@@ -6407,7 +6943,7 @@ input StoryCreateWithoutPhotosInput
   createdAt: DateTime
   updatedAt: DateTime
   emojimood: EmojimoodCreateNestedManyWithoutStoryInput
-  Profile: ProfileCreateNestedOneWithoutStoryInput
+  Profile: ProfileCreateNestedOneWithoutStorysInput
 }
 
 input StoryCreateWithoutProfileInput
@@ -6500,7 +7036,7 @@ input StoryUpdateWithoutPhotosInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
   emojimood: EmojimoodUpdateManyWithoutStoryInput
-  Profile: ProfileUpdateOneWithoutStoryInput
+  Profile: ProfileUpdateOneWithoutStorysInput
 }
 
 input StoryUpdateWithoutProfileInput
@@ -7536,6 +8072,30 @@ enum TypeOfDocument
 {
   PROFILE_PRIVACY_POLICY
   PROFILE_TERMS_OF_SERVICE
+}
+
+input UpdateManyNotificationStatusInput
+  @join__type(graph: PROFILING)
+{
+  notificationStatusIds: [UpdateNotificationStatusInput!]
+}
+
+"""Any posibilities """
+union UpdateManyNotificationStatusUnionResponse
+  @join__type(graph: PROFILING)
+ = UpdateNotificationResponse | ErrorProfiling
+
+type UpdateNotificationResponse
+  @join__type(graph: PROFILING)
+{
+  updatedTotal: Int
+}
+
+input UpdateNotificationStatusInput
+  @join__type(graph: PROFILING)
+{
+  """id of the Notification Status you want to update"""
+  id: String!
 }
 
 union UpdateProfileResponse

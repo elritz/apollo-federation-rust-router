@@ -9,13 +9,13 @@
     "router-local": "APOLLO_ROUTER_HOT_RELOAD=true ./router --dev --supergraph supergraph.graphql --config ./router.yaml",
     "router-m": "APOLLO_ROUTER_HOT_RELOAD=true cargo run -- --dev --supergraph supergraph.graphql -c ./router.yaml",
     "list": "rover subgraph list barfriends@current",
+    "build": "npm run fetch-all && npm run compose",
     "fetch-profiling": "rover subgraph fetch barfriends@current --name profiling > profiling-schema-rover.graphql",
     "fetch-managing": "rover subgraph fetch barfriends@current --name managing  > managing-schema-rover.graphql",
     "fetch-all": "npm run fetch-managing && npm run fetch-profiling",
     "intro-profiling": "rover subgraph introspect http://localhost:5001/graphql > profiling-schema-rover.graphql",
     "intro-managing": "rover subgraph introspect http://localhost:5002/graphql > managing-schema-rover.graphql",
     "intro-all": "npm run intro-managing && npm run intro-profiling",
-    "super-compose": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql",
     "compose": "rover supergraph compose --config ./supergraph.yaml > supergraph.graphql"
   },
   "repository": {

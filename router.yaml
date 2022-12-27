@@ -30,16 +30,22 @@ headers:
       - propagate:
           matching: .*
     # Subgraph-specific header rules
-  # subgraphs:
-  #   profiling:
-  #     request:
-  #       # Calls to the products subgraph have the "router-subgraph-name" header set to `products`.
-  #       - insert:
-  #           name: "router-subgraph-profiling"
-  #           value: "profiling"
-  #   managing:
-  #     request:
-  #       # Calls to the accounts subgraph have the "router-subgraph-name" header set to `accounts`.
-  #       - insert:
-  #           name: "router-subgraph-managing"
-  #           value: "managing"
+  subgraphs:
+    profiling:
+      request:
+        # Calls to the products subgraph have the "router-subgraph-name" header set to `products`.
+        - insert:
+            name: "router-subgraph-profiling"
+            value: "profiling"
+    managing:
+      request:
+        # Calls to the accounts subgraph have the "router-subgraph-name" header set to `accounts`.
+        - insert:
+            name: "router-subgraph-managing"
+            value: "managing"
+    # messaging:
+    #   request:
+    #     # Calls to the accounts subgraph have the "router-subgraph-name" header set to `accounts`.
+    #     - insert:
+    #         name: "router-subgraph-messaging"
+    #         value: "messaging"

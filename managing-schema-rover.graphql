@@ -50,9 +50,10 @@ type Success {
 type Mutation {
   createOneDevice(data: DeviceCreateInput!): Device!
   createADeviceManager(profileId: String!): RefreshDeviceManagerDeviceManagerResponseUnion
-  switchDeviceProfile(profileId: String!, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion
+  switchDeviceProfile(profileId: String, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion
   refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion
   removeDeviceProfileFromDeviceManager(profileId: String!): Boolean
+  upsertDevicePushToken(androidToken: String, appleToken: String, expoToken: String): Boolean
 }
 
 extend type Query {
@@ -77,11 +78,13 @@ input DeviceCreateInput {
   createdAt: DateTime
   updatedAt: DateTime
   DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
+  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
 }
 
 input DeviceWhereUniqueInput {
   id: String
   deviceManagerId: String
+  pushTokenId: String
 }
 
 scalar DateTime
@@ -90,6 +93,12 @@ input DeviceManagerCreateNestedOneWithoutDeviceInput {
   create: DeviceManagerCreateWithoutDeviceInput
   connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceInput
   connect: DeviceManagerWhereUniqueInput
+}
+
+input PushTokenCreateNestedOneWithoutDeviceInput {
+  create: PushTokenCreateWithoutDeviceInput
+  connectOrCreate: PushTokenCreateOrConnectWithoutDeviceInput
+  connect: PushTokenWhereUniqueInput
 }
 
 input DeviceManagerCreateWithoutDeviceInput {
@@ -108,11 +117,35 @@ input DeviceManagerWhereUniqueInput {
   id: String
 }
 
+input PushTokenCreateWithoutDeviceInput {
+  id: String
+  isExpired: Boolean
+  expoToken: String
+  androidToken: String
+  appleToken: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  receipts: PushTokenCreatereceiptsInput
+}
+
+input PushTokenCreateOrConnectWithoutDeviceInput {
+  where: PushTokenWhereUniqueInput!
+  create: PushTokenCreateWithoutDeviceInput!
+}
+
+input PushTokenWhereUniqueInput {
+  id: String
+}
+
 input DeviceProfileCreateNestedManyWithoutDeviceManagerInput {
   create: [DeviceProfileCreateWithoutDeviceManagerInput!]
   connectOrCreate: [DeviceProfileCreateOrConnectWithoutDeviceManagerInput!]
   createMany: DeviceProfileCreateManyDeviceManagerInputEnvelope
   connect: [DeviceProfileWhereUniqueInput!]
+}
+
+input PushTokenCreatereceiptsInput {
+  set: [Json!]
 }
 
 input DeviceProfileCreateWithoutDeviceManagerInput {
@@ -121,6 +154,8 @@ input DeviceProfileCreateWithoutDeviceManagerInput {
   profileId: String
   isActive: Boolean!
   accesstoken: String
+  createdAt: DateTime
+  updatedAt: DateTime
   RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
 }
 
@@ -138,6 +173,8 @@ input DeviceProfileWhereUniqueInput {
   id: Int
 }
 
+scalar Json
+
 input RefreshTokenCreateNestedOneWithoutDeviceProfileInput {
   create: RefreshTokenCreateWithoutDeviceProfileInput
   connectOrCreate: RefreshTokenCreateOrConnectWithoutDeviceProfileInput
@@ -151,6 +188,8 @@ input DeviceProfileCreateManyDeviceManagerInput {
   profileId: String
   isActive: Boolean!
   accesstoken: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input RefreshTokenCreateWithoutDeviceProfileInput {
