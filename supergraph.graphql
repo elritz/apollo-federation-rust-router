@@ -1918,7 +1918,7 @@ input GooglePlaceAutocompleteInput
          This value also is returned and should be passed back through this input. 
          Default value provided.
   """
-  sessiontoken: String = "e44080af-a2a4-4db3-8255-852a4dc68fc9"
+  sessiontoken: String = "ad59d238-3ae1-4c74-a246-8edd8ecb3dda"
   latitude: Float
   longitude: Float
 
@@ -3856,8 +3856,10 @@ type Mutation
   createOneEmojimood(data: EmojimoodCreateInput!): Emojimood! @join__field(graph: PROFILING)
   createFriendRequest(senderProfileId: String!, receiversProfileId: [String!]!): Boolean @join__field(graph: PROFILING)
   deleteFriendRequest(friendRequestId: String!): Boolean @join__field(graph: PROFILING)
-  removeFriend(relationshipId: String!): Boolean @join__field(graph: PROFILING)
   acceptFriendRequest(friendRequestId: String!, venueIdMetAt: String): Relationship @join__field(graph: PROFILING)
+  declineFriendRequest(friendRequestId: String!): Boolean @join__field(graph: PROFILING)
+  qrAddFriend(qrCodeProfileId: String!): Relationship @join__field(graph: PROFILING)
+  removeFriend(relationshipId: String!): Boolean @join__field(graph: PROFILING)
   checkThePink: Boolean @join__field(graph: PROFILING)
   updateManyNotificationStatusIsChecked(data: UpdateManyNotificationStatusInput!): UpdateManyNotificationStatusUnionResponse @join__field(graph: PROFILING)
   upsertTonightPathOrPath(tonightPathId: String, profileIdPersonal: String!, latitude: Float!, longitude: Float!): Boolean @join__field(graph: PROFILING)
