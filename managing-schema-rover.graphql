@@ -1,84 +1,842 @@
-interface Node {
-  id: String
-}
+directive @inaccessible on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION
 
-type Device {
-  deviceType: String
-}
+directive @link(import: [link__Import], url: String!) on SCHEMA
 
-type DeviceManager @key(fields: "id") {
-  id: String!
-  Device: Device
-  DeviceProfile: DeviceProfile
-}
+directive @override(from: String!) on FIELD_DEFINITION
 
-type DeviceManagerDeviceProfiles {
-  DeviceProfiles: [DeviceProfile]
-}
-
-type DeviceProfile {
-  id: Int!
-  isActive: Boolean!
-  refreshtoken: String
-  accesstoken: String
-  Profile: Profile
-  AppType: AppType
-  DeviceManager: DeviceManager!
-  deviceManagerId: String!
-}
-
-union DeviceManagerDeviceProfilesResponseUnion = DeviceManagerDeviceProfiles | Error
-
-union RefreshDeviceManagerDeviceManagerResponseUnion = DeviceManager | Error
-
-extend type Profile implements Node @key(fields: "id") {
-  id: String! @external
-}
-
-type Error {
-  type: String
-  errorCode: String
-  message: String
-}
-
-type Success {
-  type: String
-  successCode: String
-  message: String
-}
-
-type Mutation {
-  createOneDevice(data: DeviceCreateInput!): Device!
-  createADeviceManager(profileId: String!): RefreshDeviceManagerDeviceManagerResponseUnion
-  switchDeviceProfile(profileId: String, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion
-  refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion
-  removeDeviceProfileFromDeviceManager(profileId: String!): Boolean
-  upsertDevicePushToken(androidToken: String, appleToken: String, expoToken: String): Boolean
-}
-
-extend type Query {
-  device(where: DeviceWhereUniqueInput!): Device
-  getADeviceManager: DeviceManagerDeviceProfilesResponseUnion
-}
-
-enum ProfileType {
-  GUEST
-  VENUE
-  PERSONAL
-}
+directive @shareable on FIELD_DEFINITION | OBJECT
 
 enum AppType {
   BARFRIENDS
   PETFRIENDS
 }
 
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input BoolWithAggregatesFilter {
+  equals: Boolean
+  not: NestedBoolWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedBoolFilter
+  _max: NestedBoolFilter
+}
+
+type ClientDeviceManager {
+  id: String!
+  Device: Device
+  DeviceProfile: ClientDeviceProfile
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ClientDeviceProfile {
+  id: ID!
+  AppType: AppType
+  ProfileType: ProfileType
+  profileId: String
+  isActive: Boolean!
+  DeviceManager: DeviceManager!
+  accesstoken: String
+  RefreshToken: RefreshToken
+  deviceManagerId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  refreshtoken: String!
+  Profile: Profile!
+}
+
+scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input DateTimeNullableWithAggregatesFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableWithAggregatesFilter
+  _count: NestedIntNullableFilter
+  _min: NestedDateTimeNullableFilter
+  _max: NestedDateTimeNullableFilter
+}
+
+input DateTimeWithAggregatesFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedDateTimeFilter
+  _max: NestedDateTimeFilter
+}
+
+type Device {
+  id: ID!
+  deviceType: String
+  DeviceManager: DeviceManager!
+  deviceManagerId: String!
+  PushToken: PushToken
+  pushTokenId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceCountOrderByAggregateInput {
+  id: SortOrder
+  deviceType: SortOrder
+  deviceManagerId: SortOrder
+  pushTokenId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
 input DeviceCreateInput {
   id: String
   deviceType: String
-  createdAt: DateTime
-  updatedAt: DateTime
   DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
   PushToken: PushTokenCreateNestedOneWithoutDeviceInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceCreateManyInput {
+  id: String
+  deviceType: String
+  deviceManagerId: String!
+  pushTokenId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceCreateNestedOneWithoutDeviceManagerInput {
+  create: DeviceCreateWithoutDeviceManagerInput
+  connectOrCreate: DeviceCreateOrConnectWithoutDeviceManagerInput
+  connect: DeviceWhereUniqueInput
+}
+
+input DeviceCreateNestedOneWithoutPushTokenInput {
+  create: DeviceCreateWithoutPushTokenInput
+  connectOrCreate: DeviceCreateOrConnectWithoutPushTokenInput
+  connect: DeviceWhereUniqueInput
+}
+
+input DeviceCreateOrConnectWithoutDeviceManagerInput {
+  where: DeviceWhereUniqueInput!
+  create: DeviceCreateWithoutDeviceManagerInput!
+}
+
+input DeviceCreateOrConnectWithoutPushTokenInput {
+  where: DeviceWhereUniqueInput!
+  create: DeviceCreateWithoutPushTokenInput!
+}
+
+input DeviceCreateWithoutDeviceManagerInput {
+  id: String
+  deviceType: String
+  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceCreateWithoutPushTokenInput {
+  id: String
+  deviceType: String
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type DeviceManager {
+  id: ID!
+  Device: Device
+  DeviceProfile(where: DeviceProfileWhereInput, orderBy: [DeviceProfileOrderByWithRelationInput!], cursor: DeviceProfileWhereUniqueInput, take: Int, skip: Int, distinct: [DeviceProfileScalarFieldEnum!]): [ClientDeviceProfile!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input DeviceManagerCountOrderByAggregateInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceManagerCreateInput {
+  id: String
+  Device: DeviceCreateNestedOneWithoutDeviceManagerInput
+  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceManagerCreateManyInput {
+  id: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceManagerCreateNestedOneWithoutDeviceInput {
+  create: DeviceManagerCreateWithoutDeviceInput
+  connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceInput
+  connect: DeviceManagerWhereUniqueInput
+}
+
+input DeviceManagerCreateNestedOneWithoutDeviceProfileInput {
+  create: DeviceManagerCreateWithoutDeviceProfileInput
+  connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceProfileInput
+  connect: DeviceManagerWhereUniqueInput
+}
+
+input DeviceManagerCreateOrConnectWithoutDeviceInput {
+  where: DeviceManagerWhereUniqueInput!
+  create: DeviceManagerCreateWithoutDeviceInput!
+}
+
+input DeviceManagerCreateOrConnectWithoutDeviceProfileInput {
+  where: DeviceManagerWhereUniqueInput!
+  create: DeviceManagerCreateWithoutDeviceProfileInput!
+}
+
+input DeviceManagerCreateWithoutDeviceInput {
+  id: String
+  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceManagerCreateWithoutDeviceProfileInput {
+  id: String
+  Device: DeviceCreateNestedOneWithoutDeviceManagerInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type DeviceManagerDeviceProfiles {
+  DeviceProfiles: [ClientDeviceProfile!]!
+}
+
+union DeviceManagerDeviceProfilesResponseUnion = DeviceManagerDeviceProfiles | ErrorManaging
+
+input DeviceManagerMaxOrderByAggregateInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceManagerMinOrderByAggregateInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceManagerOrderByWithAggregationInput {
+  id: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  _count: DeviceManagerCountOrderByAggregateInput
+  _max: DeviceManagerMaxOrderByAggregateInput
+  _min: DeviceManagerMinOrderByAggregateInput
+}
+
+input DeviceManagerOrderByWithRelationInput {
+  id: SortOrder
+  Device: DeviceOrderByWithRelationInput
+  DeviceProfile: DeviceProfileOrderByRelationAggregateInput
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceManagerRelationFilter {
+  is: DeviceManagerWhereInput
+  isNot: DeviceManagerWhereInput
+}
+
+enum DeviceManagerScalarFieldEnum {
+  id
+  createdAt
+  updatedAt
+}
+
+input DeviceManagerScalarWhereWithAggregatesInput {
+  AND: [DeviceManagerScalarWhereWithAggregatesInput!]
+  OR: [DeviceManagerScalarWhereWithAggregatesInput!]
+  NOT: [DeviceManagerScalarWhereWithAggregatesInput!]
+  id: StringWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+input DeviceManagerUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  Device: DeviceUpdateOneWithoutDeviceManagerNestedInput
+  DeviceProfile: DeviceProfileUpdateManyWithoutDeviceManagerNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceManagerUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput {
+  create: DeviceManagerCreateWithoutDeviceInput
+  connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceInput
+  upsert: DeviceManagerUpsertWithoutDeviceInput
+  connect: DeviceManagerWhereUniqueInput
+  update: DeviceManagerUpdateWithoutDeviceInput
+}
+
+input DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput {
+  create: DeviceManagerCreateWithoutDeviceProfileInput
+  connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceProfileInput
+  upsert: DeviceManagerUpsertWithoutDeviceProfileInput
+  connect: DeviceManagerWhereUniqueInput
+  update: DeviceManagerUpdateWithoutDeviceProfileInput
+}
+
+input DeviceManagerUpdateWithoutDeviceInput {
+  id: StringFieldUpdateOperationsInput
+  DeviceProfile: DeviceProfileUpdateManyWithoutDeviceManagerNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceManagerUpdateWithoutDeviceProfileInput {
+  id: StringFieldUpdateOperationsInput
+  Device: DeviceUpdateOneWithoutDeviceManagerNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceManagerUpsertWithoutDeviceInput {
+  update: DeviceManagerUpdateWithoutDeviceInput!
+  create: DeviceManagerCreateWithoutDeviceInput!
+}
+
+input DeviceManagerUpsertWithoutDeviceProfileInput {
+  update: DeviceManagerUpdateWithoutDeviceProfileInput!
+  create: DeviceManagerCreateWithoutDeviceProfileInput!
+}
+
+input DeviceManagerWhereInput {
+  AND: [DeviceManagerWhereInput!]
+  OR: [DeviceManagerWhereInput!]
+  NOT: [DeviceManagerWhereInput!]
+  id: StringFilter
+  Device: DeviceWhereInput
+  DeviceProfile: DeviceProfileListRelationFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input DeviceManagerWhereUniqueInput {
+  id: String
+}
+
+input DeviceMaxOrderByAggregateInput {
+  id: SortOrder
+  deviceType: SortOrder
+  deviceManagerId: SortOrder
+  pushTokenId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceMinOrderByAggregateInput {
+  id: SortOrder
+  deviceType: SortOrder
+  deviceManagerId: SortOrder
+  pushTokenId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceOrderByWithAggregationInput {
+  id: SortOrder
+  deviceType: SortOrder
+  deviceManagerId: SortOrder
+  pushTokenId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  _count: DeviceCountOrderByAggregateInput
+  _max: DeviceMaxOrderByAggregateInput
+  _min: DeviceMinOrderByAggregateInput
+}
+
+input DeviceOrderByWithRelationInput {
+  id: SortOrder
+  deviceType: SortOrder
+  DeviceManager: DeviceManagerOrderByWithRelationInput
+  deviceManagerId: SortOrder
+  PushToken: PushTokenOrderByWithRelationInput
+  pushTokenId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceProfileCountOrderByAggregateInput {
+  id: SortOrder
+  AppType: SortOrder
+  ProfileType: SortOrder
+  profileId: SortOrder
+  isActive: SortOrder
+  accesstoken: SortOrder
+  deviceManagerId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceProfileCreateInput {
+  id: String
+  AppType: AppType
+  ProfileType: ProfileType
+  profileId: String
+  isActive: Boolean!
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceProfileInput!
+  accesstoken: String
+  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceProfileCreateManyDeviceManagerInput {
+  id: String
+  AppType: AppType
+  ProfileType: ProfileType
+  profileId: String
+  isActive: Boolean!
+  accesstoken: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceProfileCreateManyDeviceManagerInputEnvelope {
+  data: [DeviceProfileCreateManyDeviceManagerInput!]!
+  skipDuplicates: Boolean
+}
+
+input DeviceProfileCreateManyInput {
+  id: String
+  AppType: AppType
+  ProfileType: ProfileType
+  profileId: String
+  isActive: Boolean!
+  accesstoken: String
+  deviceManagerId: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceProfileCreateNestedManyWithoutDeviceManagerInput {
+  create: DeviceProfileCreateWithoutDeviceManagerInput
+  connectOrCreate: [DeviceProfileCreateOrConnectWithoutDeviceManagerInput!]
+  createMany: DeviceProfileCreateManyDeviceManagerInputEnvelope
+  connect: [DeviceProfileWhereUniqueInput!]
+}
+
+input DeviceProfileCreateNestedOneWithoutRefreshTokenInput {
+  create: DeviceProfileCreateWithoutRefreshTokenInput
+  connectOrCreate: DeviceProfileCreateOrConnectWithoutRefreshTokenInput
+  connect: DeviceProfileWhereUniqueInput
+}
+
+input DeviceProfileCreateOrConnectWithoutDeviceManagerInput {
+  where: DeviceProfileWhereUniqueInput!
+  create: DeviceProfileCreateWithoutDeviceManagerInput!
+}
+
+input DeviceProfileCreateOrConnectWithoutRefreshTokenInput {
+  where: DeviceProfileWhereUniqueInput!
+  create: DeviceProfileCreateWithoutRefreshTokenInput!
+}
+
+input DeviceProfileCreateWithoutDeviceManagerInput {
+  id: String
+  AppType: AppType
+  ProfileType: ProfileType
+  profileId: String
+  isActive: Boolean!
+  accesstoken: String
+  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceProfileCreateWithoutRefreshTokenInput {
+  id: String
+  AppType: AppType
+  ProfileType: ProfileType
+  profileId: String
+  isActive: Boolean!
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceProfileInput!
+  accesstoken: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input DeviceProfileListRelationFilter {
+  every: DeviceProfileWhereInput
+  some: DeviceProfileWhereInput
+  none: DeviceProfileWhereInput
+}
+
+input DeviceProfileMaxOrderByAggregateInput {
+  id: SortOrder
+  AppType: SortOrder
+  ProfileType: SortOrder
+  profileId: SortOrder
+  isActive: SortOrder
+  accesstoken: SortOrder
+  deviceManagerId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceProfileMinOrderByAggregateInput {
+  id: SortOrder
+  AppType: SortOrder
+  ProfileType: SortOrder
+  profileId: SortOrder
+  isActive: SortOrder
+  accesstoken: SortOrder
+  deviceManagerId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceProfileOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input DeviceProfileOrderByWithAggregationInput {
+  id: SortOrder
+  AppType: SortOrder
+  ProfileType: SortOrder
+  profileId: SortOrder
+  isActive: SortOrder
+  accesstoken: SortOrder
+  deviceManagerId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  _count: DeviceProfileCountOrderByAggregateInput
+  _max: DeviceProfileMaxOrderByAggregateInput
+  _min: DeviceProfileMinOrderByAggregateInput
+}
+
+input DeviceProfileOrderByWithRelationInput {
+  id: SortOrder
+  AppType: SortOrder
+  ProfileType: SortOrder
+  profileId: SortOrder
+  isActive: SortOrder
+  DeviceManager: DeviceManagerOrderByWithRelationInput
+  accesstoken: SortOrder
+  RefreshToken: RefreshTokenOrderByWithRelationInput
+  deviceManagerId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input DeviceProfileRelationFilter {
+  is: DeviceProfileWhereInput
+  isNot: DeviceProfileWhereInput
+}
+
+enum DeviceProfileScalarFieldEnum {
+  id
+  AppType
+  ProfileType
+  profileId
+  isActive
+  accesstoken
+  deviceManagerId
+  createdAt
+  updatedAt
+}
+
+input DeviceProfileScalarWhereInput {
+  AND: [DeviceProfileScalarWhereInput!]
+  OR: [DeviceProfileScalarWhereInput!]
+  NOT: [DeviceProfileScalarWhereInput!]
+  id: StringFilter
+  AppType: EnumAppTypeNullableFilter
+  ProfileType: EnumProfileTypeNullableFilter
+  profileId: StringNullableFilter
+  isActive: BoolFilter
+  accesstoken: StringNullableFilter
+  deviceManagerId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input DeviceProfileScalarWhereWithAggregatesInput {
+  AND: [DeviceProfileScalarWhereWithAggregatesInput!]
+  OR: [DeviceProfileScalarWhereWithAggregatesInput!]
+  NOT: [DeviceProfileScalarWhereWithAggregatesInput!]
+  id: StringWithAggregatesFilter
+  AppType: EnumAppTypeNullableWithAggregatesFilter
+  ProfileType: EnumProfileTypeNullableWithAggregatesFilter
+  profileId: StringNullableWithAggregatesFilter
+  isActive: BoolWithAggregatesFilter
+  accesstoken: StringNullableWithAggregatesFilter
+  deviceManagerId: StringWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+input DeviceProfileUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  AppType: NullableEnumAppTypeFieldUpdateOperationsInput
+  ProfileType: NullableEnumProfileTypeFieldUpdateOperationsInput
+  profileId: NullableStringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput
+  accesstoken: NullableStringFieldUpdateOperationsInput
+  RefreshToken: RefreshTokenUpdateOneWithoutDeviceProfileNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceProfileUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  AppType: NullableEnumAppTypeFieldUpdateOperationsInput
+  ProfileType: NullableEnumProfileTypeFieldUpdateOperationsInput
+  profileId: NullableStringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  accesstoken: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceProfileUpdateManyWithWhereWithoutDeviceManagerInput {
+  where: DeviceProfileScalarWhereInput!
+  data: DeviceProfileUpdateManyMutationInput!
+}
+
+input DeviceProfileUpdateManyWithoutDeviceManagerNestedInput {
+  create: DeviceProfileCreateWithoutDeviceManagerInput
+  connectOrCreate: [DeviceProfileCreateOrConnectWithoutDeviceManagerInput!]
+  upsert: [DeviceProfileUpsertWithWhereUniqueWithoutDeviceManagerInput!]
+  createMany: DeviceProfileCreateManyDeviceManagerInputEnvelope
+  set: [DeviceProfileWhereUniqueInput!]
+  disconnect: [DeviceProfileWhereUniqueInput!]
+  delete: [DeviceProfileWhereUniqueInput!]
+  connect: [DeviceProfileWhereUniqueInput!]
+  update: [DeviceProfileUpdateWithWhereUniqueWithoutDeviceManagerInput!]
+  updateMany: [DeviceProfileUpdateManyWithWhereWithoutDeviceManagerInput!]
+  deleteMany: [DeviceProfileScalarWhereInput!]
+}
+
+input DeviceProfileUpdateOneWithoutRefreshTokenNestedInput {
+  create: DeviceProfileCreateWithoutRefreshTokenInput
+  connectOrCreate: DeviceProfileCreateOrConnectWithoutRefreshTokenInput
+  upsert: DeviceProfileUpsertWithoutRefreshTokenInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: DeviceProfileWhereUniqueInput
+  update: DeviceProfileUpdateWithoutRefreshTokenInput
+}
+
+input DeviceProfileUpdateWithWhereUniqueWithoutDeviceManagerInput {
+  where: DeviceProfileWhereUniqueInput!
+  data: DeviceProfileUpdateWithoutDeviceManagerInput!
+}
+
+input DeviceProfileUpdateWithoutDeviceManagerInput {
+  id: StringFieldUpdateOperationsInput
+  AppType: NullableEnumAppTypeFieldUpdateOperationsInput
+  ProfileType: NullableEnumProfileTypeFieldUpdateOperationsInput
+  profileId: NullableStringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  accesstoken: NullableStringFieldUpdateOperationsInput
+  RefreshToken: RefreshTokenUpdateOneWithoutDeviceProfileNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceProfileUpdateWithoutRefreshTokenInput {
+  id: StringFieldUpdateOperationsInput
+  AppType: NullableEnumAppTypeFieldUpdateOperationsInput
+  ProfileType: NullableEnumProfileTypeFieldUpdateOperationsInput
+  profileId: NullableStringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput
+  accesstoken: NullableStringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input DeviceProfileUpsertWithWhereUniqueWithoutDeviceManagerInput {
+  where: DeviceProfileWhereUniqueInput!
+  update: DeviceProfileUpdateWithoutDeviceManagerInput!
+  create: DeviceProfileCreateWithoutDeviceManagerInput!
+}
+
+input DeviceProfileUpsertWithoutRefreshTokenInput {
+  update: DeviceProfileUpdateWithoutRefreshTokenInput!
+  create: DeviceProfileCreateWithoutRefreshTokenInput!
+}
+
+input DeviceProfileWhereInput {
+  AND: [DeviceProfileWhereInput!]
+  OR: [DeviceProfileWhereInput!]
+  NOT: [DeviceProfileWhereInput!]
+  id: StringFilter
+  AppType: EnumAppTypeNullableFilter
+  ProfileType: EnumProfileTypeNullableFilter
+  profileId: StringNullableFilter
+  isActive: BoolFilter
+  DeviceManager: DeviceManagerWhereInput
+  accesstoken: StringNullableFilter
+  RefreshToken: RefreshTokenWhereInput
+  deviceManagerId: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input DeviceProfileWhereUniqueInput {
+  id: String
+}
+
+input DeviceRelationFilter {
+  is: DeviceWhereInput
+  isNot: DeviceWhereInput
+}
+
+enum DeviceScalarFieldEnum {
+  id
+  deviceType
+  deviceManagerId
+  pushTokenId
+  createdAt
+  updatedAt
+}
+
+input DeviceScalarWhereWithAggregatesInput {
+  AND: [DeviceScalarWhereWithAggregatesInput!]
+  OR: [DeviceScalarWhereWithAggregatesInput!]
+  NOT: [DeviceScalarWhereWithAggregatesInput!]
+  id: StringWithAggregatesFilter
+  deviceType: StringNullableWithAggregatesFilter
+  deviceManagerId: StringWithAggregatesFilter
+  pushTokenId: StringNullableWithAggregatesFilter
+  createdAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+}
+
+input DeviceUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  deviceType: NullableStringFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput
+  PushToken: PushTokenUpdateOneWithoutDeviceNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input DeviceUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  deviceType: NullableStringFieldUpdateOperationsInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input DeviceUpdateOneWithoutDeviceManagerNestedInput {
+  create: DeviceCreateWithoutDeviceManagerInput
+  connectOrCreate: DeviceCreateOrConnectWithoutDeviceManagerInput
+  upsert: DeviceUpsertWithoutDeviceManagerInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: DeviceWhereUniqueInput
+  update: DeviceUpdateWithoutDeviceManagerInput
+}
+
+input DeviceUpdateOneWithoutPushTokenNestedInput {
+  create: DeviceCreateWithoutPushTokenInput
+  connectOrCreate: DeviceCreateOrConnectWithoutPushTokenInput
+  upsert: DeviceUpsertWithoutPushTokenInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: DeviceWhereUniqueInput
+  update: DeviceUpdateWithoutPushTokenInput
+}
+
+input DeviceUpdateWithoutDeviceManagerInput {
+  id: StringFieldUpdateOperationsInput
+  deviceType: NullableStringFieldUpdateOperationsInput
+  PushToken: PushTokenUpdateOneWithoutDeviceNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input DeviceUpdateWithoutPushTokenInput {
+  id: StringFieldUpdateOperationsInput
+  deviceType: NullableStringFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input DeviceUpsertWithoutDeviceManagerInput {
+  update: DeviceUpdateWithoutDeviceManagerInput!
+  create: DeviceCreateWithoutDeviceManagerInput!
+}
+
+input DeviceUpsertWithoutPushTokenInput {
+  update: DeviceUpdateWithoutPushTokenInput!
+  create: DeviceCreateWithoutPushTokenInput!
+}
+
+input DeviceWhereInput {
+  AND: [DeviceWhereInput!]
+  OR: [DeviceWhereInput!]
+  NOT: [DeviceWhereInput!]
+  id: StringFilter
+  deviceType: StringNullableFilter
+  DeviceManager: DeviceManagerWhereInput
+  deviceManagerId: StringFilter
+  PushToken: PushTokenWhereInput
+  pushTokenId: StringNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
 }
 
 input DeviceWhereUniqueInput {
@@ -87,12 +845,381 @@ input DeviceWhereUniqueInput {
   pushTokenId: String
 }
 
-scalar DateTime
+input EnumAppTypeNullableFilter {
+  equals: AppType
+  in: [AppType!]
+  notIn: [AppType!]
+  not: AppType
+}
 
-input DeviceManagerCreateNestedOneWithoutDeviceInput {
-  create: DeviceManagerCreateWithoutDeviceInput
-  connectOrCreate: DeviceManagerCreateOrConnectWithoutDeviceInput
-  connect: DeviceManagerWhereUniqueInput
+input EnumAppTypeNullableWithAggregatesFilter {
+  equals: AppType
+  in: [AppType!]
+  notIn: [AppType!]
+  not: AppType
+  _count: NestedIntNullableFilter
+  _min: NestedEnumAppTypeNullableFilter
+  _max: NestedEnumAppTypeNullableFilter
+}
+
+input EnumProfileTypeNullableFilter {
+  equals: ProfileType
+  in: [ProfileType!]
+  notIn: [ProfileType!]
+  not: ProfileType
+}
+
+input EnumProfileTypeNullableWithAggregatesFilter {
+  equals: ProfileType
+  in: [ProfileType!]
+  notIn: [ProfileType!]
+  not: ProfileType
+  _count: NestedIntNullableFilter
+  _min: NestedEnumProfileTypeNullableFilter
+  _max: NestedEnumProfileTypeNullableFilter
+}
+
+"""Long necks, cool patterns, taller than you."""
+type ErrorManaging {
+  errorCode: String!
+  message: String!
+}
+
+input IntFieldUpdateOperationsInput {
+  set: Int
+  increment: Int
+  decrement: Int
+  multiply: Int
+  divide: Int
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntFilter
+}
+
+input IntWithAggregatesFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntWithAggregatesFilter
+  _count: NestedIntFilter
+  _avg: NestedFloatFilter
+  _sum: NestedIntFilter
+  _min: NestedIntFilter
+  _max: NestedIntFilter
+}
+
+scalar Json
+
+input JsonNullableListFilter {
+  equals: [Json!]
+  has: Json
+  hasEvery: [Json!]
+  hasSome: [Json!]
+  isEmpty: Boolean
+}
+
+type Mutation {
+  checkManaging: Boolean!
+  createADeviceManager(profileId: String!): ClientDeviceManager!
+  switchDeviceProfile(profileId: String!, profileType: ProfileType): RefreshDeviceManagerDeviceManagerResponseUnion!
+  refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion!
+  removeDeviceProfileFromDeviceManager(profileId: String!, profileType: ProfileType): Boolean!
+  upsertDevicePushToken(androidToken: String, appleToken: String, expoToken: String): Boolean!
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedBoolWithAggregatesFilter {
+  equals: Boolean
+  not: NestedBoolWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedBoolFilter
+  _max: NestedBoolFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableFilter
+}
+
+input NestedDateTimeNullableWithAggregatesFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeNullableWithAggregatesFilter
+  _count: NestedIntNullableFilter
+  _min: NestedDateTimeNullableFilter
+  _max: NestedDateTimeNullableFilter
+}
+
+input NestedDateTimeWithAggregatesFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedDateTimeFilter
+  _max: NestedDateTimeFilter
+}
+
+input NestedEnumAppTypeNullableFilter {
+  equals: AppType
+  in: [AppType!]
+  notIn: [AppType!]
+  not: AppType
+}
+
+input NestedEnumAppTypeNullableWithAggregatesFilter {
+  equals: AppType
+  in: [AppType!]
+  notIn: [AppType!]
+  not: AppType
+  _count: NestedIntNullableFilter
+  _min: NestedEnumAppTypeNullableFilter
+  _max: NestedEnumAppTypeNullableFilter
+}
+
+input NestedEnumProfileTypeNullableFilter {
+  equals: ProfileType
+  in: [ProfileType!]
+  notIn: [ProfileType!]
+  not: ProfileType
+}
+
+input NestedEnumProfileTypeNullableWithAggregatesFilter {
+  equals: ProfileType
+  in: [ProfileType!]
+  notIn: [ProfileType!]
+  not: ProfileType
+  _count: NestedIntNullableFilter
+  _min: NestedEnumProfileTypeNullableFilter
+  _max: NestedEnumProfileTypeNullableFilter
+}
+
+input NestedFloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: NestedFloatFilter
+}
+
+input NestedIntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntFilter
+}
+
+input NestedIntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntNullableFilter
+}
+
+input NestedIntWithAggregatesFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntWithAggregatesFilter
+  _count: NestedIntFilter
+  _avg: NestedFloatFilter
+  _sum: NestedIntFilter
+  _min: NestedIntFilter
+  _max: NestedIntFilter
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableWithAggregatesFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableWithAggregatesFilter
+  _count: NestedIntNullableFilter
+  _min: NestedStringNullableFilter
+  _max: NestedStringNullableFilter
+}
+
+input NestedStringWithAggregatesFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedStringFilter
+  _max: NestedStringFilter
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
+
+input NullableEnumAppTypeFieldUpdateOperationsInput {
+  set: AppType
+}
+
+input NullableEnumProfileTypeFieldUpdateOperationsInput {
+  set: ProfileType
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
+}
+
+type Profile
+  @key(fields: "id")
+  @extends
+{
+  id: String @external
+}
+
+enum ProfileType {
+  PERSONAL
+  VENUE
+  GUEST
+}
+
+type PushToken {
+  id: ID!
+  isExpired: Boolean!
+  expoToken: String
+  androidToken: String
+  appleToken: String
+  Device: Device
+  receipts: [Json!]!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input PushTokenCountOrderByAggregateInput {
+  id: SortOrder
+  isExpired: SortOrder
+  expoToken: SortOrder
+  androidToken: SortOrder
+  appleToken: SortOrder
+  receipts: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input PushTokenCreateInput {
+  id: String
+  isExpired: Boolean
+  expoToken: String
+  androidToken: String
+  appleToken: String
+  Device: DeviceCreateNestedOneWithoutPushTokenInput
+  receipts: [Json!]
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input PushTokenCreateManyInput {
+  id: String
+  isExpired: Boolean
+  expoToken: String
+  androidToken: String
+  appleToken: String
+  receipts: [Json!]
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input PushTokenCreateNestedOneWithoutDeviceInput {
@@ -101,20 +1228,9 @@ input PushTokenCreateNestedOneWithoutDeviceInput {
   connect: PushTokenWhereUniqueInput
 }
 
-input DeviceManagerCreateWithoutDeviceInput {
-  id: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
-}
-
-input DeviceManagerCreateOrConnectWithoutDeviceInput {
-  where: DeviceManagerWhereUniqueInput!
-  create: DeviceManagerCreateWithoutDeviceInput!
-}
-
-input DeviceManagerWhereUniqueInput {
-  id: String
+input PushTokenCreateOrConnectWithoutDeviceInput {
+  where: PushTokenWhereUniqueInput!
+  create: PushTokenCreateWithoutDeviceInput!
 }
 
 input PushTokenCreateWithoutDeviceInput {
@@ -123,57 +1239,210 @@ input PushTokenCreateWithoutDeviceInput {
   expoToken: String
   androidToken: String
   appleToken: String
+  receipts: [Json!]
   createdAt: DateTime
   updatedAt: DateTime
-  receipts: PushTokenCreatereceiptsInput
 }
 
-input PushTokenCreateOrConnectWithoutDeviceInput {
-  where: PushTokenWhereUniqueInput!
+input PushTokenCreatereceiptsInput {
+  set: [Json!]!
+}
+
+input PushTokenMaxOrderByAggregateInput {
+  id: SortOrder
+  isExpired: SortOrder
+  expoToken: SortOrder
+  androidToken: SortOrder
+  appleToken: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input PushTokenMinOrderByAggregateInput {
+  id: SortOrder
+  isExpired: SortOrder
+  expoToken: SortOrder
+  androidToken: SortOrder
+  appleToken: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input PushTokenOrderByWithAggregationInput {
+  id: SortOrder
+  isExpired: SortOrder
+  expoToken: SortOrder
+  androidToken: SortOrder
+  appleToken: SortOrder
+  receipts: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  _count: PushTokenCountOrderByAggregateInput
+  _max: PushTokenMaxOrderByAggregateInput
+  _min: PushTokenMinOrderByAggregateInput
+}
+
+input PushTokenOrderByWithRelationInput {
+  id: SortOrder
+  isExpired: SortOrder
+  expoToken: SortOrder
+  androidToken: SortOrder
+  appleToken: SortOrder
+  Device: DeviceOrderByWithRelationInput
+  receipts: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input PushTokenRelationFilter {
+  is: PushTokenWhereInput
+  isNot: PushTokenWhereInput
+}
+
+enum PushTokenScalarFieldEnum {
+  id
+  isExpired
+  expoToken
+  androidToken
+  appleToken
+  receipts
+  createdAt
+  updatedAt
+}
+
+input PushTokenScalarWhereWithAggregatesInput {
+  AND: [PushTokenScalarWhereWithAggregatesInput!]
+  OR: [PushTokenScalarWhereWithAggregatesInput!]
+  NOT: [PushTokenScalarWhereWithAggregatesInput!]
+  id: StringWithAggregatesFilter
+  isExpired: BoolWithAggregatesFilter
+  expoToken: StringNullableWithAggregatesFilter
+  androidToken: StringNullableWithAggregatesFilter
+  appleToken: StringNullableWithAggregatesFilter
+  receipts: JsonNullableListFilter
+  createdAt: DateTimeNullableWithAggregatesFilter
+  updatedAt: DateTimeNullableWithAggregatesFilter
+}
+
+input PushTokenUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  isExpired: BoolFieldUpdateOperationsInput
+  expoToken: NullableStringFieldUpdateOperationsInput
+  androidToken: NullableStringFieldUpdateOperationsInput
+  appleToken: NullableStringFieldUpdateOperationsInput
+  Device: DeviceUpdateOneWithoutPushTokenNestedInput
+  receipts: [Json!]
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input PushTokenUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  isExpired: BoolFieldUpdateOperationsInput
+  expoToken: NullableStringFieldUpdateOperationsInput
+  androidToken: NullableStringFieldUpdateOperationsInput
+  appleToken: NullableStringFieldUpdateOperationsInput
+  receipts: [Json!]
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input PushTokenUpdateOneWithoutDeviceNestedInput {
+  create: PushTokenCreateWithoutDeviceInput
+  connectOrCreate: PushTokenCreateOrConnectWithoutDeviceInput
+  upsert: PushTokenUpsertWithoutDeviceInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: PushTokenWhereUniqueInput
+  update: PushTokenUpdateWithoutDeviceInput
+}
+
+input PushTokenUpdateWithoutDeviceInput {
+  id: StringFieldUpdateOperationsInput
+  isExpired: BoolFieldUpdateOperationsInput
+  expoToken: NullableStringFieldUpdateOperationsInput
+  androidToken: NullableStringFieldUpdateOperationsInput
+  appleToken: NullableStringFieldUpdateOperationsInput
+  receipts: [Json!]
+  createdAt: NullableDateTimeFieldUpdateOperationsInput
+  updatedAt: NullableDateTimeFieldUpdateOperationsInput
+}
+
+input PushTokenUpdatereceiptsInput {
+  set: [Json!]
+  push: Json
+}
+
+input PushTokenUpsertWithoutDeviceInput {
+  update: PushTokenUpdateWithoutDeviceInput!
   create: PushTokenCreateWithoutDeviceInput!
+}
+
+input PushTokenWhereInput {
+  AND: [PushTokenWhereInput!]
+  OR: [PushTokenWhereInput!]
+  NOT: [PushTokenWhereInput!]
+  id: StringFilter
+  isExpired: BoolFilter
+  expoToken: StringNullableFilter
+  androidToken: StringNullableFilter
+  appleToken: StringNullableFilter
+  Device: DeviceWhereInput
+  receipts: JsonNullableListFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
 }
 
 input PushTokenWhereUniqueInput {
   id: String
 }
 
-input DeviceProfileCreateNestedManyWithoutDeviceManagerInput {
-  create: [DeviceProfileCreateWithoutDeviceManagerInput!]
-  connectOrCreate: [DeviceProfileCreateOrConnectWithoutDeviceManagerInput!]
-  createMany: DeviceProfileCreateManyDeviceManagerInputEnvelope
-  connect: [DeviceProfileWhereUniqueInput!]
+type Query {
+  getADeviceManager: DeviceManagerDeviceProfilesResponseUnion!
 }
 
-input PushTokenCreatereceiptsInput {
-  set: [Json!]
+enum QueryMode {
+  default
+  insensitive
 }
 
-input DeviceProfileCreateWithoutDeviceManagerInput {
-  AppType: AppType
-  ProfileType: ProfileType
-  profileId: String
-  isActive: Boolean!
-  accesstoken: String
+union RefreshDeviceManagerDeviceManagerResponseUnion = ClientDeviceManager | ErrorManaging
+
+type RefreshToken {
+  id: ID!
+  token: String!
+  DeviceProfile: ClientDeviceProfile
+  DeviceProfileId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input RefreshTokenAvgOrderByAggregateInput {
+  id: SortOrder
+}
+
+input RefreshTokenCountOrderByAggregateInput {
+  id: SortOrder
+  token: SortOrder
+  DeviceProfileId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input RefreshTokenCreateInput {
+  token: String!
+  DeviceProfile: DeviceProfileCreateNestedOneWithoutRefreshTokenInput
   createdAt: DateTime
   updatedAt: DateTime
-  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
 }
 
-input DeviceProfileCreateOrConnectWithoutDeviceManagerInput {
-  where: DeviceProfileWhereUniqueInput!
-  create: DeviceProfileCreateWithoutDeviceManagerInput!
-}
-
-input DeviceProfileCreateManyDeviceManagerInputEnvelope {
-  data: [DeviceProfileCreateManyDeviceManagerInput!]
-  skipDuplicates: Boolean
-}
-
-input DeviceProfileWhereUniqueInput {
+input RefreshTokenCreateManyInput {
   id: Int
+  token: String!
+  DeviceProfileId: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
-
-scalar Json
 
 input RefreshTokenCreateNestedOneWithoutDeviceProfileInput {
   create: RefreshTokenCreateWithoutDeviceProfileInput
@@ -181,15 +1450,9 @@ input RefreshTokenCreateNestedOneWithoutDeviceProfileInput {
   connect: RefreshTokenWhereUniqueInput
 }
 
-input DeviceProfileCreateManyDeviceManagerInput {
-  id: Int
-  AppType: AppType
-  ProfileType: ProfileType
-  profileId: String
-  isActive: Boolean!
-  accesstoken: String
-  createdAt: DateTime
-  updatedAt: DateTime
+input RefreshTokenCreateOrConnectWithoutDeviceProfileInput {
+  where: RefreshTokenWhereUniqueInput!
+  create: RefreshTokenCreateWithoutDeviceProfileInput!
 }
 
 input RefreshTokenCreateWithoutDeviceProfileInput {
@@ -198,13 +1461,204 @@ input RefreshTokenCreateWithoutDeviceProfileInput {
   updatedAt: DateTime
 }
 
-input RefreshTokenCreateOrConnectWithoutDeviceProfileInput {
-  where: RefreshTokenWhereUniqueInput!
+input RefreshTokenMaxOrderByAggregateInput {
+  id: SortOrder
+  token: SortOrder
+  DeviceProfileId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input RefreshTokenMinOrderByAggregateInput {
+  id: SortOrder
+  token: SortOrder
+  DeviceProfileId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input RefreshTokenOrderByWithAggregationInput {
+  id: SortOrder
+  token: SortOrder
+  DeviceProfileId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  _count: RefreshTokenCountOrderByAggregateInput
+  _avg: RefreshTokenAvgOrderByAggregateInput
+  _max: RefreshTokenMaxOrderByAggregateInput
+  _min: RefreshTokenMinOrderByAggregateInput
+  _sum: RefreshTokenSumOrderByAggregateInput
+}
+
+input RefreshTokenOrderByWithRelationInput {
+  id: SortOrder
+  token: SortOrder
+  DeviceProfile: DeviceProfileOrderByWithRelationInput
+  DeviceProfileId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input RefreshTokenRelationFilter {
+  is: RefreshTokenWhereInput
+  isNot: RefreshTokenWhereInput
+}
+
+enum RefreshTokenScalarFieldEnum {
+  id
+  token
+  DeviceProfileId
+  createdAt
+  updatedAt
+}
+
+input RefreshTokenScalarWhereWithAggregatesInput {
+  AND: [RefreshTokenScalarWhereWithAggregatesInput!]
+  OR: [RefreshTokenScalarWhereWithAggregatesInput!]
+  NOT: [RefreshTokenScalarWhereWithAggregatesInput!]
+  id: IntWithAggregatesFilter
+  token: StringWithAggregatesFilter
+  DeviceProfileId: StringNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+input RefreshTokenSumOrderByAggregateInput {
+  id: SortOrder
+}
+
+input RefreshTokenUpdateInput {
+  token: StringFieldUpdateOperationsInput
+  DeviceProfile: DeviceProfileUpdateOneWithoutRefreshTokenNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input RefreshTokenUpdateManyMutationInput {
+  token: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input RefreshTokenUpdateOneWithoutDeviceProfileNestedInput {
+  create: RefreshTokenCreateWithoutDeviceProfileInput
+  connectOrCreate: RefreshTokenCreateOrConnectWithoutDeviceProfileInput
+  upsert: RefreshTokenUpsertWithoutDeviceProfileInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: RefreshTokenWhereUniqueInput
+  update: RefreshTokenUpdateWithoutDeviceProfileInput
+}
+
+input RefreshTokenUpdateWithoutDeviceProfileInput {
+  token: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input RefreshTokenUpsertWithoutDeviceProfileInput {
+  update: RefreshTokenUpdateWithoutDeviceProfileInput!
   create: RefreshTokenCreateWithoutDeviceProfileInput!
+}
+
+input RefreshTokenWhereInput {
+  AND: [RefreshTokenWhereInput!]
+  OR: [RefreshTokenWhereInput!]
+  NOT: [RefreshTokenWhereInput!]
+  id: IntFilter
+  token: StringFilter
+  DeviceProfile: DeviceProfileWhereInput
+  DeviceProfileId: StringNullableFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
 }
 
 input RefreshTokenWhereUniqueInput {
   id: Int
   token: String
-  DeviceProfileId: Int
+  DeviceProfileId: String
 }
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+}
+
+input StringNullableWithAggregatesFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableWithAggregatesFilter
+  _count: NestedIntNullableFilter
+  _min: NestedStringNullableFilter
+  _max: NestedStringNullableFilter
+}
+
+input StringWithAggregatesFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedStringFilter
+  _max: NestedStringFilter
+}
+
+enum TransactionIsolationLevel {
+  ReadUncommitted
+  ReadCommitted
+  RepeatableRead
+  Serializable
+}
+
+scalar link__Import
