@@ -841,6 +841,130 @@ input BoolWithAggregatesFilter {
   _max: NestedBoolFilter
 }
 
+type Category {
+  id: ID!
+  name: String!
+  Tags(where: TagWhereInput, orderBy: [TagOrderByWithRelationInput!], cursor: TagWhereUniqueInput, take: Int, skip: Int, distinct: [TagScalarFieldEnum!]): [Tag!]!
+}
+
+input CategoryCountOrderByAggregateInput {
+  id: SortOrder
+  name: SortOrder
+}
+
+input CategoryCreateInput {
+  id: String
+  name: String!
+  Tags: TagCreateNestedManyWithoutCategoryInput
+}
+
+input CategoryCreateManyInput {
+  id: String
+  name: String!
+}
+
+input CategoryCreateNestedOneWithoutTagsInput {
+  create: CategoryCreateWithoutTagsInput
+  connectOrCreate: CategoryCreateOrConnectWithoutTagsInput
+  connect: CategoryWhereUniqueInput
+}
+
+input CategoryCreateOrConnectWithoutTagsInput {
+  where: CategoryWhereUniqueInput!
+  create: CategoryCreateWithoutTagsInput!
+}
+
+input CategoryCreateWithoutTagsInput {
+  id: String
+  name: String!
+}
+
+input CategoryMaxOrderByAggregateInput {
+  id: SortOrder
+  name: SortOrder
+}
+
+input CategoryMinOrderByAggregateInput {
+  id: SortOrder
+  name: SortOrder
+}
+
+input CategoryOrderByWithAggregationInput {
+  id: SortOrder
+  name: SortOrder
+  _count: CategoryCountOrderByAggregateInput
+  _max: CategoryMaxOrderByAggregateInput
+  _min: CategoryMinOrderByAggregateInput
+}
+
+input CategoryOrderByWithRelationInput {
+  id: SortOrder
+  name: SortOrder
+  Tags: TagOrderByRelationAggregateInput
+}
+
+input CategoryRelationFilter {
+  is: CategoryWhereInput
+  isNot: CategoryWhereInput
+}
+
+enum CategoryScalarFieldEnum {
+  id
+  name
+}
+
+input CategoryScalarWhereWithAggregatesInput {
+  AND: [CategoryScalarWhereWithAggregatesInput!]
+  OR: [CategoryScalarWhereWithAggregatesInput!]
+  NOT: [CategoryScalarWhereWithAggregatesInput!]
+  id: StringWithAggregatesFilter
+  name: StringWithAggregatesFilter
+}
+
+input CategoryUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  Tags: TagUpdateManyWithoutCategoryNestedInput
+}
+
+input CategoryUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input CategoryUpdateOneWithoutTagsNestedInput {
+  create: CategoryCreateWithoutTagsInput
+  connectOrCreate: CategoryCreateOrConnectWithoutTagsInput
+  upsert: CategoryUpsertWithoutTagsInput
+  disconnect: Boolean
+  delete: Boolean
+  connect: CategoryWhereUniqueInput
+  update: CategoryUpdateWithoutTagsInput
+}
+
+input CategoryUpdateWithoutTagsInput {
+  id: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input CategoryUpsertWithoutTagsInput {
+  update: CategoryUpdateWithoutTagsInput!
+  create: CategoryCreateWithoutTagsInput!
+}
+
+input CategoryWhereInput {
+  AND: [CategoryWhereInput!]
+  OR: [CategoryWhereInput!]
+  NOT: [CategoryWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  Tags: TagListRelationFilter
+}
+
+input CategoryWhereUniqueInput {
+  id: String
+}
+
 input ChatroomCountOrderByAggregateInput {
   id: SortOrder
 }
@@ -1209,13 +1333,18 @@ input CodeWhereUniqueInput {
 }
 
 input ContactInput {
-  type: String
-  value: String!
+  name: String
+  number: String
 }
 
 type Coords {
   latitude: Float
   longitude: Float
+}
+
+input CoordsInput {
+  latitude: Float!
+  longitude: Float!
 }
 
 type CountryResponseObject {
@@ -1230,7 +1359,6 @@ type CountryResponseObject {
 
 input CreatePersonalDataInput {
   PrivacyPolicyId: ID
-  emojimood: ID
   ServicesId: ID
   PhoneInput: PhoneInput
   EmailInput: EmailInput
@@ -1239,7 +1367,6 @@ input CreatePersonalDataInput {
   fullname: String
   address: String!
   birthday: DateTime!
-  photos: PhotoCreateManyProfileInputEnvelope
 }
 
 input CreateVenueDataInput {
@@ -1254,7 +1381,7 @@ input CreateVenueDataInput {
   venueusername: String!
   address: String!
   ownername: String!
-  contacts: [ContactInput!]!
+  contacts: [VenueContactInput!]!
   capacity: String!
   venuetypes: [String!]
   description: String
@@ -2420,6 +2547,27 @@ input EmojimoodWhereUniqueInput {
   id: Int
 }
 
+input EnumOutTypeFieldUpdateOperationsInput {
+  set: OutType
+}
+
+input EnumOutTypeFilter {
+  equals: OutType
+  in: [OutType!]
+  notIn: [OutType!]
+  not: OutType
+}
+
+input EnumOutTypeWithAggregatesFilter {
+  equals: OutType
+  in: [OutType!]
+  notIn: [OutType!]
+  not: OutType
+  _count: NestedIntFilter
+  _min: NestedEnumOutTypeFilter
+  _max: NestedEnumOutTypeFilter
+}
+
 input EnumPhotoTypeNullableFilter {
   equals: PhotoType
   in: [PhotoType!]
@@ -2485,27 +2633,6 @@ input EnumSecureDataTypeWithAggregatesFilter {
   _count: NestedIntFilter
   _min: NestedEnumSecureDataTypeFilter
   _max: NestedEnumSecureDataTypeFilter
-}
-
-input EnumTagTypeFieldUpdateOperationsInput {
-  set: TagType
-}
-
-input EnumTagTypeFilter {
-  equals: TagType
-  in: [TagType!]
-  notIn: [TagType!]
-  not: TagType
-}
-
-input EnumTagTypeWithAggregatesFilter {
-  equals: TagType
-  in: [TagType!]
-  notIn: [TagType!]
-  not: TagType
-  _count: NestedIntFilter
-  _min: NestedEnumTagTypeFilter
-  _max: NestedEnumTagTypeFilter
 }
 
 input EnumTypeOfDocumentFieldUpdateOperationsInput {
@@ -3933,554 +4060,6 @@ input IntWithAggregatesFilter {
   _max: NestedIntFilter
 }
 
-type JoinedOut {
-  id: ID!
-  personalProfileId: String
-  venueProfileId: String!
-  LiveOutVenue: LiveOutVenue
-  liveOutVenueId: String
-  LiveOutPersonal: LiveOutPersonal
-  liveOutPersonalId: String
-  leftAt: DateTime
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  VenueStats: VenueStats
-  venueStatsId: String
-  PersonalStats: PersonalStats
-  personalStatsId: String
-}
-
-input JoinedOutCountOrderByAggregateInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  liveOutVenueId: SortOrder
-  liveOutPersonalId: SortOrder
-  leftAt: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-}
-
-input JoinedOutCreateInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutJoinedInput
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutJoinedInput
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  VenueStats: VenueStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-  PersonalStats: PersonalStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-}
-
-input JoinedOutCreateManyInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  liveOutVenueId: String
-  liveOutPersonalId: String
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  venueStatsId: String
-  personalStatsId: String
-}
-
-input JoinedOutCreateManyLiveOutPersonalInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  liveOutVenueId: String
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  venueStatsId: String
-  personalStatsId: String
-}
-
-input JoinedOutCreateManyLiveOutPersonalInputEnvelope {
-  data: [JoinedOutCreateManyLiveOutPersonalInput!]!
-  skipDuplicates: Boolean
-}
-
-input JoinedOutCreateManyLiveOutVenueInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  liveOutPersonalId: String
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  venueStatsId: String
-  personalStatsId: String
-}
-
-input JoinedOutCreateManyLiveOutVenueInputEnvelope {
-  data: [JoinedOutCreateManyLiveOutVenueInput!]!
-  skipDuplicates: Boolean
-}
-
-input JoinedOutCreateManyPersonalStatsInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  liveOutVenueId: String
-  liveOutPersonalId: String
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  venueStatsId: String
-}
-
-input JoinedOutCreateManyPersonalStatsInputEnvelope {
-  data: [JoinedOutCreateManyPersonalStatsInput!]!
-  skipDuplicates: Boolean
-}
-
-input JoinedOutCreateManyVenueStatsInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  liveOutVenueId: String
-  liveOutPersonalId: String
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  personalStatsId: String
-}
-
-input JoinedOutCreateManyVenueStatsInputEnvelope {
-  data: [JoinedOutCreateManyVenueStatsInput!]!
-  skipDuplicates: Boolean
-}
-
-input JoinedOutCreateNestedManyWithoutLiveOutPersonalInput {
-  create: JoinedOutCreateWithoutLiveOutPersonalInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutLiveOutPersonalInput!]
-  createMany: JoinedOutCreateManyLiveOutPersonalInputEnvelope
-  connect: [JoinedOutWhereUniqueInput!]
-}
-
-input JoinedOutCreateNestedManyWithoutLiveOutVenueInput {
-  create: JoinedOutCreateWithoutLiveOutVenueInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutLiveOutVenueInput!]
-  createMany: JoinedOutCreateManyLiveOutVenueInputEnvelope
-  connect: [JoinedOutWhereUniqueInput!]
-}
-
-input JoinedOutCreateNestedManyWithoutPersonalStatsInput {
-  create: JoinedOutCreateWithoutPersonalStatsInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutPersonalStatsInput!]
-  createMany: JoinedOutCreateManyPersonalStatsInputEnvelope
-  connect: [JoinedOutWhereUniqueInput!]
-}
-
-input JoinedOutCreateNestedManyWithoutVenueStatsInput {
-  create: JoinedOutCreateWithoutVenueStatsInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutVenueStatsInput!]
-  createMany: JoinedOutCreateManyVenueStatsInputEnvelope
-  connect: [JoinedOutWhereUniqueInput!]
-}
-
-input JoinedOutCreateOrConnectWithoutLiveOutPersonalInput {
-  where: JoinedOutWhereUniqueInput!
-  create: JoinedOutCreateWithoutLiveOutPersonalInput!
-}
-
-input JoinedOutCreateOrConnectWithoutLiveOutVenueInput {
-  where: JoinedOutWhereUniqueInput!
-  create: JoinedOutCreateWithoutLiveOutVenueInput!
-}
-
-input JoinedOutCreateOrConnectWithoutPersonalStatsInput {
-  where: JoinedOutWhereUniqueInput!
-  create: JoinedOutCreateWithoutPersonalStatsInput!
-}
-
-input JoinedOutCreateOrConnectWithoutVenueStatsInput {
-  where: JoinedOutWhereUniqueInput!
-  create: JoinedOutCreateWithoutVenueStatsInput!
-}
-
-input JoinedOutCreateWithoutLiveOutPersonalInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutJoinedInput
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  VenueStats: VenueStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-  PersonalStats: PersonalStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-}
-
-input JoinedOutCreateWithoutLiveOutVenueInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutJoinedInput
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  VenueStats: VenueStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-  PersonalStats: PersonalStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-}
-
-input JoinedOutCreateWithoutPersonalStatsInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutJoinedInput
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutJoinedInput
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  VenueStats: VenueStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-}
-
-input JoinedOutCreateWithoutVenueStatsInput {
-  id: String
-  personalProfileId: String
-  venueProfileId: String!
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutJoinedInput
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutJoinedInput
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  PersonalStats: PersonalStatsCreateNestedOneWithoutJoinedVenueHistoryInput
-}
-
-input JoinedOutListRelationFilter {
-  every: JoinedOutWhereInput
-  some: JoinedOutWhereInput
-  none: JoinedOutWhereInput
-}
-
-input JoinedOutMaxOrderByAggregateInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  liveOutVenueId: SortOrder
-  liveOutPersonalId: SortOrder
-  leftAt: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-}
-
-input JoinedOutMinOrderByAggregateInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  liveOutVenueId: SortOrder
-  liveOutPersonalId: SortOrder
-  leftAt: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-}
-
-input JoinedOutOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input JoinedOutOrderByWithAggregationInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  liveOutVenueId: SortOrder
-  liveOutPersonalId: SortOrder
-  leftAt: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-  _count: JoinedOutCountOrderByAggregateInput
-  _max: JoinedOutMaxOrderByAggregateInput
-  _min: JoinedOutMinOrderByAggregateInput
-}
-
-input JoinedOutOrderByWithRelationInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  LiveOutVenue: LiveOutVenueOrderByWithRelationInput
-  liveOutVenueId: SortOrder
-  LiveOutPersonal: LiveOutPersonalOrderByWithRelationInput
-  liveOutPersonalId: SortOrder
-  leftAt: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  VenueStats: VenueStatsOrderByWithRelationInput
-  venueStatsId: SortOrder
-  PersonalStats: PersonalStatsOrderByWithRelationInput
-  personalStatsId: SortOrder
-}
-
-enum JoinedOutScalarFieldEnum {
-  id
-  personalProfileId
-  venueProfileId
-  liveOutVenueId
-  liveOutPersonalId
-  leftAt
-  createdAt
-  updatedAt
-  venueStatsId
-  personalStatsId
-}
-
-input JoinedOutScalarWhereInput {
-  AND: [JoinedOutScalarWhereInput!]
-  OR: [JoinedOutScalarWhereInput!]
-  NOT: [JoinedOutScalarWhereInput!]
-  id: StringFilter
-  personalProfileId: StringNullableFilter
-  venueProfileId: StringFilter
-  liveOutVenueId: StringNullableFilter
-  liveOutPersonalId: StringNullableFilter
-  leftAt: DateTimeNullableFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  venueStatsId: StringNullableFilter
-  personalStatsId: StringNullableFilter
-}
-
-input JoinedOutScalarWhereWithAggregatesInput {
-  AND: [JoinedOutScalarWhereWithAggregatesInput!]
-  OR: [JoinedOutScalarWhereWithAggregatesInput!]
-  NOT: [JoinedOutScalarWhereWithAggregatesInput!]
-  id: StringWithAggregatesFilter
-  personalProfileId: StringNullableWithAggregatesFilter
-  venueProfileId: StringWithAggregatesFilter
-  liveOutVenueId: StringNullableWithAggregatesFilter
-  liveOutPersonalId: StringNullableWithAggregatesFilter
-  leftAt: DateTimeNullableWithAggregatesFilter
-  createdAt: DateTimeWithAggregatesFilter
-  updatedAt: DateTimeWithAggregatesFilter
-  venueStatsId: StringNullableWithAggregatesFilter
-  personalStatsId: StringNullableWithAggregatesFilter
-}
-
-input JoinedOutUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: NullableStringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutJoinedNestedInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutJoinedNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-  PersonalStats: PersonalStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-}
-
-input JoinedOutUpdateManyMutationInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: NullableStringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input JoinedOutUpdateManyWithWhereWithoutLiveOutPersonalInput {
-  where: JoinedOutScalarWhereInput!
-  data: JoinedOutUpdateManyMutationInput!
-}
-
-input JoinedOutUpdateManyWithWhereWithoutLiveOutVenueInput {
-  where: JoinedOutScalarWhereInput!
-  data: JoinedOutUpdateManyMutationInput!
-}
-
-input JoinedOutUpdateManyWithWhereWithoutPersonalStatsInput {
-  where: JoinedOutScalarWhereInput!
-  data: JoinedOutUpdateManyMutationInput!
-}
-
-input JoinedOutUpdateManyWithWhereWithoutVenueStatsInput {
-  where: JoinedOutScalarWhereInput!
-  data: JoinedOutUpdateManyMutationInput!
-}
-
-input JoinedOutUpdateManyWithoutLiveOutPersonalNestedInput {
-  create: JoinedOutCreateWithoutLiveOutPersonalInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutLiveOutPersonalInput!]
-  upsert: [JoinedOutUpsertWithWhereUniqueWithoutLiveOutPersonalInput!]
-  createMany: JoinedOutCreateManyLiveOutPersonalInputEnvelope
-  set: [JoinedOutWhereUniqueInput!]
-  disconnect: [JoinedOutWhereUniqueInput!]
-  delete: [JoinedOutWhereUniqueInput!]
-  connect: [JoinedOutWhereUniqueInput!]
-  update: [JoinedOutUpdateWithWhereUniqueWithoutLiveOutPersonalInput!]
-  updateMany: [JoinedOutUpdateManyWithWhereWithoutLiveOutPersonalInput!]
-  deleteMany: [JoinedOutScalarWhereInput!]
-}
-
-input JoinedOutUpdateManyWithoutLiveOutVenueNestedInput {
-  create: JoinedOutCreateWithoutLiveOutVenueInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutLiveOutVenueInput!]
-  upsert: [JoinedOutUpsertWithWhereUniqueWithoutLiveOutVenueInput!]
-  createMany: JoinedOutCreateManyLiveOutVenueInputEnvelope
-  set: [JoinedOutWhereUniqueInput!]
-  disconnect: [JoinedOutWhereUniqueInput!]
-  delete: [JoinedOutWhereUniqueInput!]
-  connect: [JoinedOutWhereUniqueInput!]
-  update: [JoinedOutUpdateWithWhereUniqueWithoutLiveOutVenueInput!]
-  updateMany: [JoinedOutUpdateManyWithWhereWithoutLiveOutVenueInput!]
-  deleteMany: [JoinedOutScalarWhereInput!]
-}
-
-input JoinedOutUpdateManyWithoutPersonalStatsNestedInput {
-  create: JoinedOutCreateWithoutPersonalStatsInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutPersonalStatsInput!]
-  upsert: [JoinedOutUpsertWithWhereUniqueWithoutPersonalStatsInput!]
-  createMany: JoinedOutCreateManyPersonalStatsInputEnvelope
-  set: [JoinedOutWhereUniqueInput!]
-  disconnect: [JoinedOutWhereUniqueInput!]
-  delete: [JoinedOutWhereUniqueInput!]
-  connect: [JoinedOutWhereUniqueInput!]
-  update: [JoinedOutUpdateWithWhereUniqueWithoutPersonalStatsInput!]
-  updateMany: [JoinedOutUpdateManyWithWhereWithoutPersonalStatsInput!]
-  deleteMany: [JoinedOutScalarWhereInput!]
-}
-
-input JoinedOutUpdateManyWithoutVenueStatsNestedInput {
-  create: JoinedOutCreateWithoutVenueStatsInput
-  connectOrCreate: [JoinedOutCreateOrConnectWithoutVenueStatsInput!]
-  upsert: [JoinedOutUpsertWithWhereUniqueWithoutVenueStatsInput!]
-  createMany: JoinedOutCreateManyVenueStatsInputEnvelope
-  set: [JoinedOutWhereUniqueInput!]
-  disconnect: [JoinedOutWhereUniqueInput!]
-  delete: [JoinedOutWhereUniqueInput!]
-  connect: [JoinedOutWhereUniqueInput!]
-  update: [JoinedOutUpdateWithWhereUniqueWithoutVenueStatsInput!]
-  updateMany: [JoinedOutUpdateManyWithWhereWithoutVenueStatsInput!]
-  deleteMany: [JoinedOutScalarWhereInput!]
-}
-
-input JoinedOutUpdateWithWhereUniqueWithoutLiveOutPersonalInput {
-  where: JoinedOutWhereUniqueInput!
-  data: JoinedOutUpdateWithoutLiveOutPersonalInput!
-}
-
-input JoinedOutUpdateWithWhereUniqueWithoutLiveOutVenueInput {
-  where: JoinedOutWhereUniqueInput!
-  data: JoinedOutUpdateWithoutLiveOutVenueInput!
-}
-
-input JoinedOutUpdateWithWhereUniqueWithoutPersonalStatsInput {
-  where: JoinedOutWhereUniqueInput!
-  data: JoinedOutUpdateWithoutPersonalStatsInput!
-}
-
-input JoinedOutUpdateWithWhereUniqueWithoutVenueStatsInput {
-  where: JoinedOutWhereUniqueInput!
-  data: JoinedOutUpdateWithoutVenueStatsInput!
-}
-
-input JoinedOutUpdateWithoutLiveOutPersonalInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: NullableStringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutJoinedNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-  PersonalStats: PersonalStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-}
-
-input JoinedOutUpdateWithoutLiveOutVenueInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: NullableStringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutJoinedNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-  PersonalStats: PersonalStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-}
-
-input JoinedOutUpdateWithoutPersonalStatsInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: NullableStringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutJoinedNestedInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutJoinedNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-}
-
-input JoinedOutUpdateWithoutVenueStatsInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: NullableStringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutJoinedNestedInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutJoinedNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-  PersonalStats: PersonalStatsUpdateOneWithoutJoinedVenueHistoryNestedInput
-}
-
-input JoinedOutUpsertWithWhereUniqueWithoutLiveOutPersonalInput {
-  where: JoinedOutWhereUniqueInput!
-  update: JoinedOutUpdateWithoutLiveOutPersonalInput!
-  create: JoinedOutCreateWithoutLiveOutPersonalInput!
-}
-
-input JoinedOutUpsertWithWhereUniqueWithoutLiveOutVenueInput {
-  where: JoinedOutWhereUniqueInput!
-  update: JoinedOutUpdateWithoutLiveOutVenueInput!
-  create: JoinedOutCreateWithoutLiveOutVenueInput!
-}
-
-input JoinedOutUpsertWithWhereUniqueWithoutPersonalStatsInput {
-  where: JoinedOutWhereUniqueInput!
-  update: JoinedOutUpdateWithoutPersonalStatsInput!
-  create: JoinedOutCreateWithoutPersonalStatsInput!
-}
-
-input JoinedOutUpsertWithWhereUniqueWithoutVenueStatsInput {
-  where: JoinedOutWhereUniqueInput!
-  update: JoinedOutUpdateWithoutVenueStatsInput!
-  create: JoinedOutCreateWithoutVenueStatsInput!
-}
-
-input JoinedOutWhereInput {
-  AND: [JoinedOutWhereInput!]
-  OR: [JoinedOutWhereInput!]
-  NOT: [JoinedOutWhereInput!]
-  id: StringFilter
-  personalProfileId: StringNullableFilter
-  venueProfileId: StringFilter
-  LiveOutVenue: LiveOutVenueWhereInput
-  liveOutVenueId: StringNullableFilter
-  LiveOutPersonal: LiveOutPersonalWhereInput
-  liveOutPersonalId: StringNullableFilter
-  leftAt: DateTimeNullableFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  VenueStats: VenueStatsWhereInput
-  venueStatsId: StringNullableFilter
-  PersonalStats: PersonalStatsWhereInput
-  personalStatsId: StringNullableFilter
-}
-
-input JoinedOutWhereUniqueInput {
-  id: String
-}
-
 scalar Json
 
 input JsonNullableListFilter {
@@ -4803,8 +4382,7 @@ type LiveOutPersonal {
   id: ID!
   Personal: Personal!
   personalId: String!
-  totaled(where: TotaledOutWhereInput, orderBy: [TotaledOutOrderByWithRelationInput!], cursor: TotaledOutWhereUniqueInput, take: Int, skip: Int, distinct: [TotaledOutScalarFieldEnum!]): [TotaledOut!]!
-  joined(where: JoinedOutWhereInput, orderBy: [JoinedOutOrderByWithRelationInput!], cursor: JoinedOutWhereUniqueInput, take: Int, skip: Int, distinct: [JoinedOutScalarFieldEnum!]): [JoinedOut!]!
+  Out(where: OutWhereInput, orderBy: [OutOrderByWithRelationInput!], cursor: OutWhereUniqueInput, take: Int, skip: Int, distinct: [OutScalarFieldEnum!]): [Out!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -4819,8 +4397,7 @@ input LiveOutPersonalCountOrderByAggregateInput {
 input LiveOutPersonalCreateInput {
   id: String
   Personal: PersonalCreateNestedOneWithoutLiveOutPersonalInput!
-  totaled: TotaledOutCreateNestedManyWithoutLiveOutPersonalInput
-  joined: JoinedOutCreateNestedManyWithoutLiveOutPersonalInput
+  Out: OutCreateNestedManyWithoutLiveOutPersonalInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -4832,9 +4409,9 @@ input LiveOutPersonalCreateManyInput {
   updatedAt: DateTime
 }
 
-input LiveOutPersonalCreateNestedOneWithoutJoinedInput {
-  create: LiveOutPersonalCreateWithoutJoinedInput
-  connectOrCreate: LiveOutPersonalCreateOrConnectWithoutJoinedInput
+input LiveOutPersonalCreateNestedOneWithoutOutInput {
+  create: LiveOutPersonalCreateWithoutOutInput
+  connectOrCreate: LiveOutPersonalCreateOrConnectWithoutOutInput
   connect: LiveOutPersonalWhereUniqueInput
 }
 
@@ -4844,15 +4421,9 @@ input LiveOutPersonalCreateNestedOneWithoutPersonalInput {
   connect: LiveOutPersonalWhereUniqueInput
 }
 
-input LiveOutPersonalCreateNestedOneWithoutTotaledInput {
-  create: LiveOutPersonalCreateWithoutTotaledInput
-  connectOrCreate: LiveOutPersonalCreateOrConnectWithoutTotaledInput
-  connect: LiveOutPersonalWhereUniqueInput
-}
-
-input LiveOutPersonalCreateOrConnectWithoutJoinedInput {
+input LiveOutPersonalCreateOrConnectWithoutOutInput {
   where: LiveOutPersonalWhereUniqueInput!
-  create: LiveOutPersonalCreateWithoutJoinedInput!
+  create: LiveOutPersonalCreateWithoutOutInput!
 }
 
 input LiveOutPersonalCreateOrConnectWithoutPersonalInput {
@@ -4860,31 +4431,16 @@ input LiveOutPersonalCreateOrConnectWithoutPersonalInput {
   create: LiveOutPersonalCreateWithoutPersonalInput!
 }
 
-input LiveOutPersonalCreateOrConnectWithoutTotaledInput {
-  where: LiveOutPersonalWhereUniqueInput!
-  create: LiveOutPersonalCreateWithoutTotaledInput!
-}
-
-input LiveOutPersonalCreateWithoutJoinedInput {
+input LiveOutPersonalCreateWithoutOutInput {
   id: String
   Personal: PersonalCreateNestedOneWithoutLiveOutPersonalInput!
-  totaled: TotaledOutCreateNestedManyWithoutLiveOutPersonalInput
   createdAt: DateTime
   updatedAt: DateTime
 }
 
 input LiveOutPersonalCreateWithoutPersonalInput {
   id: String
-  totaled: TotaledOutCreateNestedManyWithoutLiveOutPersonalInput
-  joined: JoinedOutCreateNestedManyWithoutLiveOutPersonalInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input LiveOutPersonalCreateWithoutTotaledInput {
-  id: String
-  Personal: PersonalCreateNestedOneWithoutLiveOutPersonalInput!
-  joined: JoinedOutCreateNestedManyWithoutLiveOutPersonalInput
+  Out: OutCreateNestedManyWithoutLiveOutPersonalInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -4917,8 +4473,7 @@ input LiveOutPersonalOrderByWithRelationInput {
   id: SortOrder
   Personal: PersonalOrderByWithRelationInput
   personalId: SortOrder
-  totaled: TotaledOutOrderByRelationAggregateInput
-  joined: JoinedOutOrderByRelationAggregateInput
+  Out: OutOrderByRelationAggregateInput
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -4948,8 +4503,7 @@ input LiveOutPersonalScalarWhereWithAggregatesInput {
 input LiveOutPersonalUpdateInput {
   id: StringFieldUpdateOperationsInput
   Personal: PersonalUpdateOneRequiredWithoutLiveOutPersonalNestedInput
-  totaled: TotaledOutUpdateManyWithoutLiveOutPersonalNestedInput
-  joined: JoinedOutUpdateManyWithoutLiveOutPersonalNestedInput
+  Out: OutUpdateManyWithoutLiveOutPersonalNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -4960,14 +4514,14 @@ input LiveOutPersonalUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input LiveOutPersonalUpdateOneWithoutJoinedNestedInput {
-  create: LiveOutPersonalCreateWithoutJoinedInput
-  connectOrCreate: LiveOutPersonalCreateOrConnectWithoutJoinedInput
-  upsert: LiveOutPersonalUpsertWithoutJoinedInput
+input LiveOutPersonalUpdateOneWithoutOutNestedInput {
+  create: LiveOutPersonalCreateWithoutOutInput
+  connectOrCreate: LiveOutPersonalCreateOrConnectWithoutOutInput
+  upsert: LiveOutPersonalUpsertWithoutOutInput
   disconnect: Boolean
   delete: Boolean
   connect: LiveOutPersonalWhereUniqueInput
-  update: LiveOutPersonalUpdateWithoutJoinedInput
+  update: LiveOutPersonalUpdateWithoutOutInput
 }
 
 input LiveOutPersonalUpdateOneWithoutPersonalNestedInput {
@@ -4980,53 +4534,28 @@ input LiveOutPersonalUpdateOneWithoutPersonalNestedInput {
   update: LiveOutPersonalUpdateWithoutPersonalInput
 }
 
-input LiveOutPersonalUpdateOneWithoutTotaledNestedInput {
-  create: LiveOutPersonalCreateWithoutTotaledInput
-  connectOrCreate: LiveOutPersonalCreateOrConnectWithoutTotaledInput
-  upsert: LiveOutPersonalUpsertWithoutTotaledInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: LiveOutPersonalWhereUniqueInput
-  update: LiveOutPersonalUpdateWithoutTotaledInput
-}
-
-input LiveOutPersonalUpdateWithoutJoinedInput {
+input LiveOutPersonalUpdateWithoutOutInput {
   id: StringFieldUpdateOperationsInput
   Personal: PersonalUpdateOneRequiredWithoutLiveOutPersonalNestedInput
-  totaled: TotaledOutUpdateManyWithoutLiveOutPersonalNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input LiveOutPersonalUpdateWithoutPersonalInput {
   id: StringFieldUpdateOperationsInput
-  totaled: TotaledOutUpdateManyWithoutLiveOutPersonalNestedInput
-  joined: JoinedOutUpdateManyWithoutLiveOutPersonalNestedInput
+  Out: OutUpdateManyWithoutLiveOutPersonalNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input LiveOutPersonalUpdateWithoutTotaledInput {
-  id: StringFieldUpdateOperationsInput
-  Personal: PersonalUpdateOneRequiredWithoutLiveOutPersonalNestedInput
-  joined: JoinedOutUpdateManyWithoutLiveOutPersonalNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input LiveOutPersonalUpsertWithoutJoinedInput {
-  update: LiveOutPersonalUpdateWithoutJoinedInput!
-  create: LiveOutPersonalCreateWithoutJoinedInput!
+input LiveOutPersonalUpsertWithoutOutInput {
+  update: LiveOutPersonalUpdateWithoutOutInput!
+  create: LiveOutPersonalCreateWithoutOutInput!
 }
 
 input LiveOutPersonalUpsertWithoutPersonalInput {
   update: LiveOutPersonalUpdateWithoutPersonalInput!
   create: LiveOutPersonalCreateWithoutPersonalInput!
-}
-
-input LiveOutPersonalUpsertWithoutTotaledInput {
-  update: LiveOutPersonalUpdateWithoutTotaledInput!
-  create: LiveOutPersonalCreateWithoutTotaledInput!
 }
 
 input LiveOutPersonalWhereInput {
@@ -5036,8 +4565,7 @@ input LiveOutPersonalWhereInput {
   id: StringFilter
   Personal: PersonalWhereInput
   personalId: StringFilter
-  totaled: TotaledOutListRelationFilter
-  joined: JoinedOutListRelationFilter
+  Out: OutListRelationFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
@@ -5051,8 +4579,7 @@ type LiveOutVenue {
   id: ID!
   Venue: Venue!
   venueId: String!
-  joined(where: JoinedOutWhereInput, orderBy: [JoinedOutOrderByWithRelationInput!], cursor: JoinedOutWhereUniqueInput, take: Int, skip: Int, distinct: [JoinedOutScalarFieldEnum!]): [JoinedOut!]!
-  totaled(where: TotaledOutWhereInput, orderBy: [TotaledOutOrderByWithRelationInput!], cursor: TotaledOutWhereUniqueInput, take: Int, skip: Int, distinct: [TotaledOutScalarFieldEnum!]): [TotaledOut!]!
+  Out(where: OutWhereInput, orderBy: [OutOrderByWithRelationInput!], cursor: OutWhereUniqueInput, take: Int, skip: Int, distinct: [OutScalarFieldEnum!]): [Out!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -5067,8 +4594,7 @@ input LiveOutVenueCountOrderByAggregateInput {
 input LiveOutVenueCreateInput {
   id: String
   Venue: VenueCreateNestedOneWithoutLiveOutVenueInput!
-  joined: JoinedOutCreateNestedManyWithoutLiveOutVenueInput
-  totaled: TotaledOutCreateNestedManyWithoutLiveOutVenueInput
+  Out: OutCreateNestedManyWithoutLiveOutVenueInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -5080,15 +4606,9 @@ input LiveOutVenueCreateManyInput {
   updatedAt: DateTime
 }
 
-input LiveOutVenueCreateNestedOneWithoutJoinedInput {
-  create: LiveOutVenueCreateWithoutJoinedInput
-  connectOrCreate: LiveOutVenueCreateOrConnectWithoutJoinedInput
-  connect: LiveOutVenueWhereUniqueInput
-}
-
-input LiveOutVenueCreateNestedOneWithoutTotaledInput {
-  create: LiveOutVenueCreateWithoutTotaledInput
-  connectOrCreate: LiveOutVenueCreateOrConnectWithoutTotaledInput
+input LiveOutVenueCreateNestedOneWithoutOutInput {
+  create: LiveOutVenueCreateWithoutOutInput
+  connectOrCreate: LiveOutVenueCreateOrConnectWithoutOutInput
   connect: LiveOutVenueWhereUniqueInput
 }
 
@@ -5098,14 +4618,9 @@ input LiveOutVenueCreateNestedOneWithoutVenueInput {
   connect: LiveOutVenueWhereUniqueInput
 }
 
-input LiveOutVenueCreateOrConnectWithoutJoinedInput {
+input LiveOutVenueCreateOrConnectWithoutOutInput {
   where: LiveOutVenueWhereUniqueInput!
-  create: LiveOutVenueCreateWithoutJoinedInput!
-}
-
-input LiveOutVenueCreateOrConnectWithoutTotaledInput {
-  where: LiveOutVenueWhereUniqueInput!
-  create: LiveOutVenueCreateWithoutTotaledInput!
+  create: LiveOutVenueCreateWithoutOutInput!
 }
 
 input LiveOutVenueCreateOrConnectWithoutVenueInput {
@@ -5113,26 +4628,16 @@ input LiveOutVenueCreateOrConnectWithoutVenueInput {
   create: LiveOutVenueCreateWithoutVenueInput!
 }
 
-input LiveOutVenueCreateWithoutJoinedInput {
+input LiveOutVenueCreateWithoutOutInput {
   id: String
   Venue: VenueCreateNestedOneWithoutLiveOutVenueInput!
-  totaled: TotaledOutCreateNestedManyWithoutLiveOutVenueInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input LiveOutVenueCreateWithoutTotaledInput {
-  id: String
-  Venue: VenueCreateNestedOneWithoutLiveOutVenueInput!
-  joined: JoinedOutCreateNestedManyWithoutLiveOutVenueInput
   createdAt: DateTime
   updatedAt: DateTime
 }
 
 input LiveOutVenueCreateWithoutVenueInput {
   id: String
-  joined: JoinedOutCreateNestedManyWithoutLiveOutVenueInput
-  totaled: TotaledOutCreateNestedManyWithoutLiveOutVenueInput
+  Out: OutCreateNestedManyWithoutLiveOutVenueInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -5165,8 +4670,7 @@ input LiveOutVenueOrderByWithRelationInput {
   id: SortOrder
   Venue: VenueOrderByWithRelationInput
   venueId: SortOrder
-  joined: JoinedOutOrderByRelationAggregateInput
-  totaled: TotaledOutOrderByRelationAggregateInput
+  Out: OutOrderByRelationAggregateInput
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -5196,8 +4700,7 @@ input LiveOutVenueScalarWhereWithAggregatesInput {
 input LiveOutVenueUpdateInput {
   id: StringFieldUpdateOperationsInput
   Venue: VenueUpdateOneRequiredWithoutLiveOutVenueNestedInput
-  joined: JoinedOutUpdateManyWithoutLiveOutVenueNestedInput
-  totaled: TotaledOutUpdateManyWithoutLiveOutVenueNestedInput
+  Out: OutUpdateManyWithoutLiveOutVenueNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -5208,24 +4711,14 @@ input LiveOutVenueUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input LiveOutVenueUpdateOneWithoutJoinedNestedInput {
-  create: LiveOutVenueCreateWithoutJoinedInput
-  connectOrCreate: LiveOutVenueCreateOrConnectWithoutJoinedInput
-  upsert: LiveOutVenueUpsertWithoutJoinedInput
+input LiveOutVenueUpdateOneWithoutOutNestedInput {
+  create: LiveOutVenueCreateWithoutOutInput
+  connectOrCreate: LiveOutVenueCreateOrConnectWithoutOutInput
+  upsert: LiveOutVenueUpsertWithoutOutInput
   disconnect: Boolean
   delete: Boolean
   connect: LiveOutVenueWhereUniqueInput
-  update: LiveOutVenueUpdateWithoutJoinedInput
-}
-
-input LiveOutVenueUpdateOneWithoutTotaledNestedInput {
-  create: LiveOutVenueCreateWithoutTotaledInput
-  connectOrCreate: LiveOutVenueCreateOrConnectWithoutTotaledInput
-  upsert: LiveOutVenueUpsertWithoutTotaledInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: LiveOutVenueWhereUniqueInput
-  update: LiveOutVenueUpdateWithoutTotaledInput
+  update: LiveOutVenueUpdateWithoutOutInput
 }
 
 input LiveOutVenueUpdateOneWithoutVenueNestedInput {
@@ -5238,38 +4731,23 @@ input LiveOutVenueUpdateOneWithoutVenueNestedInput {
   update: LiveOutVenueUpdateWithoutVenueInput
 }
 
-input LiveOutVenueUpdateWithoutJoinedInput {
+input LiveOutVenueUpdateWithoutOutInput {
   id: StringFieldUpdateOperationsInput
   Venue: VenueUpdateOneRequiredWithoutLiveOutVenueNestedInput
-  totaled: TotaledOutUpdateManyWithoutLiveOutVenueNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input LiveOutVenueUpdateWithoutTotaledInput {
-  id: StringFieldUpdateOperationsInput
-  Venue: VenueUpdateOneRequiredWithoutLiveOutVenueNestedInput
-  joined: JoinedOutUpdateManyWithoutLiveOutVenueNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input LiveOutVenueUpdateWithoutVenueInput {
   id: StringFieldUpdateOperationsInput
-  joined: JoinedOutUpdateManyWithoutLiveOutVenueNestedInput
-  totaled: TotaledOutUpdateManyWithoutLiveOutVenueNestedInput
+  Out: OutUpdateManyWithoutLiveOutVenueNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input LiveOutVenueUpsertWithoutJoinedInput {
-  update: LiveOutVenueUpdateWithoutJoinedInput!
-  create: LiveOutVenueCreateWithoutJoinedInput!
-}
-
-input LiveOutVenueUpsertWithoutTotaledInput {
-  update: LiveOutVenueUpdateWithoutTotaledInput!
-  create: LiveOutVenueCreateWithoutTotaledInput!
+input LiveOutVenueUpsertWithoutOutInput {
+  update: LiveOutVenueUpdateWithoutOutInput!
+  create: LiveOutVenueCreateWithoutOutInput!
 }
 
 input LiveOutVenueUpsertWithoutVenueInput {
@@ -5284,8 +4762,7 @@ input LiveOutVenueWhereInput {
   id: StringFilter
   Venue: VenueWhereInput
   venueId: StringFilter
-  joined: JoinedOutListRelationFilter
-  totaled: TotaledOutListRelationFilter
+  Out: OutListRelationFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
@@ -5296,8 +4773,8 @@ input LiveOutVenueWhereUniqueInput {
 }
 
 type LiveVenueTotals {
-  totaled: [TotaledOut!]!
-  joined: [JoinedOut!]!
+  totaled: [Out!]!
+  joined: [Out!]!
 }
 
 type Location {
@@ -6327,8 +5804,9 @@ type Mutation {
   qrAddFriend(qrCodeProfileId: String!, dataHash: String!): Relationship!
   addPersonalTotalsVenue(profileIdVenue: String, profileIdPersonal: String): Boolean!
   removePersonalTotalsVenue(profileIdVenue: String, profileIdPersonal: String): Boolean!
-  addPersonalJoinsVenue(profileIdVenue: String, profileIdPersonal: String): Boolean!
-  removePersonalJoinsVenue(profileIdVenue: String, profileIdPersonal: String): Boolean!
+  removeAllFromVenue(profileIdVenue: String): Boolean!
+  addPersonalJoinsVenue(profileIdVenue: String, profileIdPersonal: String): Profile!
+  removePersonalJoinsVenue(outId: String!): Profile!
   createGuestProfile: ProfileResponseUnion!
   createVenueProfile(data: CreateVenueDataInput): ProfileResponseUnion!
   createPersonalProfile(data: CreatePersonalDataInput): ProfileResponseUnion!
@@ -6415,6 +5893,23 @@ input NestedDateTimeWithAggregatesFilter {
   _max: NestedDateTimeFilter
 }
 
+input NestedEnumOutTypeFilter {
+  equals: OutType
+  in: [OutType!]
+  notIn: [OutType!]
+  not: OutType
+}
+
+input NestedEnumOutTypeWithAggregatesFilter {
+  equals: OutType
+  in: [OutType!]
+  notIn: [OutType!]
+  not: OutType
+  _count: NestedIntFilter
+  _min: NestedEnumOutTypeFilter
+  _max: NestedEnumOutTypeFilter
+}
+
 input NestedEnumPhotoTypeNullableFilter {
   equals: PhotoType
   in: [PhotoType!]
@@ -6464,23 +5959,6 @@ input NestedEnumSecureDataTypeWithAggregatesFilter {
   _count: NestedIntFilter
   _min: NestedEnumSecureDataTypeFilter
   _max: NestedEnumSecureDataTypeFilter
-}
-
-input NestedEnumTagTypeFilter {
-  equals: TagType
-  in: [TagType!]
-  notIn: [TagType!]
-  not: TagType
-}
-
-input NestedEnumTagTypeWithAggregatesFilter {
-  equals: TagType
-  in: [TagType!]
-  notIn: [TagType!]
-  not: TagType
-  _count: NestedIntFilter
-  _min: NestedEnumTagTypeFilter
-  _max: NestedEnumTagTypeFilter
 }
 
 input NestedEnumTypeOfDocumentFilter {
@@ -7076,6 +6554,585 @@ input NullableStringFieldUpdateOperationsInput {
   set: String
 }
 
+type Out {
+  id: ID!
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  VenueStats: VenueStats
+  venueStatsId: String
+  PersonalStats: PersonalStats
+  personalStatsId: String
+  LiveOutVenue: LiveOutVenue
+  liveOutVenueId: String
+  leftAt: DateTime
+  LiveOutPersonal: LiveOutPersonal
+  liveOutPersonalId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input OutCountOrderByAggregateInput {
+  id: SortOrder
+  type: SortOrder
+  personalProfileId: SortOrder
+  venueProfileId: SortOrder
+  venueStatsId: SortOrder
+  personalStatsId: SortOrder
+  liveOutVenueId: SortOrder
+  leftAt: SortOrder
+  liveOutPersonalId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input OutCreateInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  VenueStats: VenueStatsCreateNestedOneWithoutOutInput
+  PersonalStats: PersonalStatsCreateNestedOneWithoutOutInput
+  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutOutInput
+  leftAt: DateTime
+  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutOutInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateManyInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  venueStatsId: String
+  personalStatsId: String
+  liveOutVenueId: String
+  leftAt: DateTime
+  liveOutPersonalId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateManyLiveOutPersonalInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  venueStatsId: String
+  personalStatsId: String
+  liveOutVenueId: String
+  leftAt: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateManyLiveOutPersonalInputEnvelope {
+  data: [OutCreateManyLiveOutPersonalInput!]!
+  skipDuplicates: Boolean
+}
+
+input OutCreateManyLiveOutVenueInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  venueStatsId: String
+  personalStatsId: String
+  leftAt: DateTime
+  liveOutPersonalId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateManyLiveOutVenueInputEnvelope {
+  data: [OutCreateManyLiveOutVenueInput!]!
+  skipDuplicates: Boolean
+}
+
+input OutCreateManyPersonalStatsInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  venueStatsId: String
+  liveOutVenueId: String
+  leftAt: DateTime
+  liveOutPersonalId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateManyPersonalStatsInputEnvelope {
+  data: [OutCreateManyPersonalStatsInput!]!
+  skipDuplicates: Boolean
+}
+
+input OutCreateManyVenueStatsInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  personalStatsId: String
+  liveOutVenueId: String
+  leftAt: DateTime
+  liveOutPersonalId: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateManyVenueStatsInputEnvelope {
+  data: [OutCreateManyVenueStatsInput!]!
+  skipDuplicates: Boolean
+}
+
+input OutCreateNestedManyWithoutLiveOutPersonalInput {
+  create: OutCreateWithoutLiveOutPersonalInput
+  connectOrCreate: [OutCreateOrConnectWithoutLiveOutPersonalInput!]
+  createMany: OutCreateManyLiveOutPersonalInputEnvelope
+  connect: [OutWhereUniqueInput!]
+}
+
+input OutCreateNestedManyWithoutLiveOutVenueInput {
+  create: OutCreateWithoutLiveOutVenueInput
+  connectOrCreate: [OutCreateOrConnectWithoutLiveOutVenueInput!]
+  createMany: OutCreateManyLiveOutVenueInputEnvelope
+  connect: [OutWhereUniqueInput!]
+}
+
+input OutCreateNestedManyWithoutPersonalStatsInput {
+  create: OutCreateWithoutPersonalStatsInput
+  connectOrCreate: [OutCreateOrConnectWithoutPersonalStatsInput!]
+  createMany: OutCreateManyPersonalStatsInputEnvelope
+  connect: [OutWhereUniqueInput!]
+}
+
+input OutCreateNestedManyWithoutVenueStatsInput {
+  create: OutCreateWithoutVenueStatsInput
+  connectOrCreate: [OutCreateOrConnectWithoutVenueStatsInput!]
+  createMany: OutCreateManyVenueStatsInputEnvelope
+  connect: [OutWhereUniqueInput!]
+}
+
+input OutCreateOrConnectWithoutLiveOutPersonalInput {
+  where: OutWhereUniqueInput!
+  create: OutCreateWithoutLiveOutPersonalInput!
+}
+
+input OutCreateOrConnectWithoutLiveOutVenueInput {
+  where: OutWhereUniqueInput!
+  create: OutCreateWithoutLiveOutVenueInput!
+}
+
+input OutCreateOrConnectWithoutPersonalStatsInput {
+  where: OutWhereUniqueInput!
+  create: OutCreateWithoutPersonalStatsInput!
+}
+
+input OutCreateOrConnectWithoutVenueStatsInput {
+  where: OutWhereUniqueInput!
+  create: OutCreateWithoutVenueStatsInput!
+}
+
+input OutCreateWithoutLiveOutPersonalInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  VenueStats: VenueStatsCreateNestedOneWithoutOutInput
+  PersonalStats: PersonalStatsCreateNestedOneWithoutOutInput
+  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutOutInput
+  leftAt: DateTime
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateWithoutLiveOutVenueInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  VenueStats: VenueStatsCreateNestedOneWithoutOutInput
+  PersonalStats: PersonalStatsCreateNestedOneWithoutOutInput
+  leftAt: DateTime
+  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutOutInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateWithoutPersonalStatsInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  VenueStats: VenueStatsCreateNestedOneWithoutOutInput
+  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutOutInput
+  leftAt: DateTime
+  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutOutInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutCreateWithoutVenueStatsInput {
+  id: String
+  type: OutType!
+  personalProfileId: String!
+  venueProfileId: String!
+  PersonalStats: PersonalStatsCreateNestedOneWithoutOutInput
+  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutOutInput
+  leftAt: DateTime
+  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutOutInput
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input OutListRelationFilter {
+  every: OutWhereInput
+  some: OutWhereInput
+  none: OutWhereInput
+}
+
+input OutMaxOrderByAggregateInput {
+  id: SortOrder
+  type: SortOrder
+  personalProfileId: SortOrder
+  venueProfileId: SortOrder
+  venueStatsId: SortOrder
+  personalStatsId: SortOrder
+  liveOutVenueId: SortOrder
+  leftAt: SortOrder
+  liveOutPersonalId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input OutMinOrderByAggregateInput {
+  id: SortOrder
+  type: SortOrder
+  personalProfileId: SortOrder
+  venueProfileId: SortOrder
+  venueStatsId: SortOrder
+  personalStatsId: SortOrder
+  liveOutVenueId: SortOrder
+  leftAt: SortOrder
+  liveOutPersonalId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input OutOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
+input OutOrderByWithAggregationInput {
+  id: SortOrder
+  type: SortOrder
+  personalProfileId: SortOrder
+  venueProfileId: SortOrder
+  venueStatsId: SortOrder
+  personalStatsId: SortOrder
+  liveOutVenueId: SortOrder
+  leftAt: SortOrder
+  liveOutPersonalId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  _count: OutCountOrderByAggregateInput
+  _max: OutMaxOrderByAggregateInput
+  _min: OutMinOrderByAggregateInput
+}
+
+input OutOrderByWithRelationInput {
+  id: SortOrder
+  type: SortOrder
+  personalProfileId: SortOrder
+  venueProfileId: SortOrder
+  VenueStats: VenueStatsOrderByWithRelationInput
+  venueStatsId: SortOrder
+  PersonalStats: PersonalStatsOrderByWithRelationInput
+  personalStatsId: SortOrder
+  LiveOutVenue: LiveOutVenueOrderByWithRelationInput
+  liveOutVenueId: SortOrder
+  leftAt: SortOrder
+  LiveOutPersonal: LiveOutPersonalOrderByWithRelationInput
+  liveOutPersonalId: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+enum OutScalarFieldEnum {
+  id
+  type
+  personalProfileId
+  venueProfileId
+  venueStatsId
+  personalStatsId
+  liveOutVenueId
+  leftAt
+  liveOutPersonalId
+  createdAt
+  updatedAt
+}
+
+input OutScalarWhereInput {
+  AND: [OutScalarWhereInput!]
+  OR: [OutScalarWhereInput!]
+  NOT: [OutScalarWhereInput!]
+  id: StringFilter
+  type: EnumOutTypeFilter
+  personalProfileId: StringFilter
+  venueProfileId: StringFilter
+  venueStatsId: StringNullableFilter
+  personalStatsId: StringNullableFilter
+  liveOutVenueId: StringNullableFilter
+  leftAt: DateTimeNullableFilter
+  liveOutPersonalId: StringNullableFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input OutScalarWhereWithAggregatesInput {
+  AND: [OutScalarWhereWithAggregatesInput!]
+  OR: [OutScalarWhereWithAggregatesInput!]
+  NOT: [OutScalarWhereWithAggregatesInput!]
+  id: StringWithAggregatesFilter
+  type: EnumOutTypeWithAggregatesFilter
+  personalProfileId: StringWithAggregatesFilter
+  venueProfileId: StringWithAggregatesFilter
+  venueStatsId: StringNullableWithAggregatesFilter
+  personalStatsId: StringNullableWithAggregatesFilter
+  liveOutVenueId: StringNullableWithAggregatesFilter
+  leftAt: DateTimeNullableWithAggregatesFilter
+  liveOutPersonalId: StringNullableWithAggregatesFilter
+  createdAt: DateTimeWithAggregatesFilter
+  updatedAt: DateTimeWithAggregatesFilter
+}
+
+enum OutType {
+  TOTAL
+  JOIN
+}
+
+input OutUpdateInput {
+  id: StringFieldUpdateOperationsInput
+  type: EnumOutTypeFieldUpdateOperationsInput
+  personalProfileId: StringFieldUpdateOperationsInput
+  venueProfileId: StringFieldUpdateOperationsInput
+  VenueStats: VenueStatsUpdateOneWithoutOutNestedInput
+  PersonalStats: PersonalStatsUpdateOneWithoutOutNestedInput
+  LiveOutVenue: LiveOutVenueUpdateOneWithoutOutNestedInput
+  leftAt: NullableDateTimeFieldUpdateOperationsInput
+  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutOutNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input OutUpdateManyMutationInput {
+  id: StringFieldUpdateOperationsInput
+  type: EnumOutTypeFieldUpdateOperationsInput
+  personalProfileId: StringFieldUpdateOperationsInput
+  venueProfileId: StringFieldUpdateOperationsInput
+  leftAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input OutUpdateManyWithWhereWithoutLiveOutPersonalInput {
+  where: OutScalarWhereInput!
+  data: OutUpdateManyMutationInput!
+}
+
+input OutUpdateManyWithWhereWithoutLiveOutVenueInput {
+  where: OutScalarWhereInput!
+  data: OutUpdateManyMutationInput!
+}
+
+input OutUpdateManyWithWhereWithoutPersonalStatsInput {
+  where: OutScalarWhereInput!
+  data: OutUpdateManyMutationInput!
+}
+
+input OutUpdateManyWithWhereWithoutVenueStatsInput {
+  where: OutScalarWhereInput!
+  data: OutUpdateManyMutationInput!
+}
+
+input OutUpdateManyWithoutLiveOutPersonalNestedInput {
+  create: OutCreateWithoutLiveOutPersonalInput
+  connectOrCreate: [OutCreateOrConnectWithoutLiveOutPersonalInput!]
+  upsert: [OutUpsertWithWhereUniqueWithoutLiveOutPersonalInput!]
+  createMany: OutCreateManyLiveOutPersonalInputEnvelope
+  set: [OutWhereUniqueInput!]
+  disconnect: [OutWhereUniqueInput!]
+  delete: [OutWhereUniqueInput!]
+  connect: [OutWhereUniqueInput!]
+  update: [OutUpdateWithWhereUniqueWithoutLiveOutPersonalInput!]
+  updateMany: [OutUpdateManyWithWhereWithoutLiveOutPersonalInput!]
+  deleteMany: [OutScalarWhereInput!]
+}
+
+input OutUpdateManyWithoutLiveOutVenueNestedInput {
+  create: OutCreateWithoutLiveOutVenueInput
+  connectOrCreate: [OutCreateOrConnectWithoutLiveOutVenueInput!]
+  upsert: [OutUpsertWithWhereUniqueWithoutLiveOutVenueInput!]
+  createMany: OutCreateManyLiveOutVenueInputEnvelope
+  set: [OutWhereUniqueInput!]
+  disconnect: [OutWhereUniqueInput!]
+  delete: [OutWhereUniqueInput!]
+  connect: [OutWhereUniqueInput!]
+  update: [OutUpdateWithWhereUniqueWithoutLiveOutVenueInput!]
+  updateMany: [OutUpdateManyWithWhereWithoutLiveOutVenueInput!]
+  deleteMany: [OutScalarWhereInput!]
+}
+
+input OutUpdateManyWithoutPersonalStatsNestedInput {
+  create: OutCreateWithoutPersonalStatsInput
+  connectOrCreate: [OutCreateOrConnectWithoutPersonalStatsInput!]
+  upsert: [OutUpsertWithWhereUniqueWithoutPersonalStatsInput!]
+  createMany: OutCreateManyPersonalStatsInputEnvelope
+  set: [OutWhereUniqueInput!]
+  disconnect: [OutWhereUniqueInput!]
+  delete: [OutWhereUniqueInput!]
+  connect: [OutWhereUniqueInput!]
+  update: [OutUpdateWithWhereUniqueWithoutPersonalStatsInput!]
+  updateMany: [OutUpdateManyWithWhereWithoutPersonalStatsInput!]
+  deleteMany: [OutScalarWhereInput!]
+}
+
+input OutUpdateManyWithoutVenueStatsNestedInput {
+  create: OutCreateWithoutVenueStatsInput
+  connectOrCreate: [OutCreateOrConnectWithoutVenueStatsInput!]
+  upsert: [OutUpsertWithWhereUniqueWithoutVenueStatsInput!]
+  createMany: OutCreateManyVenueStatsInputEnvelope
+  set: [OutWhereUniqueInput!]
+  disconnect: [OutWhereUniqueInput!]
+  delete: [OutWhereUniqueInput!]
+  connect: [OutWhereUniqueInput!]
+  update: [OutUpdateWithWhereUniqueWithoutVenueStatsInput!]
+  updateMany: [OutUpdateManyWithWhereWithoutVenueStatsInput!]
+  deleteMany: [OutScalarWhereInput!]
+}
+
+input OutUpdateWithWhereUniqueWithoutLiveOutPersonalInput {
+  where: OutWhereUniqueInput!
+  data: OutUpdateWithoutLiveOutPersonalInput!
+}
+
+input OutUpdateWithWhereUniqueWithoutLiveOutVenueInput {
+  where: OutWhereUniqueInput!
+  data: OutUpdateWithoutLiveOutVenueInput!
+}
+
+input OutUpdateWithWhereUniqueWithoutPersonalStatsInput {
+  where: OutWhereUniqueInput!
+  data: OutUpdateWithoutPersonalStatsInput!
+}
+
+input OutUpdateWithWhereUniqueWithoutVenueStatsInput {
+  where: OutWhereUniqueInput!
+  data: OutUpdateWithoutVenueStatsInput!
+}
+
+input OutUpdateWithoutLiveOutPersonalInput {
+  id: StringFieldUpdateOperationsInput
+  type: EnumOutTypeFieldUpdateOperationsInput
+  personalProfileId: StringFieldUpdateOperationsInput
+  venueProfileId: StringFieldUpdateOperationsInput
+  VenueStats: VenueStatsUpdateOneWithoutOutNestedInput
+  PersonalStats: PersonalStatsUpdateOneWithoutOutNestedInput
+  LiveOutVenue: LiveOutVenueUpdateOneWithoutOutNestedInput
+  leftAt: NullableDateTimeFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input OutUpdateWithoutLiveOutVenueInput {
+  id: StringFieldUpdateOperationsInput
+  type: EnumOutTypeFieldUpdateOperationsInput
+  personalProfileId: StringFieldUpdateOperationsInput
+  venueProfileId: StringFieldUpdateOperationsInput
+  VenueStats: VenueStatsUpdateOneWithoutOutNestedInput
+  PersonalStats: PersonalStatsUpdateOneWithoutOutNestedInput
+  leftAt: NullableDateTimeFieldUpdateOperationsInput
+  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutOutNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input OutUpdateWithoutPersonalStatsInput {
+  id: StringFieldUpdateOperationsInput
+  type: EnumOutTypeFieldUpdateOperationsInput
+  personalProfileId: StringFieldUpdateOperationsInput
+  venueProfileId: StringFieldUpdateOperationsInput
+  VenueStats: VenueStatsUpdateOneWithoutOutNestedInput
+  LiveOutVenue: LiveOutVenueUpdateOneWithoutOutNestedInput
+  leftAt: NullableDateTimeFieldUpdateOperationsInput
+  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutOutNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input OutUpdateWithoutVenueStatsInput {
+  id: StringFieldUpdateOperationsInput
+  type: EnumOutTypeFieldUpdateOperationsInput
+  personalProfileId: StringFieldUpdateOperationsInput
+  venueProfileId: StringFieldUpdateOperationsInput
+  PersonalStats: PersonalStatsUpdateOneWithoutOutNestedInput
+  LiveOutVenue: LiveOutVenueUpdateOneWithoutOutNestedInput
+  leftAt: NullableDateTimeFieldUpdateOperationsInput
+  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutOutNestedInput
+  createdAt: DateTimeFieldUpdateOperationsInput
+  updatedAt: DateTimeFieldUpdateOperationsInput
+}
+
+input OutUpsertWithWhereUniqueWithoutLiveOutPersonalInput {
+  where: OutWhereUniqueInput!
+  update: OutUpdateWithoutLiveOutPersonalInput!
+  create: OutCreateWithoutLiveOutPersonalInput!
+}
+
+input OutUpsertWithWhereUniqueWithoutLiveOutVenueInput {
+  where: OutWhereUniqueInput!
+  update: OutUpdateWithoutLiveOutVenueInput!
+  create: OutCreateWithoutLiveOutVenueInput!
+}
+
+input OutUpsertWithWhereUniqueWithoutPersonalStatsInput {
+  where: OutWhereUniqueInput!
+  update: OutUpdateWithoutPersonalStatsInput!
+  create: OutCreateWithoutPersonalStatsInput!
+}
+
+input OutUpsertWithWhereUniqueWithoutVenueStatsInput {
+  where: OutWhereUniqueInput!
+  update: OutUpdateWithoutVenueStatsInput!
+  create: OutCreateWithoutVenueStatsInput!
+}
+
+input OutWhereInput {
+  AND: [OutWhereInput!]
+  OR: [OutWhereInput!]
+  NOT: [OutWhereInput!]
+  id: StringFilter
+  type: EnumOutTypeFilter
+  personalProfileId: StringFilter
+  venueProfileId: StringFilter
+  VenueStats: VenueStatsWhereInput
+  venueStatsId: StringNullableFilter
+  PersonalStats: PersonalStatsWhereInput
+  personalStatsId: StringNullableFilter
+  LiveOutVenue: LiveOutVenueWhereInput
+  liveOutVenueId: StringNullableFilter
+  leftAt: DateTimeNullableFilter
+  LiveOutPersonal: LiveOutPersonalWhereInput
+  liveOutPersonalId: StringNullableFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+}
+
+input OutWhereUniqueInput {
+  id: String
+}
+
 type Password {
   id: ID!
   password: String!
@@ -7616,8 +7673,7 @@ input PersonalScalarWhereWithAggregatesInput {
 type PersonalStats {
   id: ID!
   Personal: Personal
-  joinedVenueHistory(where: JoinedOutWhereInput, orderBy: [JoinedOutOrderByWithRelationInput!], cursor: JoinedOutWhereUniqueInput, take: Int, skip: Int, distinct: [JoinedOutScalarFieldEnum!]): [JoinedOut!]!
-  totaledVenueHistory(where: TotaledOutWhereInput, orderBy: [TotaledOutOrderByWithRelationInput!], cursor: TotaledOutWhereUniqueInput, take: Int, skip: Int, distinct: [TotaledOutScalarFieldEnum!]): [TotaledOut!]!
+  Out(where: OutWhereInput, orderBy: [OutOrderByWithRelationInput!], cursor: OutWhereUniqueInput, take: Int, skip: Int, distinct: [OutScalarFieldEnum!]): [Out!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -7631,8 +7687,7 @@ input PersonalStatsCountOrderByAggregateInput {
 input PersonalStatsCreateInput {
   id: String
   Personal: PersonalCreateNestedOneWithoutPersonalStatsInput
-  joinedVenueHistory: JoinedOutCreateNestedManyWithoutPersonalStatsInput
-  totaledVenueHistory: TotaledOutCreateNestedManyWithoutPersonalStatsInput
+  Out: OutCreateNestedManyWithoutPersonalStatsInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -7643,9 +7698,9 @@ input PersonalStatsCreateManyInput {
   updatedAt: DateTime
 }
 
-input PersonalStatsCreateNestedOneWithoutJoinedVenueHistoryInput {
-  create: PersonalStatsCreateWithoutJoinedVenueHistoryInput
-  connectOrCreate: PersonalStatsCreateOrConnectWithoutJoinedVenueHistoryInput
+input PersonalStatsCreateNestedOneWithoutOutInput {
+  create: PersonalStatsCreateWithoutOutInput
+  connectOrCreate: PersonalStatsCreateOrConnectWithoutOutInput
   connect: PersonalStatsWhereUniqueInput
 }
 
@@ -7655,15 +7710,9 @@ input PersonalStatsCreateNestedOneWithoutPersonalInput {
   connect: PersonalStatsWhereUniqueInput
 }
 
-input PersonalStatsCreateNestedOneWithoutTotaledVenueHistoryInput {
-  create: PersonalStatsCreateWithoutTotaledVenueHistoryInput
-  connectOrCreate: PersonalStatsCreateOrConnectWithoutTotaledVenueHistoryInput
-  connect: PersonalStatsWhereUniqueInput
-}
-
-input PersonalStatsCreateOrConnectWithoutJoinedVenueHistoryInput {
+input PersonalStatsCreateOrConnectWithoutOutInput {
   where: PersonalStatsWhereUniqueInput!
-  create: PersonalStatsCreateWithoutJoinedVenueHistoryInput!
+  create: PersonalStatsCreateWithoutOutInput!
 }
 
 input PersonalStatsCreateOrConnectWithoutPersonalInput {
@@ -7671,31 +7720,16 @@ input PersonalStatsCreateOrConnectWithoutPersonalInput {
   create: PersonalStatsCreateWithoutPersonalInput!
 }
 
-input PersonalStatsCreateOrConnectWithoutTotaledVenueHistoryInput {
-  where: PersonalStatsWhereUniqueInput!
-  create: PersonalStatsCreateWithoutTotaledVenueHistoryInput!
-}
-
-input PersonalStatsCreateWithoutJoinedVenueHistoryInput {
+input PersonalStatsCreateWithoutOutInput {
   id: String
   Personal: PersonalCreateNestedOneWithoutPersonalStatsInput
-  totaledVenueHistory: TotaledOutCreateNestedManyWithoutPersonalStatsInput
   createdAt: DateTime
   updatedAt: DateTime
 }
 
 input PersonalStatsCreateWithoutPersonalInput {
   id: String
-  joinedVenueHistory: JoinedOutCreateNestedManyWithoutPersonalStatsInput
-  totaledVenueHistory: TotaledOutCreateNestedManyWithoutPersonalStatsInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input PersonalStatsCreateWithoutTotaledVenueHistoryInput {
-  id: String
-  Personal: PersonalCreateNestedOneWithoutPersonalStatsInput
-  joinedVenueHistory: JoinedOutCreateNestedManyWithoutPersonalStatsInput
+  Out: OutCreateNestedManyWithoutPersonalStatsInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -7724,8 +7758,7 @@ input PersonalStatsOrderByWithAggregationInput {
 input PersonalStatsOrderByWithRelationInput {
   id: SortOrder
   Personal: PersonalOrderByWithRelationInput
-  joinedVenueHistory: JoinedOutOrderByRelationAggregateInput
-  totaledVenueHistory: TotaledOutOrderByRelationAggregateInput
+  Out: OutOrderByRelationAggregateInput
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -7753,8 +7786,7 @@ input PersonalStatsScalarWhereWithAggregatesInput {
 input PersonalStatsUpdateInput {
   id: StringFieldUpdateOperationsInput
   Personal: PersonalUpdateOneWithoutPersonalStatsNestedInput
-  joinedVenueHistory: JoinedOutUpdateManyWithoutPersonalStatsNestedInput
-  totaledVenueHistory: TotaledOutUpdateManyWithoutPersonalStatsNestedInput
+  Out: OutUpdateManyWithoutPersonalStatsNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -7765,14 +7797,14 @@ input PersonalStatsUpdateManyMutationInput {
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input PersonalStatsUpdateOneWithoutJoinedVenueHistoryNestedInput {
-  create: PersonalStatsCreateWithoutJoinedVenueHistoryInput
-  connectOrCreate: PersonalStatsCreateOrConnectWithoutJoinedVenueHistoryInput
-  upsert: PersonalStatsUpsertWithoutJoinedVenueHistoryInput
+input PersonalStatsUpdateOneWithoutOutNestedInput {
+  create: PersonalStatsCreateWithoutOutInput
+  connectOrCreate: PersonalStatsCreateOrConnectWithoutOutInput
+  upsert: PersonalStatsUpsertWithoutOutInput
   disconnect: Boolean
   delete: Boolean
   connect: PersonalStatsWhereUniqueInput
-  update: PersonalStatsUpdateWithoutJoinedVenueHistoryInput
+  update: PersonalStatsUpdateWithoutOutInput
 }
 
 input PersonalStatsUpdateOneWithoutPersonalNestedInput {
@@ -7785,53 +7817,28 @@ input PersonalStatsUpdateOneWithoutPersonalNestedInput {
   update: PersonalStatsUpdateWithoutPersonalInput
 }
 
-input PersonalStatsUpdateOneWithoutTotaledVenueHistoryNestedInput {
-  create: PersonalStatsCreateWithoutTotaledVenueHistoryInput
-  connectOrCreate: PersonalStatsCreateOrConnectWithoutTotaledVenueHistoryInput
-  upsert: PersonalStatsUpsertWithoutTotaledVenueHistoryInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: PersonalStatsWhereUniqueInput
-  update: PersonalStatsUpdateWithoutTotaledVenueHistoryInput
-}
-
-input PersonalStatsUpdateWithoutJoinedVenueHistoryInput {
+input PersonalStatsUpdateWithoutOutInput {
   id: StringFieldUpdateOperationsInput
   Personal: PersonalUpdateOneWithoutPersonalStatsNestedInput
-  totaledVenueHistory: TotaledOutUpdateManyWithoutPersonalStatsNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input PersonalStatsUpdateWithoutPersonalInput {
   id: StringFieldUpdateOperationsInput
-  joinedVenueHistory: JoinedOutUpdateManyWithoutPersonalStatsNestedInput
-  totaledVenueHistory: TotaledOutUpdateManyWithoutPersonalStatsNestedInput
+  Out: OutUpdateManyWithoutPersonalStatsNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input PersonalStatsUpdateWithoutTotaledVenueHistoryInput {
-  id: StringFieldUpdateOperationsInput
-  Personal: PersonalUpdateOneWithoutPersonalStatsNestedInput
-  joinedVenueHistory: JoinedOutUpdateManyWithoutPersonalStatsNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input PersonalStatsUpsertWithoutJoinedVenueHistoryInput {
-  update: PersonalStatsUpdateWithoutJoinedVenueHistoryInput!
-  create: PersonalStatsCreateWithoutJoinedVenueHistoryInput!
+input PersonalStatsUpsertWithoutOutInput {
+  update: PersonalStatsUpdateWithoutOutInput!
+  create: PersonalStatsCreateWithoutOutInput!
 }
 
 input PersonalStatsUpsertWithoutPersonalInput {
   update: PersonalStatsUpdateWithoutPersonalInput!
   create: PersonalStatsCreateWithoutPersonalInput!
-}
-
-input PersonalStatsUpsertWithoutTotaledVenueHistoryInput {
-  update: PersonalStatsUpdateWithoutTotaledVenueHistoryInput!
-  create: PersonalStatsCreateWithoutTotaledVenueHistoryInput!
 }
 
 input PersonalStatsWhereInput {
@@ -7840,8 +7847,7 @@ input PersonalStatsWhereInput {
   NOT: [PersonalStatsWhereInput!]
   id: StringFilter
   Personal: PersonalWhereInput
-  joinedVenueHistory: JoinedOutListRelationFilter
-  totaledVenueHistory: TotaledOutListRelationFilter
+  Out: OutListRelationFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
@@ -8215,11 +8221,19 @@ input PhoneWhereUniqueInput {
 type Photo {
   id: ID!
   url: String!
-  active: Boolean!
+  width: Int
+  height: Int
   blurhash: String
   ratio: String
-  type: String
+  type: PhotoType
   position: Int
+  active: Boolean!
+  Story: Story
+  storyId: String
+  Group: Group
+  groupId: String
+  Profile: Profile
+  profileId: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -9035,7 +9049,8 @@ type Profile
 {
   id: String!
   bfsprofileid: String!
-  photos: [Photo!]!
+  photos: [Photo!]
+  profilePhoto: Photo
   tonightStory: Story
   Credentials: Credentials!
   Relationships: [Relationship!]!
@@ -10762,6 +10777,24 @@ input ProfileUpsertWithoutVenueInput {
   create: ProfileCreateWithoutVenueInput!
 }
 
+type ProfileVenue {
+  id: String!
+  distanceInM: Int
+  bfsprofileid: String!
+  photos: [Photo!]!
+  profilePhoto: Photo
+  tonightStory: Story
+  Credentials: Credentials!
+  Relationships: [Relationship!]!
+  Venue: Venue
+  IdentifiableInformation: IdentifiableInformation
+  DetailInformation: DetailInformation
+  ProfileType: ProfileType!
+  ThemeManager: ThemeManager
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 input ProfileWhereInput {
   AND: [ProfileWhereInput!]
   OR: [ProfileWhereInput!]
@@ -10809,14 +10842,17 @@ type Query {
   getNotifications: NotificationResponse!
   getRelationshipFriendRequestStatus(profileId: String!): NotificationFriendRequestStatusResponse!
   getSecureFriendQRCodeData: String!
+  getAllInterrests: [Json!]!
   getLiveVenueTotals(profileIdVenue: String): LiveVenueTotals!
+  H3IndexLatLng(cell: String!): [Float!]!
+  H3IndexGrid(cell: String!, ringSize: Int!): [String!]!
+  venuesNearby(searchAreaCoords: CoordsInput!, currentLocationCoords: CoordsInput, countryIsoCode: String!, stateIsoCode: String!, kRing: Int): VenuesNearbyResponse!
+  friendsFromContacts(contact: [ContactInput!]!): String!
   venues(where: VenueWhereInput, orderBy: [VenueOrderByWithRelationInput!], cursor: VenueWhereUniqueInput, take: Int, skip: Int, distinct: [VenueScalarFieldEnum!]): [Venue!]!
   venue(where: VenueWhereInput, orderBy: [VenueOrderByWithRelationInput!], cursor: VenueWhereUniqueInput, take: Int, skip: Int, distinct: [VenueScalarFieldEnum!]): Venue
   profiles(where: ProfileWhereInput, orderBy: [ProfileOrderByWithRelationInput!], cursor: ProfileWhereUniqueInput, take: Int, skip: Int, distinct: [ProfileScalarFieldEnum!]): [Profile!]!
   profile(where: ProfileWhereInput, orderBy: [ProfileOrderByWithRelationInput!], cursor: ProfileWhereUniqueInput, take: Int, skip: Int, distinct: [ProfileScalarFieldEnum!]): Profile
-  H3IndexLatLng(cell: String!): [Float!]!
-  H3IndexGrid(cell: String!, ringSize: Int!): [String!]!
-  venuesNearby(latitude: Float!, longitude: Float!, countryIsoCode: String!, stateIsoCode: String!, kRing: Int): VenuesNearbyResponse!
+  currentVenue(where: ProfileWhereInput, orderBy: [ProfileOrderByWithRelationInput!], cursor: ProfileWhereUniqueInput, take: Int, skip: Int, distinct: [ProfileScalarFieldEnum!], currentLocationCoords: CoordsInput): ProfileVenue
   getAllCountries: [CountryResponseObject!]!
   getAllStatesByCountry(countryIsoCode: String!): [StateResponseObject!]!
   getAllCitiesByState(countryIsoCode: String!, stateIsoCode: String!): [CityResponseObject!]!
@@ -11923,9 +11959,10 @@ input StringWithAggregatesFilter {
 type Tag {
   id: ID!
   name: String!
-  type: TagType!
   emoji: String
   DetailInformation(where: DetailInformationWhereInput, orderBy: [DetailInformationOrderByWithRelationInput!], cursor: DetailInformationWhereUniqueInput, take: Int, skip: Int, distinct: [DetailInformationScalarFieldEnum!]): [DetailInformation!]!
+  Category: Category
+  categoryId: String
 }
 
 input TagAvgOrderByAggregateInput {
@@ -11935,22 +11972,40 @@ input TagAvgOrderByAggregateInput {
 input TagCountOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
-  type: SortOrder
   emoji: SortOrder
+  categoryId: SortOrder
 }
 
 input TagCreateInput {
   name: String!
-  type: TagType!
   emoji: String
   DetailInformation: DetailInformationCreateNestedManyWithoutTagsInput
+  Category: CategoryCreateNestedOneWithoutTagsInput
+}
+
+input TagCreateManyCategoryInput {
+  id: Int
+  name: String!
+  emoji: String
+}
+
+input TagCreateManyCategoryInputEnvelope {
+  data: [TagCreateManyCategoryInput!]!
+  skipDuplicates: Boolean
 }
 
 input TagCreateManyInput {
   id: Int
   name: String!
-  type: TagType!
   emoji: String
+  categoryId: String
+}
+
+input TagCreateNestedManyWithoutCategoryInput {
+  create: TagCreateWithoutCategoryInput
+  connectOrCreate: [TagCreateOrConnectWithoutCategoryInput!]
+  createMany: TagCreateManyCategoryInputEnvelope
+  connect: [TagWhereUniqueInput!]
 }
 
 input TagCreateNestedManyWithoutDetailInformationInput {
@@ -11959,15 +12014,26 @@ input TagCreateNestedManyWithoutDetailInformationInput {
   connect: [TagWhereUniqueInput!]
 }
 
+input TagCreateOrConnectWithoutCategoryInput {
+  where: TagWhereUniqueInput!
+  create: TagCreateWithoutCategoryInput!
+}
+
 input TagCreateOrConnectWithoutDetailInformationInput {
   where: TagWhereUniqueInput!
   create: TagCreateWithoutDetailInformationInput!
 }
 
+input TagCreateWithoutCategoryInput {
+  name: String!
+  emoji: String
+  DetailInformation: DetailInformationCreateNestedManyWithoutTagsInput
+}
+
 input TagCreateWithoutDetailInformationInput {
   name: String!
-  type: TagType!
   emoji: String
+  Category: CategoryCreateNestedOneWithoutTagsInput
 }
 
 input TagListRelationFilter {
@@ -11979,15 +12045,15 @@ input TagListRelationFilter {
 input TagMaxOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
-  type: SortOrder
   emoji: SortOrder
+  categoryId: SortOrder
 }
 
 input TagMinOrderByAggregateInput {
   id: SortOrder
   name: SortOrder
-  type: SortOrder
   emoji: SortOrder
+  categoryId: SortOrder
 }
 
 input TagOrderByRelationAggregateInput {
@@ -11997,8 +12063,8 @@ input TagOrderByRelationAggregateInput {
 input TagOrderByWithAggregationInput {
   id: SortOrder
   name: SortOrder
-  type: SortOrder
   emoji: SortOrder
+  categoryId: SortOrder
   _count: TagCountOrderByAggregateInput
   _avg: TagAvgOrderByAggregateInput
   _max: TagMaxOrderByAggregateInput
@@ -12009,16 +12075,17 @@ input TagOrderByWithAggregationInput {
 input TagOrderByWithRelationInput {
   id: SortOrder
   name: SortOrder
-  type: SortOrder
   emoji: SortOrder
   DetailInformation: DetailInformationOrderByRelationAggregateInput
+  Category: CategoryOrderByWithRelationInput
+  categoryId: SortOrder
 }
 
 enum TagScalarFieldEnum {
   id
   name
-  type
   emoji
+  categoryId
 }
 
 input TagScalarWhereInput {
@@ -12027,8 +12094,8 @@ input TagScalarWhereInput {
   NOT: [TagScalarWhereInput!]
   id: IntFilter
   name: StringFilter
-  type: EnumTagTypeFilter
   emoji: StringNullableFilter
+  categoryId: StringNullableFilter
 }
 
 input TagScalarWhereWithAggregatesInput {
@@ -12037,35 +12104,48 @@ input TagScalarWhereWithAggregatesInput {
   NOT: [TagScalarWhereWithAggregatesInput!]
   id: IntWithAggregatesFilter
   name: StringWithAggregatesFilter
-  type: EnumTagTypeWithAggregatesFilter
   emoji: StringNullableWithAggregatesFilter
+  categoryId: StringNullableWithAggregatesFilter
 }
 
 input TagSumOrderByAggregateInput {
   id: SortOrder
 }
 
-enum TagType {
-  ACTIVITY
-  TYPE
-}
-
 input TagUpdateInput {
   name: StringFieldUpdateOperationsInput
-  type: EnumTagTypeFieldUpdateOperationsInput
   emoji: NullableStringFieldUpdateOperationsInput
   DetailInformation: DetailInformationUpdateManyWithoutTagsNestedInput
+  Category: CategoryUpdateOneWithoutTagsNestedInput
 }
 
 input TagUpdateManyMutationInput {
   name: StringFieldUpdateOperationsInput
-  type: EnumTagTypeFieldUpdateOperationsInput
   emoji: NullableStringFieldUpdateOperationsInput
+}
+
+input TagUpdateManyWithWhereWithoutCategoryInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyMutationInput!
 }
 
 input TagUpdateManyWithWhereWithoutDetailInformationInput {
   where: TagScalarWhereInput!
   data: TagUpdateManyMutationInput!
+}
+
+input TagUpdateManyWithoutCategoryNestedInput {
+  create: TagCreateWithoutCategoryInput
+  connectOrCreate: [TagCreateOrConnectWithoutCategoryInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutCategoryInput!]
+  createMany: TagCreateManyCategoryInputEnvelope
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  connect: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutCategoryInput!]
+  updateMany: [TagUpdateManyWithWhereWithoutCategoryInput!]
+  deleteMany: [TagScalarWhereInput!]
 }
 
 input TagUpdateManyWithoutDetailInformationNestedInput {
@@ -12081,15 +12161,32 @@ input TagUpdateManyWithoutDetailInformationNestedInput {
   deleteMany: [TagScalarWhereInput!]
 }
 
+input TagUpdateWithWhereUniqueWithoutCategoryInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutCategoryInput!
+}
+
 input TagUpdateWithWhereUniqueWithoutDetailInformationInput {
   where: TagWhereUniqueInput!
   data: TagUpdateWithoutDetailInformationInput!
 }
 
+input TagUpdateWithoutCategoryInput {
+  name: StringFieldUpdateOperationsInput
+  emoji: NullableStringFieldUpdateOperationsInput
+  DetailInformation: DetailInformationUpdateManyWithoutTagsNestedInput
+}
+
 input TagUpdateWithoutDetailInformationInput {
   name: StringFieldUpdateOperationsInput
-  type: EnumTagTypeFieldUpdateOperationsInput
   emoji: NullableStringFieldUpdateOperationsInput
+  Category: CategoryUpdateOneWithoutTagsNestedInput
+}
+
+input TagUpsertWithWhereUniqueWithoutCategoryInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutCategoryInput!
+  create: TagCreateWithoutCategoryInput!
 }
 
 input TagUpsertWithWhereUniqueWithoutDetailInformationInput {
@@ -12104,9 +12201,10 @@ input TagWhereInput {
   NOT: [TagWhereInput!]
   id: IntFilter
   name: StringFilter
-  type: EnumTagTypeFilter
   emoji: StringNullableFilter
   DetailInformation: DetailInformationListRelationFilter
+  Category: CategoryWhereInput
+  categoryId: StringNullableFilter
 }
 
 input TagWhereUniqueInput {
@@ -12724,554 +12822,6 @@ input TonightPathWhereUniqueInput {
   id: String
 }
 
-type TotaledOut {
-  id: ID!
-  personalProfileId: String!
-  venueProfileId: String!
-  VenueStats: VenueStats
-  venueStatsId: String
-  PersonalStats: PersonalStats
-  personalStatsId: String
-  LiveOutVenue: LiveOutVenue
-  liveOutVenueId: String
-  leftAt: DateTime
-  LiveOutPersonal: LiveOutPersonal
-  liveOutPersonalId: String
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-input TotaledOutCountOrderByAggregateInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-  liveOutVenueId: SortOrder
-  leftAt: SortOrder
-  liveOutPersonalId: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-}
-
-input TotaledOutCreateInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  VenueStats: VenueStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  PersonalStats: PersonalStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutTotaledInput
-  leftAt: DateTime
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutTotaledInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateManyInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  venueStatsId: String
-  personalStatsId: String
-  liveOutVenueId: String
-  leftAt: DateTime
-  liveOutPersonalId: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateManyLiveOutPersonalInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  venueStatsId: String
-  personalStatsId: String
-  liveOutVenueId: String
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateManyLiveOutPersonalInputEnvelope {
-  data: [TotaledOutCreateManyLiveOutPersonalInput!]!
-  skipDuplicates: Boolean
-}
-
-input TotaledOutCreateManyLiveOutVenueInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  venueStatsId: String
-  personalStatsId: String
-  leftAt: DateTime
-  liveOutPersonalId: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateManyLiveOutVenueInputEnvelope {
-  data: [TotaledOutCreateManyLiveOutVenueInput!]!
-  skipDuplicates: Boolean
-}
-
-input TotaledOutCreateManyPersonalStatsInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  venueStatsId: String
-  liveOutVenueId: String
-  leftAt: DateTime
-  liveOutPersonalId: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateManyPersonalStatsInputEnvelope {
-  data: [TotaledOutCreateManyPersonalStatsInput!]!
-  skipDuplicates: Boolean
-}
-
-input TotaledOutCreateManyVenueStatsInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  personalStatsId: String
-  liveOutVenueId: String
-  leftAt: DateTime
-  liveOutPersonalId: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateManyVenueStatsInputEnvelope {
-  data: [TotaledOutCreateManyVenueStatsInput!]!
-  skipDuplicates: Boolean
-}
-
-input TotaledOutCreateNestedManyWithoutLiveOutPersonalInput {
-  create: TotaledOutCreateWithoutLiveOutPersonalInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutLiveOutPersonalInput!]
-  createMany: TotaledOutCreateManyLiveOutPersonalInputEnvelope
-  connect: [TotaledOutWhereUniqueInput!]
-}
-
-input TotaledOutCreateNestedManyWithoutLiveOutVenueInput {
-  create: TotaledOutCreateWithoutLiveOutVenueInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutLiveOutVenueInput!]
-  createMany: TotaledOutCreateManyLiveOutVenueInputEnvelope
-  connect: [TotaledOutWhereUniqueInput!]
-}
-
-input TotaledOutCreateNestedManyWithoutPersonalStatsInput {
-  create: TotaledOutCreateWithoutPersonalStatsInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutPersonalStatsInput!]
-  createMany: TotaledOutCreateManyPersonalStatsInputEnvelope
-  connect: [TotaledOutWhereUniqueInput!]
-}
-
-input TotaledOutCreateNestedManyWithoutVenueStatsInput {
-  create: TotaledOutCreateWithoutVenueStatsInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutVenueStatsInput!]
-  createMany: TotaledOutCreateManyVenueStatsInputEnvelope
-  connect: [TotaledOutWhereUniqueInput!]
-}
-
-input TotaledOutCreateOrConnectWithoutLiveOutPersonalInput {
-  where: TotaledOutWhereUniqueInput!
-  create: TotaledOutCreateWithoutLiveOutPersonalInput!
-}
-
-input TotaledOutCreateOrConnectWithoutLiveOutVenueInput {
-  where: TotaledOutWhereUniqueInput!
-  create: TotaledOutCreateWithoutLiveOutVenueInput!
-}
-
-input TotaledOutCreateOrConnectWithoutPersonalStatsInput {
-  where: TotaledOutWhereUniqueInput!
-  create: TotaledOutCreateWithoutPersonalStatsInput!
-}
-
-input TotaledOutCreateOrConnectWithoutVenueStatsInput {
-  where: TotaledOutWhereUniqueInput!
-  create: TotaledOutCreateWithoutVenueStatsInput!
-}
-
-input TotaledOutCreateWithoutLiveOutPersonalInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  VenueStats: VenueStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  PersonalStats: PersonalStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutTotaledInput
-  leftAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateWithoutLiveOutVenueInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  VenueStats: VenueStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  PersonalStats: PersonalStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  leftAt: DateTime
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutTotaledInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateWithoutPersonalStatsInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  VenueStats: VenueStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutTotaledInput
-  leftAt: DateTime
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutTotaledInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutCreateWithoutVenueStatsInput {
-  id: String
-  personalProfileId: String!
-  venueProfileId: String!
-  PersonalStats: PersonalStatsCreateNestedOneWithoutTotaledVenueHistoryInput
-  LiveOutVenue: LiveOutVenueCreateNestedOneWithoutTotaledInput
-  leftAt: DateTime
-  LiveOutPersonal: LiveOutPersonalCreateNestedOneWithoutTotaledInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input TotaledOutListRelationFilter {
-  every: TotaledOutWhereInput
-  some: TotaledOutWhereInput
-  none: TotaledOutWhereInput
-}
-
-input TotaledOutMaxOrderByAggregateInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-  liveOutVenueId: SortOrder
-  leftAt: SortOrder
-  liveOutPersonalId: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-}
-
-input TotaledOutMinOrderByAggregateInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-  liveOutVenueId: SortOrder
-  leftAt: SortOrder
-  liveOutPersonalId: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-}
-
-input TotaledOutOrderByRelationAggregateInput {
-  _count: SortOrder
-}
-
-input TotaledOutOrderByWithAggregationInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  venueStatsId: SortOrder
-  personalStatsId: SortOrder
-  liveOutVenueId: SortOrder
-  leftAt: SortOrder
-  liveOutPersonalId: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-  _count: TotaledOutCountOrderByAggregateInput
-  _max: TotaledOutMaxOrderByAggregateInput
-  _min: TotaledOutMinOrderByAggregateInput
-}
-
-input TotaledOutOrderByWithRelationInput {
-  id: SortOrder
-  personalProfileId: SortOrder
-  venueProfileId: SortOrder
-  VenueStats: VenueStatsOrderByWithRelationInput
-  venueStatsId: SortOrder
-  PersonalStats: PersonalStatsOrderByWithRelationInput
-  personalStatsId: SortOrder
-  LiveOutVenue: LiveOutVenueOrderByWithRelationInput
-  liveOutVenueId: SortOrder
-  leftAt: SortOrder
-  LiveOutPersonal: LiveOutPersonalOrderByWithRelationInput
-  liveOutPersonalId: SortOrder
-  createdAt: SortOrder
-  updatedAt: SortOrder
-}
-
-enum TotaledOutScalarFieldEnum {
-  id
-  personalProfileId
-  venueProfileId
-  venueStatsId
-  personalStatsId
-  liveOutVenueId
-  leftAt
-  liveOutPersonalId
-  createdAt
-  updatedAt
-}
-
-input TotaledOutScalarWhereInput {
-  AND: [TotaledOutScalarWhereInput!]
-  OR: [TotaledOutScalarWhereInput!]
-  NOT: [TotaledOutScalarWhereInput!]
-  id: StringFilter
-  personalProfileId: StringFilter
-  venueProfileId: StringFilter
-  venueStatsId: StringNullableFilter
-  personalStatsId: StringNullableFilter
-  liveOutVenueId: StringNullableFilter
-  leftAt: DateTimeNullableFilter
-  liveOutPersonalId: StringNullableFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-}
-
-input TotaledOutScalarWhereWithAggregatesInput {
-  AND: [TotaledOutScalarWhereWithAggregatesInput!]
-  OR: [TotaledOutScalarWhereWithAggregatesInput!]
-  NOT: [TotaledOutScalarWhereWithAggregatesInput!]
-  id: StringWithAggregatesFilter
-  personalProfileId: StringWithAggregatesFilter
-  venueProfileId: StringWithAggregatesFilter
-  venueStatsId: StringNullableWithAggregatesFilter
-  personalStatsId: StringNullableWithAggregatesFilter
-  liveOutVenueId: StringNullableWithAggregatesFilter
-  leftAt: DateTimeNullableWithAggregatesFilter
-  liveOutPersonalId: StringNullableWithAggregatesFilter
-  createdAt: DateTimeWithAggregatesFilter
-  updatedAt: DateTimeWithAggregatesFilter
-}
-
-input TotaledOutUpdateInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: StringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  PersonalStats: PersonalStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutTotaledNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutTotaledNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input TotaledOutUpdateManyMutationInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: StringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input TotaledOutUpdateManyWithWhereWithoutLiveOutPersonalInput {
-  where: TotaledOutScalarWhereInput!
-  data: TotaledOutUpdateManyMutationInput!
-}
-
-input TotaledOutUpdateManyWithWhereWithoutLiveOutVenueInput {
-  where: TotaledOutScalarWhereInput!
-  data: TotaledOutUpdateManyMutationInput!
-}
-
-input TotaledOutUpdateManyWithWhereWithoutPersonalStatsInput {
-  where: TotaledOutScalarWhereInput!
-  data: TotaledOutUpdateManyMutationInput!
-}
-
-input TotaledOutUpdateManyWithWhereWithoutVenueStatsInput {
-  where: TotaledOutScalarWhereInput!
-  data: TotaledOutUpdateManyMutationInput!
-}
-
-input TotaledOutUpdateManyWithoutLiveOutPersonalNestedInput {
-  create: TotaledOutCreateWithoutLiveOutPersonalInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutLiveOutPersonalInput!]
-  upsert: [TotaledOutUpsertWithWhereUniqueWithoutLiveOutPersonalInput!]
-  createMany: TotaledOutCreateManyLiveOutPersonalInputEnvelope
-  set: [TotaledOutWhereUniqueInput!]
-  disconnect: [TotaledOutWhereUniqueInput!]
-  delete: [TotaledOutWhereUniqueInput!]
-  connect: [TotaledOutWhereUniqueInput!]
-  update: [TotaledOutUpdateWithWhereUniqueWithoutLiveOutPersonalInput!]
-  updateMany: [TotaledOutUpdateManyWithWhereWithoutLiveOutPersonalInput!]
-  deleteMany: [TotaledOutScalarWhereInput!]
-}
-
-input TotaledOutUpdateManyWithoutLiveOutVenueNestedInput {
-  create: TotaledOutCreateWithoutLiveOutVenueInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutLiveOutVenueInput!]
-  upsert: [TotaledOutUpsertWithWhereUniqueWithoutLiveOutVenueInput!]
-  createMany: TotaledOutCreateManyLiveOutVenueInputEnvelope
-  set: [TotaledOutWhereUniqueInput!]
-  disconnect: [TotaledOutWhereUniqueInput!]
-  delete: [TotaledOutWhereUniqueInput!]
-  connect: [TotaledOutWhereUniqueInput!]
-  update: [TotaledOutUpdateWithWhereUniqueWithoutLiveOutVenueInput!]
-  updateMany: [TotaledOutUpdateManyWithWhereWithoutLiveOutVenueInput!]
-  deleteMany: [TotaledOutScalarWhereInput!]
-}
-
-input TotaledOutUpdateManyWithoutPersonalStatsNestedInput {
-  create: TotaledOutCreateWithoutPersonalStatsInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutPersonalStatsInput!]
-  upsert: [TotaledOutUpsertWithWhereUniqueWithoutPersonalStatsInput!]
-  createMany: TotaledOutCreateManyPersonalStatsInputEnvelope
-  set: [TotaledOutWhereUniqueInput!]
-  disconnect: [TotaledOutWhereUniqueInput!]
-  delete: [TotaledOutWhereUniqueInput!]
-  connect: [TotaledOutWhereUniqueInput!]
-  update: [TotaledOutUpdateWithWhereUniqueWithoutPersonalStatsInput!]
-  updateMany: [TotaledOutUpdateManyWithWhereWithoutPersonalStatsInput!]
-  deleteMany: [TotaledOutScalarWhereInput!]
-}
-
-input TotaledOutUpdateManyWithoutVenueStatsNestedInput {
-  create: TotaledOutCreateWithoutVenueStatsInput
-  connectOrCreate: [TotaledOutCreateOrConnectWithoutVenueStatsInput!]
-  upsert: [TotaledOutUpsertWithWhereUniqueWithoutVenueStatsInput!]
-  createMany: TotaledOutCreateManyVenueStatsInputEnvelope
-  set: [TotaledOutWhereUniqueInput!]
-  disconnect: [TotaledOutWhereUniqueInput!]
-  delete: [TotaledOutWhereUniqueInput!]
-  connect: [TotaledOutWhereUniqueInput!]
-  update: [TotaledOutUpdateWithWhereUniqueWithoutVenueStatsInput!]
-  updateMany: [TotaledOutUpdateManyWithWhereWithoutVenueStatsInput!]
-  deleteMany: [TotaledOutScalarWhereInput!]
-}
-
-input TotaledOutUpdateWithWhereUniqueWithoutLiveOutPersonalInput {
-  where: TotaledOutWhereUniqueInput!
-  data: TotaledOutUpdateWithoutLiveOutPersonalInput!
-}
-
-input TotaledOutUpdateWithWhereUniqueWithoutLiveOutVenueInput {
-  where: TotaledOutWhereUniqueInput!
-  data: TotaledOutUpdateWithoutLiveOutVenueInput!
-}
-
-input TotaledOutUpdateWithWhereUniqueWithoutPersonalStatsInput {
-  where: TotaledOutWhereUniqueInput!
-  data: TotaledOutUpdateWithoutPersonalStatsInput!
-}
-
-input TotaledOutUpdateWithWhereUniqueWithoutVenueStatsInput {
-  where: TotaledOutWhereUniqueInput!
-  data: TotaledOutUpdateWithoutVenueStatsInput!
-}
-
-input TotaledOutUpdateWithoutLiveOutPersonalInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: StringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  PersonalStats: PersonalStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutTotaledNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input TotaledOutUpdateWithoutLiveOutVenueInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: StringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  PersonalStats: PersonalStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutTotaledNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input TotaledOutUpdateWithoutPersonalStatsInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: StringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  VenueStats: VenueStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutTotaledNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutTotaledNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input TotaledOutUpdateWithoutVenueStatsInput {
-  id: StringFieldUpdateOperationsInput
-  personalProfileId: StringFieldUpdateOperationsInput
-  venueProfileId: StringFieldUpdateOperationsInput
-  PersonalStats: PersonalStatsUpdateOneWithoutTotaledVenueHistoryNestedInput
-  LiveOutVenue: LiveOutVenueUpdateOneWithoutTotaledNestedInput
-  leftAt: NullableDateTimeFieldUpdateOperationsInput
-  LiveOutPersonal: LiveOutPersonalUpdateOneWithoutTotaledNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input TotaledOutUpsertWithWhereUniqueWithoutLiveOutPersonalInput {
-  where: TotaledOutWhereUniqueInput!
-  update: TotaledOutUpdateWithoutLiveOutPersonalInput!
-  create: TotaledOutCreateWithoutLiveOutPersonalInput!
-}
-
-input TotaledOutUpsertWithWhereUniqueWithoutLiveOutVenueInput {
-  where: TotaledOutWhereUniqueInput!
-  update: TotaledOutUpdateWithoutLiveOutVenueInput!
-  create: TotaledOutCreateWithoutLiveOutVenueInput!
-}
-
-input TotaledOutUpsertWithWhereUniqueWithoutPersonalStatsInput {
-  where: TotaledOutWhereUniqueInput!
-  update: TotaledOutUpdateWithoutPersonalStatsInput!
-  create: TotaledOutCreateWithoutPersonalStatsInput!
-}
-
-input TotaledOutUpsertWithWhereUniqueWithoutVenueStatsInput {
-  where: TotaledOutWhereUniqueInput!
-  update: TotaledOutUpdateWithoutVenueStatsInput!
-  create: TotaledOutCreateWithoutVenueStatsInput!
-}
-
-input TotaledOutWhereInput {
-  AND: [TotaledOutWhereInput!]
-  OR: [TotaledOutWhereInput!]
-  NOT: [TotaledOutWhereInput!]
-  id: StringFilter
-  personalProfileId: StringFilter
-  venueProfileId: StringFilter
-  VenueStats: VenueStatsWhereInput
-  venueStatsId: StringNullableFilter
-  PersonalStats: PersonalStatsWhereInput
-  personalStatsId: StringNullableFilter
-  LiveOutVenue: LiveOutVenueWhereInput
-  liveOutVenueId: StringNullableFilter
-  leftAt: DateTimeNullableFilter
-  LiveOutPersonal: LiveOutPersonalWhereInput
-  liveOutPersonalId: StringNullableFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-}
-
-input TotaledOutWhereUniqueInput {
-  id: String
-}
-
 enum TransactionIsolationLevel {
   ReadUncommitted
   ReadCommitted
@@ -13311,6 +12861,11 @@ type Venue {
   venueStatsId: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input VenueContactInput {
+  type: String
+  value: String!
 }
 
 input VenueCountOrderByAggregateInput {
@@ -13498,8 +13053,7 @@ input VenueScalarWhereWithAggregatesInput {
 type VenueStats {
   id: ID!
   Venue: Venue
-  joinedVenueHistory(where: JoinedOutWhereInput, orderBy: [JoinedOutOrderByWithRelationInput!], cursor: JoinedOutWhereUniqueInput, take: Int, skip: Int, distinct: [JoinedOutScalarFieldEnum!]): [JoinedOut!]!
-  totaledVenueHistory(where: TotaledOutWhereInput, orderBy: [TotaledOutOrderByWithRelationInput!], cursor: TotaledOutWhereUniqueInput, take: Int, skip: Int, distinct: [TotaledOutScalarFieldEnum!]): [TotaledOut!]!
+  Out(where: OutWhereInput, orderBy: [OutOrderByWithRelationInput!], cursor: OutWhereUniqueInput, take: Int, skip: Int, distinct: [OutScalarFieldEnum!]): [Out!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -13513,8 +13067,7 @@ input VenueStatsCountOrderByAggregateInput {
 input VenueStatsCreateInput {
   id: String
   Venue: VenueCreateNestedOneWithoutVenueStatsInput
-  joinedVenueHistory: JoinedOutCreateNestedManyWithoutVenueStatsInput
-  totaledVenueHistory: TotaledOutCreateNestedManyWithoutVenueStatsInput
+  Out: OutCreateNestedManyWithoutVenueStatsInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -13525,15 +13078,9 @@ input VenueStatsCreateManyInput {
   updatedAt: DateTime
 }
 
-input VenueStatsCreateNestedOneWithoutJoinedVenueHistoryInput {
-  create: VenueStatsCreateWithoutJoinedVenueHistoryInput
-  connectOrCreate: VenueStatsCreateOrConnectWithoutJoinedVenueHistoryInput
-  connect: VenueStatsWhereUniqueInput
-}
-
-input VenueStatsCreateNestedOneWithoutTotaledVenueHistoryInput {
-  create: VenueStatsCreateWithoutTotaledVenueHistoryInput
-  connectOrCreate: VenueStatsCreateOrConnectWithoutTotaledVenueHistoryInput
+input VenueStatsCreateNestedOneWithoutOutInput {
+  create: VenueStatsCreateWithoutOutInput
+  connectOrCreate: VenueStatsCreateOrConnectWithoutOutInput
   connect: VenueStatsWhereUniqueInput
 }
 
@@ -13543,14 +13090,9 @@ input VenueStatsCreateNestedOneWithoutVenueInput {
   connect: VenueStatsWhereUniqueInput
 }
 
-input VenueStatsCreateOrConnectWithoutJoinedVenueHistoryInput {
+input VenueStatsCreateOrConnectWithoutOutInput {
   where: VenueStatsWhereUniqueInput!
-  create: VenueStatsCreateWithoutJoinedVenueHistoryInput!
-}
-
-input VenueStatsCreateOrConnectWithoutTotaledVenueHistoryInput {
-  where: VenueStatsWhereUniqueInput!
-  create: VenueStatsCreateWithoutTotaledVenueHistoryInput!
+  create: VenueStatsCreateWithoutOutInput!
 }
 
 input VenueStatsCreateOrConnectWithoutVenueInput {
@@ -13558,26 +13100,16 @@ input VenueStatsCreateOrConnectWithoutVenueInput {
   create: VenueStatsCreateWithoutVenueInput!
 }
 
-input VenueStatsCreateWithoutJoinedVenueHistoryInput {
+input VenueStatsCreateWithoutOutInput {
   id: String
   Venue: VenueCreateNestedOneWithoutVenueStatsInput
-  totaledVenueHistory: TotaledOutCreateNestedManyWithoutVenueStatsInput
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-input VenueStatsCreateWithoutTotaledVenueHistoryInput {
-  id: String
-  Venue: VenueCreateNestedOneWithoutVenueStatsInput
-  joinedVenueHistory: JoinedOutCreateNestedManyWithoutVenueStatsInput
   createdAt: DateTime
   updatedAt: DateTime
 }
 
 input VenueStatsCreateWithoutVenueInput {
   id: String
-  joinedVenueHistory: JoinedOutCreateNestedManyWithoutVenueStatsInput
-  totaledVenueHistory: TotaledOutCreateNestedManyWithoutVenueStatsInput
+  Out: OutCreateNestedManyWithoutVenueStatsInput
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -13606,8 +13138,7 @@ input VenueStatsOrderByWithAggregationInput {
 input VenueStatsOrderByWithRelationInput {
   id: SortOrder
   Venue: VenueOrderByWithRelationInput
-  joinedVenueHistory: JoinedOutOrderByRelationAggregateInput
-  totaledVenueHistory: TotaledOutOrderByRelationAggregateInput
+  Out: OutOrderByRelationAggregateInput
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -13635,8 +13166,7 @@ input VenueStatsScalarWhereWithAggregatesInput {
 input VenueStatsUpdateInput {
   id: StringFieldUpdateOperationsInput
   Venue: VenueUpdateOneWithoutVenueStatsNestedInput
-  joinedVenueHistory: JoinedOutUpdateManyWithoutVenueStatsNestedInput
-  totaledVenueHistory: TotaledOutUpdateManyWithoutVenueStatsNestedInput
+  Out: OutUpdateManyWithoutVenueStatsNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
@@ -13655,58 +13185,33 @@ input VenueStatsUpdateOneRequiredWithoutVenueNestedInput {
   update: VenueStatsUpdateWithoutVenueInput
 }
 
-input VenueStatsUpdateOneWithoutJoinedVenueHistoryNestedInput {
-  create: VenueStatsCreateWithoutJoinedVenueHistoryInput
-  connectOrCreate: VenueStatsCreateOrConnectWithoutJoinedVenueHistoryInput
-  upsert: VenueStatsUpsertWithoutJoinedVenueHistoryInput
+input VenueStatsUpdateOneWithoutOutNestedInput {
+  create: VenueStatsCreateWithoutOutInput
+  connectOrCreate: VenueStatsCreateOrConnectWithoutOutInput
+  upsert: VenueStatsUpsertWithoutOutInput
   disconnect: Boolean
   delete: Boolean
   connect: VenueStatsWhereUniqueInput
-  update: VenueStatsUpdateWithoutJoinedVenueHistoryInput
+  update: VenueStatsUpdateWithoutOutInput
 }
 
-input VenueStatsUpdateOneWithoutTotaledVenueHistoryNestedInput {
-  create: VenueStatsCreateWithoutTotaledVenueHistoryInput
-  connectOrCreate: VenueStatsCreateOrConnectWithoutTotaledVenueHistoryInput
-  upsert: VenueStatsUpsertWithoutTotaledVenueHistoryInput
-  disconnect: Boolean
-  delete: Boolean
-  connect: VenueStatsWhereUniqueInput
-  update: VenueStatsUpdateWithoutTotaledVenueHistoryInput
-}
-
-input VenueStatsUpdateWithoutJoinedVenueHistoryInput {
+input VenueStatsUpdateWithoutOutInput {
   id: StringFieldUpdateOperationsInput
   Venue: VenueUpdateOneWithoutVenueStatsNestedInput
-  totaledVenueHistory: TotaledOutUpdateManyWithoutVenueStatsNestedInput
-  createdAt: DateTimeFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
-}
-
-input VenueStatsUpdateWithoutTotaledVenueHistoryInput {
-  id: StringFieldUpdateOperationsInput
-  Venue: VenueUpdateOneWithoutVenueStatsNestedInput
-  joinedVenueHistory: JoinedOutUpdateManyWithoutVenueStatsNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
 input VenueStatsUpdateWithoutVenueInput {
   id: StringFieldUpdateOperationsInput
-  joinedVenueHistory: JoinedOutUpdateManyWithoutVenueStatsNestedInput
-  totaledVenueHistory: TotaledOutUpdateManyWithoutVenueStatsNestedInput
+  Out: OutUpdateManyWithoutVenueStatsNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
 }
 
-input VenueStatsUpsertWithoutJoinedVenueHistoryInput {
-  update: VenueStatsUpdateWithoutJoinedVenueHistoryInput!
-  create: VenueStatsCreateWithoutJoinedVenueHistoryInput!
-}
-
-input VenueStatsUpsertWithoutTotaledVenueHistoryInput {
-  update: VenueStatsUpdateWithoutTotaledVenueHistoryInput!
-  create: VenueStatsCreateWithoutTotaledVenueHistoryInput!
+input VenueStatsUpsertWithoutOutInput {
+  update: VenueStatsUpdateWithoutOutInput!
+  create: VenueStatsCreateWithoutOutInput!
 }
 
 input VenueStatsUpsertWithoutVenueInput {
@@ -13720,8 +13225,7 @@ input VenueStatsWhereInput {
   NOT: [VenueStatsWhereInput!]
   id: StringFilter
   Venue: VenueWhereInput
-  joinedVenueHistory: JoinedOutListRelationFilter
-  totaledVenueHistory: TotaledOutListRelationFilter
+  Out: OutListRelationFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
 }
@@ -13869,7 +13373,7 @@ input VenueWhereUniqueInput {
 }
 
 type VenuesNearbyResponse {
-  venuesNearby: [Profile!]!
+  venuesNearby: [ProfileVenue!]!
   searchArea: SearchAreaResponse!
 }
 
