@@ -13,5 +13,6 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "jest.jestCommandLine": "jest",
-  "githubPullRequests.ignoredPullRequestBranches": ["main"]
+  "githubPullRequests.ignoredPullRequestBranches": ["main"],
+  "dotenv.enableAutocloaking": false
 }

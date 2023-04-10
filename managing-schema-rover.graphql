@@ -32,8 +32,8 @@ type ClientDeviceManager {
   id: String!
   Device: Device
   DeviceProfile: ClientDeviceProfile
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type ClientDeviceProfile {
@@ -48,7 +48,7 @@ type ClientDeviceProfile {
   deviceManagerId: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  refreshtoken: String!
+  refreshtoken: String
   Profile: Profile!
 }
 
