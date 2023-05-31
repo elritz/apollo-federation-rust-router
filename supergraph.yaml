@@ -1,11 +1,11 @@
 federation_version: 2
 subgraphs:
   profiling:
-    routing_url: http://localhost:5001/graphql
+    routing_url: http://profiling:5001/graphql
     schema:
       file: profiling-schema-rover.graphql
   managing:
-    routing_url: http://localhost:5002/graphql
+    routing_url: http://managing:5002/graphql
     schema:
       file: managing-schema-rover.graphql
   # messaging:

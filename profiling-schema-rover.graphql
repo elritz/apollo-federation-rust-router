@@ -7322,7 +7322,6 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
-  checkThePink: Boolean!
   sendAuthenticatorDeviceOwnerCode(where: CustomCodeWhereInput, data: CodeDataInput): CodeResponse!
   sendAuthenticatorForgotPasswordCode(where: CustomCodeWhereInput, data: CodeDataInput): CodeResponse!
   createFriendRequest(senderProfileId: String!, receiversProfileId: [String!]!): Boolean!

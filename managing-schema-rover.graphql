@@ -1,10 +1,5 @@
-directive @inaccessible on ARGUMENT_DEFINITION | ENUM | ENUM_VALUE | FIELD_DEFINITION | INPUT_FIELD_DEFINITION | INPUT_OBJECT | INTERFACE | OBJECT | SCALAR | UNION
-
-directive @link(import: [link__Import], url: String!) on SCHEMA
-
-directive @override(from: String!) on FIELD_DEFINITION
-
-directive @shareable on FIELD_DEFINITION | OBJECT
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key", "@shareable", "@inaccessible", "@tag", "@provides", "@requires", "@external", "@extends", "@override"])
 
 enum AppType {
   BARFRIENDS
@@ -131,10 +126,10 @@ input DeviceCountOrderByAggregateInput {
 input DeviceCreateInput {
   id: String
   deviceType: String
-  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
-  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
   createdAt: DateTime
   updatedAt: DateTime
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
+  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
 }
 
 input DeviceCreateManyInput {
@@ -171,17 +166,17 @@ input DeviceCreateOrConnectWithoutPushTokenInput {
 input DeviceCreateWithoutDeviceManagerInput {
   id: String
   deviceType: String
-  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
   createdAt: DateTime
   updatedAt: DateTime
+  PushToken: PushTokenCreateNestedOneWithoutDeviceInput
 }
 
 input DeviceCreateWithoutPushTokenInput {
   id: String
   deviceType: String
-  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
   createdAt: DateTime
   updatedAt: DateTime
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceInput!
 }
 
 type DeviceManager {
@@ -200,10 +195,10 @@ input DeviceManagerCountOrderByAggregateInput {
 
 input DeviceManagerCreateInput {
   id: String
-  Device: DeviceCreateNestedOneWithoutDeviceManagerInput
-  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
   createdAt: DateTime
   updatedAt: DateTime
+  Device: DeviceCreateNestedOneWithoutDeviceManagerInput
+  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
 }
 
 input DeviceManagerCreateManyInput {
@@ -236,16 +231,16 @@ input DeviceManagerCreateOrConnectWithoutDeviceProfileInput {
 
 input DeviceManagerCreateWithoutDeviceInput {
   id: String
-  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
   createdAt: DateTime
   updatedAt: DateTime
+  DeviceProfile: DeviceProfileCreateNestedManyWithoutDeviceManagerInput
 }
 
 input DeviceManagerCreateWithoutDeviceProfileInput {
   id: String
-  Device: DeviceCreateNestedOneWithoutDeviceManagerInput
   createdAt: DateTime
   updatedAt: DateTime
+  Device: DeviceCreateNestedOneWithoutDeviceManagerInput
 }
 
 type DeviceManagerDeviceProfiles {
@@ -277,10 +272,10 @@ input DeviceManagerOrderByWithAggregationInput {
 
 input DeviceManagerOrderByWithRelationInput {
   id: SortOrder
-  Device: DeviceOrderByWithRelationInput
-  DeviceProfile: DeviceProfileOrderByRelationAggregateInput
   createdAt: SortOrder
   updatedAt: SortOrder
+  Device: DeviceOrderByWithRelationInput
+  DeviceProfile: DeviceProfileOrderByRelationAggregateInput
 }
 
 input DeviceManagerRelationFilter {
@@ -305,10 +300,10 @@ input DeviceManagerScalarWhereWithAggregatesInput {
 
 input DeviceManagerUpdateInput {
   id: StringFieldUpdateOperationsInput
-  Device: DeviceUpdateOneWithoutDeviceManagerNestedInput
-  DeviceProfile: DeviceProfileUpdateManyWithoutDeviceManagerNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  Device: DeviceUpdateOneWithoutDeviceManagerNestedInput
+  DeviceProfile: DeviceProfileUpdateManyWithoutDeviceManagerNestedInput
 }
 
 input DeviceManagerUpdateManyMutationInput {
@@ -335,16 +330,16 @@ input DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput {
 
 input DeviceManagerUpdateWithoutDeviceInput {
   id: StringFieldUpdateOperationsInput
-  DeviceProfile: DeviceProfileUpdateManyWithoutDeviceManagerNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  DeviceProfile: DeviceProfileUpdateManyWithoutDeviceManagerNestedInput
 }
 
 input DeviceManagerUpdateWithoutDeviceProfileInput {
   id: StringFieldUpdateOperationsInput
-  Device: DeviceUpdateOneWithoutDeviceManagerNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  Device: DeviceUpdateOneWithoutDeviceManagerNestedInput
 }
 
 input DeviceManagerUpsertWithoutDeviceInput {
@@ -362,10 +357,10 @@ input DeviceManagerWhereInput {
   OR: [DeviceManagerWhereInput!]
   NOT: [DeviceManagerWhereInput!]
   id: StringFilter
-  Device: DeviceWhereInput
-  DeviceProfile: DeviceProfileListRelationFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
+  Device: DeviceWhereInput
+  DeviceProfile: DeviceProfileListRelationFilter
 }
 
 input DeviceManagerWhereUniqueInput {
@@ -405,12 +400,12 @@ input DeviceOrderByWithAggregationInput {
 input DeviceOrderByWithRelationInput {
   id: SortOrder
   deviceType: SortOrder
-  DeviceManager: DeviceManagerOrderByWithRelationInput
   deviceManagerId: SortOrder
-  PushToken: PushTokenOrderByWithRelationInput
   pushTokenId: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  DeviceManager: DeviceManagerOrderByWithRelationInput
+  PushToken: PushTokenOrderByWithRelationInput
 }
 
 input DeviceProfileCountOrderByAggregateInput {
@@ -431,11 +426,11 @@ input DeviceProfileCreateInput {
   ProfileType: ProfileType
   profileId: String
   isActive: Boolean!
-  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceProfileInput!
   accesstoken: String
-  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
   createdAt: DateTime
   updatedAt: DateTime
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceProfileInput!
+  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
 }
 
 input DeviceProfileCreateManyDeviceManagerInput {
@@ -496,9 +491,9 @@ input DeviceProfileCreateWithoutDeviceManagerInput {
   profileId: String
   isActive: Boolean!
   accesstoken: String
-  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
   createdAt: DateTime
   updatedAt: DateTime
+  RefreshToken: RefreshTokenCreateNestedOneWithoutDeviceProfileInput
 }
 
 input DeviceProfileCreateWithoutRefreshTokenInput {
@@ -507,10 +502,10 @@ input DeviceProfileCreateWithoutRefreshTokenInput {
   ProfileType: ProfileType
   profileId: String
   isActive: Boolean!
-  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceProfileInput!
   accesstoken: String
   createdAt: DateTime
   updatedAt: DateTime
+  DeviceManager: DeviceManagerCreateNestedOneWithoutDeviceProfileInput!
 }
 
 input DeviceProfileListRelationFilter {
@@ -568,12 +563,12 @@ input DeviceProfileOrderByWithRelationInput {
   ProfileType: SortOrder
   profileId: SortOrder
   isActive: SortOrder
-  DeviceManager: DeviceManagerOrderByWithRelationInput
   accesstoken: SortOrder
-  RefreshToken: RefreshTokenOrderByWithRelationInput
   deviceManagerId: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  DeviceManager: DeviceManagerOrderByWithRelationInput
+  RefreshToken: RefreshTokenOrderByWithRelationInput
 }
 
 input DeviceProfileRelationFilter {
@@ -629,11 +624,11 @@ input DeviceProfileUpdateInput {
   ProfileType: NullableEnumProfileTypeFieldUpdateOperationsInput
   profileId: NullableStringFieldUpdateOperationsInput
   isActive: BoolFieldUpdateOperationsInput
-  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput
   accesstoken: NullableStringFieldUpdateOperationsInput
-  RefreshToken: RefreshTokenUpdateOneWithoutDeviceProfileNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput
+  RefreshToken: RefreshTokenUpdateOneWithoutDeviceProfileNestedInput
 }
 
 input DeviceProfileUpdateManyMutationInput {
@@ -688,9 +683,9 @@ input DeviceProfileUpdateWithoutDeviceManagerInput {
   profileId: NullableStringFieldUpdateOperationsInput
   isActive: BoolFieldUpdateOperationsInput
   accesstoken: NullableStringFieldUpdateOperationsInput
-  RefreshToken: RefreshTokenUpdateOneWithoutDeviceProfileNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  RefreshToken: RefreshTokenUpdateOneWithoutDeviceProfileNestedInput
 }
 
 input DeviceProfileUpdateWithoutRefreshTokenInput {
@@ -699,10 +694,10 @@ input DeviceProfileUpdateWithoutRefreshTokenInput {
   ProfileType: NullableEnumProfileTypeFieldUpdateOperationsInput
   profileId: NullableStringFieldUpdateOperationsInput
   isActive: BoolFieldUpdateOperationsInput
-  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput
   accesstoken: NullableStringFieldUpdateOperationsInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceProfileNestedInput
 }
 
 input DeviceProfileUpsertWithWhereUniqueWithoutDeviceManagerInput {
@@ -725,12 +720,12 @@ input DeviceProfileWhereInput {
   ProfileType: EnumProfileTypeNullableFilter
   profileId: StringNullableFilter
   isActive: BoolFilter
-  DeviceManager: DeviceManagerWhereInput
   accesstoken: StringNullableFilter
-  RefreshToken: RefreshTokenWhereInput
   deviceManagerId: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
+  DeviceManager: DeviceManagerWhereInput
+  RefreshToken: RefreshTokenWhereInput
 }
 
 input DeviceProfileWhereUniqueInput {
@@ -766,10 +761,10 @@ input DeviceScalarWhereWithAggregatesInput {
 input DeviceUpdateInput {
   id: StringFieldUpdateOperationsInput
   deviceType: NullableStringFieldUpdateOperationsInput
-  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput
-  PushToken: PushTokenUpdateOneWithoutDeviceNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput
+  PushToken: PushTokenUpdateOneWithoutDeviceNestedInput
 }
 
 input DeviceUpdateManyMutationInput {
@@ -802,17 +797,17 @@ input DeviceUpdateOneWithoutPushTokenNestedInput {
 input DeviceUpdateWithoutDeviceManagerInput {
   id: StringFieldUpdateOperationsInput
   deviceType: NullableStringFieldUpdateOperationsInput
-  PushToken: PushTokenUpdateOneWithoutDeviceNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  PushToken: PushTokenUpdateOneWithoutDeviceNestedInput
 }
 
 input DeviceUpdateWithoutPushTokenInput {
   id: StringFieldUpdateOperationsInput
   deviceType: NullableStringFieldUpdateOperationsInput
-  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  DeviceManager: DeviceManagerUpdateOneRequiredWithoutDeviceNestedInput
 }
 
 input DeviceUpsertWithoutDeviceManagerInput {
@@ -831,12 +826,12 @@ input DeviceWhereInput {
   NOT: [DeviceWhereInput!]
   id: StringFilter
   deviceType: StringNullableFilter
-  DeviceManager: DeviceManagerWhereInput
   deviceManagerId: StringFilter
-  PushToken: PushTokenWhereInput
   pushTokenId: StringNullableFilter
   createdAt: DateTimeNullableFilter
   updatedAt: DateTimeNullableFilter
+  DeviceManager: DeviceManagerWhereInput
+  PushToken: PushTokenWhereInput
 }
 
 input DeviceWhereUniqueInput {
@@ -933,9 +928,9 @@ input JsonNullableListFilter {
 type Mutation {
   checkManaging: Boolean!
   createADeviceManager(profileId: String!): ClientDeviceManager!
-  switchDeviceProfile(profileId: String!, profileType: ProfileType): RefreshDeviceManagerDeviceManagerResponseUnion!
+  switchDeviceProfile(profileId: String!, profileType: ProfileType = GUEST): RefreshDeviceManagerDeviceManagerResponseUnion!
   refreshDeviceManager: RefreshDeviceManagerDeviceManagerResponseUnion!
-  removeDeviceProfileFromDeviceManager(profileId: String!, profileType: ProfileType): Boolean!
+  removeDeviceProfileFromDeviceManager(profileId: String!, profileType: ProfileType = GUEST): Boolean!
   upsertDevicePushToken(androidToken: String, appleToken: String, expoToken: String): Boolean!
 }
 
@@ -1205,10 +1200,10 @@ input PushTokenCreateInput {
   expoToken: String
   androidToken: String
   appleToken: String
-  Device: DeviceCreateNestedOneWithoutPushTokenInput
   receipts: [Json!]
   createdAt: DateTime
   updatedAt: DateTime
+  Device: DeviceCreateNestedOneWithoutPushTokenInput
 }
 
 input PushTokenCreateManyInput {
@@ -1288,10 +1283,10 @@ input PushTokenOrderByWithRelationInput {
   expoToken: SortOrder
   androidToken: SortOrder
   appleToken: SortOrder
-  Device: DeviceOrderByWithRelationInput
   receipts: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  Device: DeviceOrderByWithRelationInput
 }
 
 input PushTokenRelationFilter {
@@ -1330,10 +1325,10 @@ input PushTokenUpdateInput {
   expoToken: NullableStringFieldUpdateOperationsInput
   androidToken: NullableStringFieldUpdateOperationsInput
   appleToken: NullableStringFieldUpdateOperationsInput
-  Device: DeviceUpdateOneWithoutPushTokenNestedInput
   receipts: [Json!]
   createdAt: NullableDateTimeFieldUpdateOperationsInput
   updatedAt: NullableDateTimeFieldUpdateOperationsInput
+  Device: DeviceUpdateOneWithoutPushTokenNestedInput
 }
 
 input PushTokenUpdateManyMutationInput {
@@ -1387,10 +1382,10 @@ input PushTokenWhereInput {
   expoToken: StringNullableFilter
   androidToken: StringNullableFilter
   appleToken: StringNullableFilter
-  Device: DeviceWhereInput
   receipts: JsonNullableListFilter
   createdAt: DateTimeNullableFilter
   updatedAt: DateTimeNullableFilter
+  Device: DeviceWhereInput
 }
 
 input PushTokenWhereUniqueInput {
@@ -1431,9 +1426,9 @@ input RefreshTokenCountOrderByAggregateInput {
 
 input RefreshTokenCreateInput {
   token: String!
-  DeviceProfile: DeviceProfileCreateNestedOneWithoutRefreshTokenInput
   createdAt: DateTime
   updatedAt: DateTime
+  DeviceProfile: DeviceProfileCreateNestedOneWithoutRefreshTokenInput
 }
 
 input RefreshTokenCreateManyInput {
@@ -1493,10 +1488,10 @@ input RefreshTokenOrderByWithAggregationInput {
 input RefreshTokenOrderByWithRelationInput {
   id: SortOrder
   token: SortOrder
-  DeviceProfile: DeviceProfileOrderByWithRelationInput
   DeviceProfileId: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
+  DeviceProfile: DeviceProfileOrderByWithRelationInput
 }
 
 input RefreshTokenRelationFilter {
@@ -1529,9 +1524,9 @@ input RefreshTokenSumOrderByAggregateInput {
 
 input RefreshTokenUpdateInput {
   token: StringFieldUpdateOperationsInput
-  DeviceProfile: DeviceProfileUpdateOneWithoutRefreshTokenNestedInput
   createdAt: DateTimeFieldUpdateOperationsInput
   updatedAt: DateTimeFieldUpdateOperationsInput
+  DeviceProfile: DeviceProfileUpdateOneWithoutRefreshTokenNestedInput
 }
 
 input RefreshTokenUpdateManyMutationInput {
@@ -1567,10 +1562,10 @@ input RefreshTokenWhereInput {
   NOT: [RefreshTokenWhereInput!]
   id: IntFilter
   token: StringFilter
-  DeviceProfile: DeviceProfileWhereInput
   DeviceProfileId: StringNullableFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
+  DeviceProfile: DeviceProfileWhereInput
 }
 
 input RefreshTokenWhereUniqueInput {
@@ -1660,5 +1655,3 @@ enum TransactionIsolationLevel {
   RepeatableRead
   Serializable
 }
-
-scalar link__Import
